@@ -27,7 +27,7 @@ class ScribbleNode(template.Node):
             except Scribble.DoesNotExist:
                 scribble = None
         if scribble:
-            nodelist = Template(scribble.content)
+            nodelist = template.Template(scribble.content)
         else:
             nodelist = self.nodelist_default
         return nodelist.render(context)
