@@ -17,6 +17,9 @@ if not settings.configured:
         ),
         SITE_ID=1,
         SECRET_KEY='super-secret',
+        TEMPLATE_CONTEXT_PROCESSORS=(
+            'django.core.context_processors.request',
+        )
     )
 
 
