@@ -35,11 +35,15 @@ class ScribbleNode(template.Node):
         except Scribble.DoesNotExist:
             scribble = Scribble(slug=slug, url=request.path, content=self.raw)
         if scribble:
-            nodelist = template.Template(scribble.content)
+            scribble_template = template.Template(scribble.content)
         else:
-            nodelist = self.nodelist_default
+            scribble_template = self.nodelist_default
         scribble_context = build_scribble_context(scribble, request)
-        return nodelist.render(scribble_context)
+        content = scribble_template.render(scribble_context)
+        wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
+        context['scribble'] = scribble        
+        context['rendered_scribble'] = content
+        return wrapper_template.render(context)
 
 
 def rebuild_template_string(tokens):

@@ -30,32 +30,32 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
     def test_basic_rendering(self):
         "Render a scribble by the slug."
         result = self.render_template_tag(slug='"sidebar"')
-        self.assertEqual(result.strip(), '<p>Scribble content.</p>')
+        self.assertTrue('<p>Scribble content.</p>' in result)
 
     def test_variable_slug(self):
         "Render a scribble by the slug as a context variable."
         result = self.render_template_tag(slug='foo', context={'foo': 'sidebar'})
-        self.assertEqual(result.strip(), '<p>Scribble content.</p>')
+        self.assertTrue('<p>Scribble content.</p>' in result)
 
     def test_slug_not_found(self):
         "Render default if scribble not found by slug."
         self.scribble.slug = 'blip'
         self.scribble.save()
         result = self.render_template_tag(slug='"sidebar"')
-        self.assertEqual(result.strip(), '<p>Default.</p>')
+        self.assertTrue('<p>Default.</p>' in result)
 
     def test_url_not_found(self):
         "Render default if scribble not found for the current url."
         self.scribble.slug = '/bar/'
         self.scribble.save()
         result = self.render_template_tag(slug='"sidebar"')
-        self.assertEqual(result.strip(), '<p>Default.</p>')
+        self.assertTrue('<p>Default.</p>' in result)
 
     def test_default_rendering(self):
         "Render default if no scribbles exist."
         self.scribble.delete()
         result = self.render_template_tag(slug='"sidebar"')
-        self.assertEqual(result.strip(), '<p>Default.</p>')
+        self.assertTrue('<p>Default.</p>' in result)
 
     def test_no_slug_given(self):
         "Slug is required by the tag."
