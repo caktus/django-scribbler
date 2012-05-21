@@ -1,5 +1,25 @@
-<div class="scribble-wrapper scribble-{{ scribble.slug }}">
-    <div class="scribble-content">
+<div class="scribble-wrapper scribble-{{ scribble.slug }} {% if show_controls %}with-controls{% endif %}">
+    {% if show_controls %}
+        <div class="scribble-controls">
+            {% if can_edit_scribble or can_add_scribble %}<a class="control edit">Edit</a>{% endif %}
+            {% if can_edit_scribble or can_add_scribble %}<a class="control preview">Preview</a>{% endif %}
+            {% if can_delete_scribble %}<a class="control delete">Delete</a>{% endif %}
+            {% if can_edit_scribble or can_add_scribble %}
+                <a class="control save">Save</a>
+                <a class="control cancel">Cancel</a>
+            {% endif %}
+        </div>
+    {% endif %}
+    <div class="scribble-content original">
         {{ rendered_scribble }}
     </div>
+    {% if can_edit_scribble or can_add_scribble %}
+        <div class="scribble-form">
+            {% with scribble_form as form %}
+                {% include "scribbler/edit-form.html" %}
+            {% endwith %}
+        </div>
+        <div class="scribble-content preview">
+        </div>
+    {% endif %}
 </div>

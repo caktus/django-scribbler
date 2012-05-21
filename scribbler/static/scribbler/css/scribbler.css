@@ -1,0 +1,43 @@
+/*
+ * django-scribbler
+ * Source: https://github.com/mlavin/django-scribbler
+ * Docs: http://django-scribbler.readthedocs.org/
+ *
+ * Copyright 2012, Mark Lavin
+ * BSD License
+ *
+*/
+#hide {
+  display: none;
+}
+#show {
+  display: block;
+}
+.scribble-wrapper.with-controls:hover,
+.scribble-wrapper.active {
+  border: solid 1px black;
+}
+.scribble-wrapper.active .scribble-controls .preview,
+.scribble-wrapper.active .scribble-controls .delete,
+.scribble-wrapper.active .scribble-controls .save,
+.scribble-wrapper.active .scribble-controls .cancel {
+  display: inline;
+}
+.scribble-wrapper .scribble-controls {
+  display: none;
+  background: #eee;
+  border-bottom: 1px solid black;
+  padding: 5px;
+}
+.scribble-wrapper .scribble-controls .preview,
+.scribble-wrapper .scribble-controls .delete,
+.scribble-wrapper .scribble-controls .save,
+.scribble-wrapper .scribble-controls .cancel {
+  display: none;
+}
+.scribble-wrapper .scribble-form {
+  display: none;
+}
+.scribble-wrapper .scribble-preview {
+  display: none;
+}

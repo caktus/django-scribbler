@@ -4,6 +4,7 @@ from django import template
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
+from scribbler.forms import ScribbleForm
 from scribbler.models import Scribble
 from scribbler.views import build_scribble_context
 
@@ -43,6 +44,22 @@ class ScribbleNode(template.Node):
         wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
         context['scribble'] = scribble        
         context['rendered_scribble'] = content
+        user = context.get('user', None)
+        show_controls = False
+        can_edit = False
+        can_add = False
+        can_delete = False
+        if user:
+            can_edit = scribble.pk and user.has_perm('scribbler.change_scribble', obj=scribble)
+            can_add = (not scribble.pk) and user.has_perm('scribbler.add_scribble')
+            can_delete = scribble.pk and user.has_perm('scribbler.delete_scribble', obj=scribble)
+        show_controls = can_edit or can_add or can_delete
+        if can_edit or can_add:
+            context['scribble_form'] = ScribbleForm(instance=scribble)
+        context['show_controls'] = show_controls
+        context['can_add_scribble'] = can_add
+        context['can_edit_scribble'] = can_edit
+        context['can_delete_scribble'] = can_delete
         return wrapper_template.render(context)
 
 
