@@ -1,0 +1,37 @@
+{% load url from future %}
+{% load scribbler_tags %}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta-description %}{% endblock %}">
+    <meta name="author" content="{% block meta-author %}{% endblock %}">
+    <meta name="keywords" content="{% block meta-keywords %}{% endblock %}">
+    {% block extra-meta %}{% endblock %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/css/codemirror.css">
+    <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}scribbler/less/scribbler.less">
+    <style>
+        body {margin: 0;}
+    </style>
+    <script src="{{ STATIC_URL }}js/less-1.3.0.min.js"></script>
+    {% block extra-css %}{% endblock %}
+</head>
+<body id="{% block body-id %}body{% endblock %}" class="{% block body-class %}body{% endblock %}">
+    <div class="container main">
+        {% block content %}
+            {% scribble 'header' %}
+                <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
+            {% endscribble %}
+        {% endblock %}
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}scribbler/js/codemirror.js"></script>
+    <script src="{{ STATIC_URL }}scribbler/js/xml.js"></script>
+    <script src="{{ STATIC_URL }}scribbler/js/javascript.js"></script>
+    <script src="{{ STATIC_URL }}scribbler/js/css.js"></script>
+    <script src="{{ STATIC_URL }}scribbler/js/scribbler.js"></script>
+    {% block extra-js %}{% endblock %}
+</body>
+</html>
