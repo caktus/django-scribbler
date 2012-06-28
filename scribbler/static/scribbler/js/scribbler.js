@@ -62,9 +62,12 @@ $(document).ready(function() {
                     $(':input', form).each(function(i, input) {
                         var inputName = $(input).attr('name');
                         var inputValue = $(input).val();
-                        data[inputName] = inputValue;
+                        if (inputName.indexOf('content', inputName.length - 'content'.length) !== -1) {
+                            data[inputName] = editor.getValue();
+                        } else {
+                            data[inputName] = inputValue;
+                        }
                     });
-                    data.content = editor.getValue();
                     // Submit the form and display the preview
                     $.post(form.attr('action'), data, renderPreview, 'json');
                 }
