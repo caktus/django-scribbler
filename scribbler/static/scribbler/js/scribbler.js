@@ -27,7 +27,7 @@ $(document).ready(function() {
             var preview = footer.data('preview');
             preview.hide();
             content.show();
-            $('[name=content]', form).val(editor.getValue());
+            $('[name$=content]', form).val(editor.getValue());
             footer.removeData(['content', 'preview', 'form']);
             footer.animate({height: 0});
             footer.hide();
@@ -88,7 +88,7 @@ $(document).ready(function() {
                 footer.data('content', content);
                 footer.data('preview', preview);
                 footer.data('form', form);                
-                editor.setValue($('[name=content]', form).val());
+                editor.setValue($('[name$=content]', form).val());
                 footer.show();
                 footer.animate({height: '300px'});
                 editor.focus();

@@ -17,13 +17,13 @@ def build_scribble_context(scribble, request):
 
 
 @require_POST
-def preview_scribble(request):
+def preview_scribble(request, slug):
     "Render scribble content or return error information."
     results = {
         'valid': False,
         'html': '',
     }
-    form = ScribbleForm(request.POST)
+    form = ScribbleForm(request.POST, prefix=slug)
     if form.is_valid():
         results['valid'] = True
         template = Template(form.cleaned_data.get('content', ''))
