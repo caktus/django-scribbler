@@ -1,1 +1,1 @@
-from .templatetags import RenderScribbleTestCase
+from .test_templatetags import RenderScribbleTestCase
