@@ -19,7 +19,8 @@ if not settings.configured:
         SECRET_KEY='super-secret',
         TEMPLATE_CONTEXT_PROCESSORS=(
             'django.core.context_processors.request',
-        )
+        ),
+        ROOT_URLCONF='scribbler.tests.urls',
     )
 
 
