@@ -8,4 +8,6 @@ except ImportError: # pragma: no cover
 
 urlpatterns = patterns('scribbler.views',
     url('^preview/$', 'preview_scribble', name='preview-scribble'),
+    url('^create/$', 'create_edit_scribble', name='create-scribble'),
+    url('^edit/(?P<scribble_id>(\d+))/$', 'create_edit_scribble', name='edit-scribble'),
 )

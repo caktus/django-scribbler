@@ -13,6 +13,9 @@ if not settings.configured:
             }
         },
         INSTALLED_APPS=(
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
             'scribbler',
         ),
         SITE_ID=1,
@@ -21,6 +24,9 @@ if not settings.configured:
             'django.core.context_processors.request',
         ),
         ROOT_URLCONF='scribbler.tests.urls',
+        PASSWORD_HASHERS=(
+            'django.contrib.auth.hashers.MD5PasswordHasher',
+        ),
     )
 
 

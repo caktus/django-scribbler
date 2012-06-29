@@ -1,2 +1,2 @@
 from .test_templatetags import RenderScribbleTestCase
-from .test_views import PreviewTestCase
+from .test_views import PreviewTestCase, CreateTestCase, EditTestCase

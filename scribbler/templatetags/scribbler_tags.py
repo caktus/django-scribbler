@@ -50,9 +50,9 @@ class ScribbleNode(template.Node):
         can_add = False
         can_delete = False
         if user:
-            can_edit = scribble.pk and user.has_perm('scribbler.change_scribble', obj=scribble)
+            can_edit = scribble.pk and user.has_perm('scribbler.change_scribble')
             can_add = (not scribble.pk) and user.has_perm('scribbler.add_scribble')
-            can_delete = scribble.pk and user.has_perm('scribbler.delete_scribble', obj=scribble)
+            can_delete = scribble.pk and user.has_perm('scribbler.delete_scribble')
         show_controls = can_edit or can_add or can_delete
         if can_edit or can_add:
             context['scribble_form'] = ScribbleForm(instance=scribble, prefix=slug)
