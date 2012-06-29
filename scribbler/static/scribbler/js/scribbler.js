@@ -59,10 +59,11 @@ $(document).ready(function() {
                         currentChange = false;
                     }
                     var data = {};
+                    var prefix = form.data('prefix');
                     $(':input', form).each(function(i, input) {
-                        var inputName = $(input).attr('name');
+                        var inputName = $(input).attr('name').replace(prefix + '-', '');
                         var inputValue = $(input).val();
-                        if (inputName.indexOf('content', inputName.length - 'content'.length) !== -1) {
+                        if (inputName === 'content') {
                             data[inputName] = editor.getValue();
                         } else {
                             data[inputName] = inputValue;

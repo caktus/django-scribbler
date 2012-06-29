@@ -7,5 +7,5 @@ except ImportError: # pragma: no cover
 
 
 urlpatterns = patterns('scribbler.views',
-    url('^preview/(?P<slug>(\w|-)+)/$', 'preview_scribble', name='preview-scribble'),
+    url('^preview/$', 'preview_scribble', name='preview-scribble'),
 )

@@ -18,8 +18,7 @@ class PreviewTestCase(BaseViewTestCase):
     "Previewing scribbler content."
 
     def setUp(self):
-        self.slug = 'test'
-        self.url = reverse('preview-scribble', kwargs={'slug': self.slug})
+        self.url = reverse('preview-scribble')
 
     def test_post_required(self):
         "Preview view requires a POST."
@@ -29,9 +28,9 @@ class PreviewTestCase(BaseViewTestCase):
     def test_valid_response(self):
         "Rendered content should be given in the response."
         data = {
-            '{0}-slug'.format(self.slug): self.slug,
-            '{0}-url'.format(self.slug): '/',
-            '{0}-content'.format(self.slug): '{% now "Y" %}'
+            'slug': 'test',
+            'url': '/',
+            'content': '{% now "Y" %}'
         }
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
@@ -43,9 +42,9 @@ class PreviewTestCase(BaseViewTestCase):
     def test_invalid_template(self):
         "Debug info should be given if the template content was invalid."
         data = {
-            '{0}-slug'.format(self.slug): self.slug,
-            '{0}-url'.format(self.slug): '/',
-            '{0}-content'.format(self.slug): '{% now %}'
+            'slug': 'test',
+            'url': '/',
+            'content': '{% now %}'
         }
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
