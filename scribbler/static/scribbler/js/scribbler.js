@@ -18,6 +18,7 @@ $(document).ready(function() {
         var footer = $('<div id="scribbleEditorContainer"></div>');
         var footerControls = $('<div></div>').addClass('controls clearfix');
         var editor = null;
+        var save = $('<a>Save</a>').attr({title: 'Save', href: "#"}).addClass('btn save')
         // Footer controls
         var close = $('<a>Close</a>').attr({title: 'Close', href: '#'})
         .addClass('close').click(function(e) {
@@ -29,10 +30,9 @@ $(document).ready(function() {
             content.show();
             $('[name$=content]', form).val(editor.getValue());
             footer.removeData(['content', 'preview', 'form']);
-            footer.animate({height: 0});
-            footer.hide();
+            footer.animate({height: 0}, 500);
         });
-        footerControls.append(close);
+        footerControls.append(close, save);
         footer.append(footerControls);
 
         $('body').append(footer);
@@ -94,7 +94,7 @@ $(document).ready(function() {
                 footer.data('form', form);                
                 editor.setValue($('[name$=content]', form).val());
                 footer.show();
-                footer.animate({height: '300px'});
+                footer.animate({height: '300px'}, 500);
                 editor.focus();
             });
         });
