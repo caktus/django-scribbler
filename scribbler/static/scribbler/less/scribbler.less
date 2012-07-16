@@ -19,6 +19,9 @@
 
 @green: #62c462;
 
+@red: #FFE0E0;
+@redDarker: #BD3535;
+
 
 /* Mixins
 ======================== */
@@ -148,9 +151,17 @@
         #gradient .vertical;
         border: none;
         .clearfix;
+        span {
+            strong {
+                color: @redDarker;
+            }
+            float: left;
+            margin: 0 8px;
+            color: @white;
+        }
         a {
             float: right;
-            margin:0 8px;
+            margin: 0 8px;
             &.btn {
                 text-transform: uppercase;
                 line-height: 20px;
@@ -198,3 +209,12 @@
     }
 
 }
+
+
+/* Codemirror customization styles
+==================================== */
+.CodeMirror {
+    .activeline {
+        background: @red !important;
+    }
+}  

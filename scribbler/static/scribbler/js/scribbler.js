@@ -43,7 +43,7 @@ $(document).ready(function() {
                     content.html(preview.html());
                     close.click();
                 } else {
-                    // TODO: Handle errors...
+                    errors.html("<strong>Error:</strong> Content is not valid");
                 }
             }
             var data = {};
@@ -60,12 +60,14 @@ $(document).ready(function() {
             // Submit the form and display the result
             $.post(form.data('save'), data, displayResults, 'json');
         });
-        footerControls.append(close, save);
+        var errors = $('<span></span>').addClass('error-msg');
+        footerControls.append(errors, close, save);
         footer.append(footerControls);
 
         $('body').append(footer);
 
         var currentChange = false;
+        var lastError = null;
         var options = {
             mode: "text/html",
             tabMode: "indent",
@@ -77,12 +79,20 @@ $(document).ready(function() {
                     var content = footer.data('content');
                     var preview = footer.data('preview');
                     function renderPreview(response) {
+                        if (lastError !== null) {
+                            editor.setLineClass(lastError, null, null);
+                        }
+                        errors.html('');
                         if (response.valid) {
                             preview.html(response.html);
                             preview.show();
                             content.hide();
+                            save.removeClass('disabled');
                         } else {
-                            console.log(response.error);
+                            lastError = response.error.line - 1;
+                            editor.setLineClass(lastError, null, "activeline");
+                            errors.html("<strong>Error:</strong> " + response.error.message);
+                            save.addClass('disabled');
                         }
                         currentChange = false;
                     }
