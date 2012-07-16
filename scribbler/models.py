@@ -12,3 +12,13 @@ class Scribble(models.Model):
     slug = models.SlugField(max_length=255, blank=True, default=u"")
     url = models.CharField(max_length=255, blank=True, default=u"")
     content = models.TextField(blank=True, default=u"")
+
+    def __unicode__(self):
+        return u'{0} - {1}'.format(self.slug, self.url)
+
+    @models.permalink
+    def get_save_url(self):
+        if self.pk:
+            return ('edit-scribble', (), {'scribble_id': self.pk})
+        else:
+            return ('create-scribble', (), {})

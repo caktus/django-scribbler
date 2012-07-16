@@ -1,5 +1,6 @@
 {% load url from future %}
-<form data-prefix="{{ scribble.slug }}" action="{% url 'preview-scribble' %}" method="post">{% csrf_token %}
+<form data-save="{{ scribble.get_save_url }}" data-prefix="{{ scribble.slug }}"
+action="{% url 'preview-scribble' %}" method="post">{% csrf_token %}
     <div class="hidden">
         {% for field in form.hidden_fields %}
             {{ field }}

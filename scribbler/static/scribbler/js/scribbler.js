@@ -18,7 +18,6 @@ $(document).ready(function() {
         var footer = $('<div id="scribbleEditorContainer"></div>');
         var footerControls = $('<div></div>').addClass('controls clearfix');
         var editor = null;
-        var save = $('<a>Save</a>').attr({title: 'Save', href: "#"}).addClass('btn save')
         // Footer controls
         var close = $('<a>Close</a>').attr({title: 'Close', href: '#'})
         .addClass('close').click(function(e) {
@@ -31,6 +30,35 @@ $(document).ready(function() {
             $('[name$=content]', form).val(editor.getValue());
             footer.removeData(['content', 'preview', 'form']);
             footer.animate({height: 0}, 500);
+        });
+        var save = $('<a>Save</a>').attr({title: 'Save', href: "#"})
+        .addClass('btn save').click(function(e) {
+            e.preventDefault();
+            var form = footer.data('form').find('form').eq(0);
+            var content = footer.data('content');
+            var preview = footer.data('preview');
+            function displayResults(response) {
+                if (response.valid) {
+                    form.data('save', response.url);
+                    content.html(preview.html());
+                    close.click();
+                } else {
+                    // TODO: Handle errors...
+                }
+            }
+            var data = {};
+            var prefix = form.data('prefix');
+            $(':input', form).each(function(i, input) {
+                var inputName = $(input).attr('name').replace(prefix + '-', '');
+                var inputValue = $(input).val();
+                if (inputName === 'content') {
+                    data[inputName] = editor.getValue();
+                } else {
+                    data[inputName] = inputValue;
+                }
+            });
+            // Submit the form and display the result
+            $.post(form.data('save'), data, displayResults, 'json');
         });
         footerControls.append(close, save);
         footer.append(footerControls);
@@ -82,7 +110,6 @@ $(document).ready(function() {
         scribbles.each(function(i, elem) {
             // Bind event handlers for each scribble
             var wrapper = $(elem);
-            //var controls = $('.scribble-controls', $(this));
             var content = $('.scribble-content.original', wrapper);
             var preview = $('.scribble-content.preview', wrapper);
             var form = $('.scribble-form', wrapper);
