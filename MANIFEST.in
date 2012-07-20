@@ -1,4 +1,6 @@
 include AUTHORS
 include LICENSE
+include CodeMirror-LICENSE
 include README.rst
 recursive-include scribbler/templates *
+recursive-include scribbler/static *
