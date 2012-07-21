@@ -22,3 +22,7 @@ class Scribble(models.Model):
             return ('edit-scribble', (), {'scribble_id': self.pk})
         else:
             return ('create-scribble', (), {})
+
+    @models.permalink
+    def get_delete_url(self):
+        return ('delete-scribble', (), {'scribble_id': self.pk})

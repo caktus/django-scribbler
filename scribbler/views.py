@@ -78,3 +78,15 @@ def create_edit_scribble(request, scribble_id=None):
     results['url'] = scribble.get_save_url()
     content = json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False)
     return HttpResponse(content, content_type='application/json')
+
+
+@require_POST
+def delete_scribble(request, scribble_id):
+    "Delete an existing scribble."
+    if not request.user.is_authenticated():
+        return HttpResponseForbidden()
+    scribble = get_object_or_404(Scribble, pk=scribble_id)
+    if not request.user.has_perm('scribbler.delete_scribble'):
+        return HttpResponseForbidden()
+    scribble.delete()
+    return HttpResponse('done')
