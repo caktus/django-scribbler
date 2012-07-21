@@ -34,7 +34,7 @@ $(document).ready(function() {
         var save = $('<a>Save</a>').attr({title: 'Save', href: "#"})
         .addClass('btn save').click(function(e) {
             e.preventDefault();
-            var form = footer.data('form').find('form').eq(0);
+            var form = footer.data('form');
             var content = footer.data('content');
             var preview = footer.data('preview');
             function displayResults(response) {
@@ -60,8 +60,12 @@ $(document).ready(function() {
             // Submit the form and display the result
             $.post(form.data('save'), data, displayResults, 'json');
         });
+        var del = $('<a>Delete</a>').attr({title: 'Delete', href: "#"})
+        .addClass('btn delete').click(function(e) {
+            e.preventDefault();
+        });
         var errors = $('<span></span>').addClass('error-msg');
-        footerControls.append(errors, close, save);
+        footerControls.append(errors, close, save, del);
         footer.append(footerControls);
 
         $('body').append(footer);
@@ -73,9 +77,9 @@ $(document).ready(function() {
             tabMode: "indent",
             lineNumbers: true,
             onChange: function(editor) {
-                if (!currentChange) {
+                if (!currentChange && !editor.getOption('readOnly')) {
                     currentChange = true;
-                    var form = footer.data('form').find('form').eq(0);
+                    var form = footer.data('form');
                     var content = footer.data('content');
                     var preview = footer.data('preview');
                     function renderPreview(response) {
@@ -87,12 +91,12 @@ $(document).ready(function() {
                             preview.html(response.html);
                             preview.show();
                             content.hide();
-                            save.removeClass('disabled');
+                            save.show();
                         } else {
                             lastError = response.error.line - 1;
                             editor.setLineClass(lastError, null, "activeline");
                             errors.html("<strong>Error:</strong> " + response.error.message);
-                            save.addClass('disabled');
+                            save.hide();
                         }
                         currentChange = false;
                     }
@@ -123,16 +127,31 @@ $(document).ready(function() {
             var content = $('.scribble-content.original', wrapper);
             var preview = $('.scribble-content.preview', wrapper);
             var form = $('.scribble-form', wrapper);
+            var can_save = form.data('save');
+            var can_delete = form.data('delete');
 
             wrapper.click(function(e) {
                 e.preventDefault();
                 footer.data('content', content);
                 footer.data('preview', preview);
-                footer.data('form', form);                
-                editor.setValue($('[name$=content]', form).val());
+                footer.data('form', form);
                 footer.show();
                 footer.animate({height: '300px'}, 500);
                 editor.focus();
+                if (can_save) {
+                    save.show();
+                    editor.setOption('readOnly', false);
+                    editor.setValue($('[name$=content]', form).val());
+                } else {
+                    save.hide();
+                    editor.setOption('readOnly', true);
+                    editor.setValue('You do not have permission to edit this content.');
+                }
+                if (can_delete) {
+                    del.show();
+                } else {
+                    del.hide();
+                }
             });
         });
     }

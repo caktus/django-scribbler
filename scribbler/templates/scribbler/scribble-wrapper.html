@@ -2,12 +2,10 @@
     <div class="scribble-content original">
         {{ rendered_scribble }}
     </div>
-    {% if can_edit_scribble or can_add_scribble %}
-        <div class="scribble-form">
-            {% with scribble_form as form %}
-                {% include "scribbler/edit-form.html" %}
-            {% endwith %}
-        </div>
+    {% if show_controls %}
+        {% with scribble_form as form %}
+            {% include "scribbler/edit-form.html" %}
+        {% endwith %}
         <div class="scribble-content preview">
         </div>
     {% endif %}
