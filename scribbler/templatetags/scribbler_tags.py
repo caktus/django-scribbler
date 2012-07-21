@@ -60,6 +60,7 @@ class ScribbleNode(template.Node):
         context['can_add_scribble'] = can_add
         context['can_edit_scribble'] = can_edit
         context['can_delete_scribble'] = can_delete
+        context['raw_content'] = self.raw
         return wrapper_template.render(context)
 
 
