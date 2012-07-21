@@ -27,8 +27,14 @@ class BaseViewTestCase(ScribblerDataTestCase):
             content_type__app_label='scribbler', 
             content_type__model='scribble',
         )
+        self.delete_perm = Permission.objects.get(
+            codename='delete_scribble', 
+            content_type__app_label='scribbler', 
+            content_type__model='scribble',
+        )
         self.user.user_permissions.add(self.change_perm)
         self.user.user_permissions.add(self.add_perm)
+        self.user.user_permissions.add(self.delete_perm)
 
 
 class PreviewTestCase(BaseViewTestCase):
@@ -148,7 +154,7 @@ class CreateTestCase(BaseViewTestCase):
 
 
 class EditTestCase(BaseViewTestCase):
-    "Creating a new scribble."
+    "Edit an existing scribble."
 
     def setUp(self):
         super(EditTestCase, self).setUp()
@@ -207,6 +213,52 @@ class EditTestCase(BaseViewTestCase):
     def test_permission_required(self):
         "Return 403 if user is does not have permissions to edit the scribble."
         self.user.user_permissions.remove(self.change_perm)
+        data = self.get_valid_data()
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 403)
+
+
+class DeleteTestCase(BaseViewTestCase):
+    "Delete an existing scribble."
+
+    def setUp(self):
+        super(DeleteTestCase, self).setUp()
+        self.scribble = self.create_scribble()
+        self.url = self.scribble.get_delete_url()
+
+    def get_valid_data(self):
+        "Base valid data."
+        return {}
+
+    def test_post_required(self):
+        "Delete view requires a POST."
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 405, "GET should not be allowed.")
+
+    def test_valid_response(self):
+        "Delete an existing scribble."
+        data = self.get_valid_data()
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertRaises(Scribble.DoesNotExist, Scribble.objects.get, pk=self.scribble.pk)
+
+    def test_invalid_pk(self):
+        "404 is returned if unknown pk is given."
+        self.scribble.delete()
+        data = self.get_valid_data()
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 404)
+
+    def test_login_required(self):
+        "Return 403 if user is not authenticated."
+        self.client.logout()
+        data = self.get_valid_data()
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 403)
+
+    def test_permission_required(self):
+        "Return 403 if user is does not have permissions to delete the scribble."
+        self.user.user_permissions.remove(self.delete_perm)
         data = self.get_valid_data()
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 403)
