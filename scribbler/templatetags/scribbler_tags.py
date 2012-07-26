@@ -25,9 +25,9 @@ class ScribbleNode(template.Node):
     def render(self, context):
         slug = self.slug.resolve(context)
         request = context.get('request', None)
-        if request is None:
+        if request is None: # pragma: no cover
             if settings.DEBUG:
-                msg = u'"django.core.context_processors.request" is required to use django-scribble'
+                msg = u'"django.core.context_processors.request" is required to use django-scribbler'
                 raise ImproperlyConfigured(msg)
             else:
                 return u''
