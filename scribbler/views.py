@@ -89,4 +89,9 @@ def delete_scribble(request, scribble_id):
     if not request.user.has_perm('scribbler.delete_scribble'):
         return HttpResponseForbidden()
     scribble.delete()
-    return HttpResponse('done')
+    results = {
+        'valid': True,
+        'url': scribble.get_save_url()
+    }
+    content = json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False)
+    return HttpResponse(content, content_type='application/json')
