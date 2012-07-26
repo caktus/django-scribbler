@@ -63,12 +63,26 @@
                 e.preventDefault();
                 ScribbleEditor.submitSave();
             });
-            // Delete button
-            this.controls.del = $('<a>Delete</a>')
-            .attr({title: 'Delete', href: "#"})
-            .addClass('btn delete').click(function(e) {
+            // Reset button
+            this.controls.del = $('<a>Reset</a>')
+            .attr({title: 'Reset', href: "#"})
+            .addClass('btn reset').click(function(e) {
                 e.preventDefault();
-                ScribbleEditor.submitDelete();
+                ScribbleEditor.renderReset();
+            });
+            // Confirm button
+            this.controls.confirm = $('<a>Confirm</a>')
+            .attr({title: 'Confirm', href: "#"})
+            .addClass('btn confirm').click(function(e) {
+                e.preventDefault();
+                ScribbleEditor.confirmReset();
+            });
+            // Cancel button
+            this.controls.cancel = $('<a>Cancel</a>')
+            .attr({title: 'Cancel', href: "#"})
+            .addClass('btn cancel').click(function(e) {
+                e.preventDefault();
+                ScribbleEditor.cancelReset();
             });
             // Error message
             this.controls.errors = $('<span></span>')
@@ -77,7 +91,9 @@
                 this.controls.errors,
                 this.controls.close,
                 this.controls.save,
-                this.controls.del
+                this.controls.del,
+                this.controls.confirm,
+                this.controls.cancel
             );
             this.element.append(footerControls);
         },
@@ -85,8 +101,11 @@
             this.current.content = $('.scribble-content.original', scribble);
             this.current.preview = $('.scribble-content.preview', scribble);
             this.current.form = $('.scribble-form', scribble);
+            this.current.original = $('.scribble-default', scribble);
             this.current.can_save = this.current.form.data('save');
             this.current.can_delete = this.current.form.data('delete');
+            this.controls.confirm.hide();
+            this.controls.cancel.hide();
             this.element.show();
             this.element.animate({height: '300px'}, 500);   
             if (this.current.can_save) {
@@ -165,7 +184,7 @@
             return result;
         },
         submitSave: function() {
-            if (this.current.form && !this.errorLine) {
+            if (this.current.form && this.current.can_save && !this.errorLine) {
                 // Submit the form and change current content
                 $.post(
                     this.current.form.data('save'),
@@ -186,11 +205,43 @@
                 this.controls.errors.html("<strong>Error:</strong> Content is not valid");
             }
         },
-        submitDelete: function() {
-
+        renderReset: function() {
+            if (this.current.form && this.current.can_delete) {
+                // Submit the form and restore default content.
+                this.editor.setValue(this.current.original.text());
+                this.editor.setOption('readOnly', true);
+                this.controls.del.hide();
+                this.controls.confirm.show();
+                this.controls.cancel.show();
+            }
+        },
+        cancelReset: function() {
+            this.editor.setOption('readOnly', false);
+            this.editor.setValue($('[name$=content]', this.current.form).val());
+            this.controls.del.show();
+            this.controls.confirm.hide();
+            this.controls.cancel.hide();
+        },
+        confirmReset: function() {
+            if (this.current.form && this.current.can_delete) {
+                // Submit the form and restore default content.
+                $.post(
+                    this.current.form.data('delete'),
+                    this.getFormData(),
+                    function(response) {
+                        ScribbleEditor.renderDelete(response);
+                    },
+                    'json'
+                );
+            }
         },
         renderDelete: function(response) {
 
+
+            
+            this.controls.save.show();
+            this.controls.confirm.hide();
+            this.controls.cancel.hide();
         }
     };
 
