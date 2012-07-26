@@ -63,21 +63,13 @@
                 e.preventDefault();
                 ScribbleEditor.submitSave();
             });
-            // Delete button
-            this.controls.del = $('<a>Delete</a>')
-            .attr({title: 'Delete', href: "#"})
-            .addClass('btn delete').click(function(e) {
-                e.preventDefault();
-                ScribbleEditor.submitDelete();
-            });
             // Error message
             this.controls.errors = $('<span></span>')
             .addClass('error-msg');
             footerControls.append(
                 this.controls.errors,
                 this.controls.close,
-                this.controls.save,
-                this.controls.del
+                this.controls.save
             );
             this.element.append(footerControls);
         },
@@ -97,11 +89,6 @@
                 this.controls.save.hide();
                 this.editor.setOption('readOnly', true);
                 this.editor.setValue('You do not have permission to edit this content.');
-            }
-            if (this.current.can_delete) {
-                this.controls.del.show();
-            } else {
-                this.controls.del.hide();
             }
             this.editor.focus();
             this.visible = true;
@@ -185,12 +172,6 @@
             } else {
                 this.controls.errors.html("<strong>Error:</strong> Content is not valid");
             }
-        },
-        submitDelete: function() {
-
-        },
-        renderDelete: function(response) {
-
         }
     };
 
