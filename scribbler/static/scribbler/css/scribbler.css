@@ -183,6 +183,9 @@
 }
 /* Codemirror customization styles
 ==================================== */
+.CodeMirror {
+  background-color: #FFFFFF;
+}
 .CodeMirror .activeline {
   background: #ffe0e0 !important;
 }
