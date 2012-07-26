@@ -14,12 +14,12 @@ django-scribbler requires Django >= 1.3 and Python >= 2.6 (but < 3.0)
         
         pip install django-scribbler
 
-..
-    Documentation
-    -----------------------------------
 
-    Documentation on using django-scribbler is available on 
-    `Read The Docs <http://readthedocs.org/docs/django-scribbler/>`_.
+Documentation
+-----------------------------------
+
+Documentation on using django-scribbler is available on 
+`Read The Docs <http://readthedocs.org/docs/django-scribbler/>`_.
 
 
 Contributing
