@@ -8,7 +8,19 @@
  *
 */
 
-(function($) {
+require.config({
+    paths: {
+        jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
+        codemirror: '../libs/codemirror-compressed'
+    },
+    shim: {
+        codemirror: {
+            exports: 'CodeMirror'
+        }
+    }
+});
+
+require(['jquery', 'codemirror'], function($, CodeMirror) {
     var ScribbleEditor = {
         visible: false,
         rendering: false,
@@ -19,6 +31,7 @@
         editor: null,
         scribbles: null,
         init: function() {
+            console.log('init');
             this.scribbles = $('.scribble-wrapper.with-controls');
             if (this.scribbles.length > 0) {
                 this.element = $('<div id="scribbleEditorContainer"></div>');
@@ -176,4 +189,4 @@
     };
 
     $(document).ready(function(){ScribbleEditor.init();});
-})(jQuery);
+});

@@ -10,7 +10,7 @@
     <meta name="author" content="{% block meta-author %}{% endblock %}">
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}">
     {% block extra-meta %}{% endblock %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/css/codemirror.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/libs/codemirror.css">
     <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}scribbler/less/scribbler.less">
     <style>
         body { 
@@ -31,12 +31,7 @@
             {% endscribble %}
         {% endblock %}
     </div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/codemirror.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/xml.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/javascript.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/css.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/scribbler.js"></script>
+    <script data-main="{{ STATIC_URL }}scribbler/js/scribbler" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
     {% block extra-js %}{% endblock %}
 </body>
 </html>
