@@ -31,7 +31,6 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
         editor: null,
         scribbles: null,
         init: function() {
-            console.log('init');
             this.scribbles = $('.scribble-wrapper.with-controls');
             if (this.scribbles.length > 0) {
                 this.element = $('<div id="scribbleEditorContainer"></div>');
