@@ -4,6 +4,11 @@ django-scribbler
 django-scribbler is an application for managing snippets of text for a Django website.
 Similar projects include django-flatblocks, django-chunks and django-pagelets.
 
+.. image::
+    https://secure.travis-ci.org/mlavin/django-scribbler.png?branch=master
+    :alt: Build Status
+        :target: https://secure.travis-ci.org/mlavin/django-scribbler
+
 
 Features
 --------------------------------------
