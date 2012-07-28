@@ -38,6 +38,11 @@ For the context processor to have any effect you need to make sure that the temp
 is rendered using a RequestContext. This is done for you with the
 `render <https://docs.djangoproject.com/en/1.4/topics/http/shortcuts/#render>`_ shortcut.
 
+django-scribbler aggressively caches the scribble content. By default the scribble
+content is cached for 12 hours. You have the option to configure this cache timeout
+with the ``SCRIBBLER_CACHE_TIMEOUT`` setting. The value should be the timeout in
+seconds.
+
 
 Configure Urls
 ------------------------------------
