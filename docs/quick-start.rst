@@ -80,21 +80,19 @@ Include Static Resources
 
 django-scribbler includes both CSS and JS resources which need to be included in your
 templates to handle the front-end content management. Since you may want to include
-scribbles on any page on your site these should be included in your base template.
+scribbles on any page on your site these should be included in your base template ``<head>``.
 
 .. code-block:: html
 
-    <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/css/codemirror.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/libs/codemirror.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/css/scribbler.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/codemirror.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/xml.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/javascript.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/css.js"></script>
-    <script src="{{ STATIC_URL }}scribbler/js/scribbler.js"></script>
+    <script data-main="{{ STATIC_URL }}scribbler/js/scribbler" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
 
-Please note that the scribble javascript requires jQuery which is not included with
-the project. The above example uses the Google hosted CDN which is recommended.
+This uses `RequireJS <http://requirejs.org/>`_ to load the additional JS resources. The front-end
+editor uses `CodeMirror <http://codemirror.net/>`_ (currently using v2.32) which is included in the distribution.
+Both RequireJS and CodeMirror are available a MIT-style license compatible with 
+this project's BSD license. You can find the license files included in 
+``scribbler/static/scribbler/libs/``.
 
 
 Place Scribbles in Your Template
