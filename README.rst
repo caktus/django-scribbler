@@ -2,7 +2,10 @@ django-scribbler
 ===================
 
 django-scribbler is an application for managing snippets of text for a Django website.
-Similar projects include django-flatblocks, django-chunks and django-pagelets.
+Similar projects include django-flatblocks, django-chunks and django-pagelets. This
+project attempts to take some of the best concepts from those previous projects as
+well as focus on giving the users instant feedback inspired by Bret Victor's
+`Inventing on Principle <http://vimeo.com/36579366>`_ talk.
 
 .. image::
     https://secure.travis-ci.org/mlavin/django-scribbler.png?branch=master
