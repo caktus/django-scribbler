@@ -2,8 +2,10 @@
 
 from django import template
 from django.conf import settings
+from django.core.cache import cache
 from django.core.exceptions import ImproperlyConfigured
 
+from scribbler.conf import CACHE_TIMEOUT, CACHE_KEY_FUNCTION
 from scribbler.forms import ScribbleForm
 from scribbler.models import Scribble
 from scribbler.views import build_scribble_context
@@ -31,10 +33,15 @@ class ScribbleNode(template.Node):
                 raise ImproperlyConfigured(msg)
             else:
                 return u''
-        try:
-            scribble = Scribble.objects.get(slug=slug, url=request.path)
-        except Scribble.DoesNotExist:
-            scribble = Scribble(slug=slug, url=request.path, content=self.raw)
+        url = request.path
+        key = CACHE_KEY_FUNCTION(slug=slug, url=url)
+        scribble = cache.get(key, None)
+        if scribble is None:
+            try:
+                scribble = Scribble.objects.get(slug=slug, url=url)
+            except Scribble.DoesNotExist:
+                scribble = Scribble(slug=slug, url=url, content=self.raw)
+            cache.set(key, scribble, CACHE_TIMEOUT)
         if scribble:
             scribble_template = template.Template(scribble.content)
         else:
