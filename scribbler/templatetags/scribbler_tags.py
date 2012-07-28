@@ -42,9 +42,10 @@ class ScribbleNode(template.Node):
             except Scribble.DoesNotExist:
                 scribble = Scribble(slug=slug, url=url, content=self.raw)
             cache.set(key, scribble, CACHE_TIMEOUT)
-        if scribble:
+        if scribble.pk:
             scribble_template = template.Template(scribble.content)
         else:
+            scribble.content = self.raw
             scribble_template = self.nodelist_default
         scribble_context = build_scribble_context(scribble, request)
         content = scribble_template.render(scribble_context)

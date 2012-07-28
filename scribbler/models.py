@@ -1,6 +1,12 @@
 "Models for storing snippet content."
 
+from django.core.cache import cache
 from django.db import models
+from django.db.models.signals import post_save, post_delete, pre_save
+from django.dispatch import receiver
+
+
+from .conf import CACHE_TIMEOUT, CACHE_KEY_FUNCTION
 
 
 class Scribble(models.Model):
@@ -26,3 +32,28 @@ class Scribble(models.Model):
     @models.permalink
     def get_delete_url(self):
         return ('delete-scribble', (), {'scribble_id': self.pk})
+
+
+@receiver(post_save, sender=Scribble)
+def populate_scribble_cache(sender, instance, **kwargs):
+    "Populate scribble cache on save."
+    key = CACHE_KEY_FUNCTION(slug=instance.slug, url=instance.url)
+    cache.set(key, instance, CACHE_TIMEOUT)
+
+
+@receiver(post_delete, sender=Scribble)
+def populate_scribble_cache(sender, instance, **kwargs):
+    "Populate cache with empty scribble cache on delete."
+    key = CACHE_KEY_FUNCTION(slug=instance.slug, url=instance.url)
+    scribble = Scribble(slug=instance.slug, url=instance.url)
+    cache.set(key, scribble, CACHE_TIMEOUT)
+
+
+@receiver(pre_save, sender=Scribble)
+def clear_scribble_cache(sender, instance, **kwargs):
+    "Clear cache pre-save in case slug/url has changed."
+    if instance.pk:
+        # Need original slug/url from the DB
+        original = Scribble.objects.get(pk=instance.pk)
+        key = CACHE_KEY_FUNCTION(slug=original.slug, url=original.url)
+        cache.delete(key)

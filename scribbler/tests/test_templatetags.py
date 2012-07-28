@@ -19,6 +19,9 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
             content='<p>Scribble content.</p>'
         )
 
+    def tearDown(self):
+        cache.clear()
+
     def render_template_tag(self, slug, context=None, default='<p>Default.</p>'):
         "Render the template tag."
         context = context or {}
