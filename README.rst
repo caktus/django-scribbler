@@ -27,10 +27,9 @@ Installation
 
 django-scribbler requires Django >= 1.3 and Python >= 2.6 (but < 3.0)
 
-..
-    To install from PyPi::
-        
-        pip install django-scribbler
+To install from PyPi::
+    
+    pip install django-scribbler
 
 
 Documentation
