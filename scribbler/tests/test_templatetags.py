@@ -1,5 +1,6 @@
 "Test for template tags."
 
+from django.core.cache import cache
 from django.template import Template, TemplateSyntaxError
 from django.template.context import RequestContext
 from django.test.client import RequestFactory
@@ -60,3 +61,24 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
     def test_no_slug_given(self):
         "Slug is required by the tag."
         self.assertRaises(TemplateSyntaxError, self.render_template_tag, slug='')
+
+    def test_cache_scribble_lookup(self):
+        "DB lookups should be cached."
+        cache.clear()
+        with self.assertNumQueries(1):
+            # Render twice but should be one DB lookup
+            result = self.render_template_tag(slug='"sidebar"')
+            self.assertTrue('<p>Scribble content.</p>' in result)
+            result = self.render_template_tag(slug='"sidebar"')
+            self.assertTrue('<p>Scribble content.</p>' in result)
+
+    def test_cache_lookup_miss(self):
+        "Scribbles not in the DB should also be cached to prevent unnecessary lookup."
+        self.scribble.delete()
+        cache.clear()
+        with self.assertNumQueries(1):
+            # Render twice but should be one DB lookup
+            result = self.render_template_tag(slug='"sidebar"')
+            self.assertTrue('<p>Default.</p>' in result)
+            result = self.render_template_tag(slug='"sidebar"')
+            self.assertTrue('<p>Default.</p>' in result)
