@@ -20,6 +20,8 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
         )
 
     def tearDown(self):
+        # Transaction will be rolled back without calling delete
+        # so we need to clear the cache between runs
         cache.clear()
 
     def render_template_tag(self, slug, context=None, default='<p>Default.</p>'):
@@ -39,7 +41,7 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
     def test_variable_slug(self):
         "Render a scribble by the slug as a context variable."
         result = self.render_template_tag(slug='foo', context={'foo': 'sidebar'})
-        self.assertTrue('<p>Scribble content.</p>' in result)
+        self.assertTrue('<p>Scribble content.</p>' in result, result)
 
     def test_slug_not_found(self):
         "Render default if scribble not found by slug."
@@ -85,3 +87,15 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
             self.assertTrue('<p>Default.</p>' in result)
             result = self.render_template_tag(slug='"sidebar"')
             self.assertTrue('<p>Default.</p>' in result)
+
+    def test_cached_on_save(self):
+        "Scribbles are cached on their save."
+        cache.clear()
+        other_scribble = self.create_scribble(
+            url='/foo/', slug='header',
+            content='<p>New content.</p>'
+        )
+        with self.assertNumQueries(0):
+            # Render twice but should be one DB lookup
+            result = self.render_template_tag(slug='"header"')
+            self.assertTrue('<p>New content.</p>' in result)

@@ -35,8 +35,8 @@ class Scribble(models.Model):
 
 
 @receiver(post_save, sender=Scribble)
-def populate_scribble_cache(sender, instance, **kwargs):
-    "Populate scribble cache on save."
+def update_scribble_cache(sender, instance, **kwargs):
+    "Update scribble cache on save."
     key = CACHE_KEY_FUNCTION(slug=instance.slug, url=instance.url)
     cache.set(key, instance, CACHE_TIMEOUT)
 
@@ -52,7 +52,8 @@ def populate_scribble_cache(sender, instance, **kwargs):
 @receiver(pre_save, sender=Scribble)
 def clear_scribble_cache(sender, instance, **kwargs):
     "Clear cache pre-save in case slug/url has changed."
-    if instance.pk:
+    raw = kwargs.get('raw', False)
+    if instance.pk and not raw:
         # Need original slug/url from the DB
         original = Scribble.objects.get(pk=instance.pk)
         key = CACHE_KEY_FUNCTION(slug=original.slug, url=original.url)
