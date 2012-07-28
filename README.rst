@@ -2,6 +2,16 @@ django-scribbler
 ===================
 
 django-scribbler is an application for managing snippets of text for a Django website.
+Similar projects include django-flatblocks, django-chunks and django-pagelets.
+
+
+Features
+--------------------------------------
+
+- Simple template tag for defining snippet blocks with default text
+- Front-end editing of snippets with the powerful `CodeMirror <http://codemirror.net/>`_ editor
+- Live in-place preview of content while editing
+- The full power of the Django template language in the snippet blocks
 
 
 Installation
