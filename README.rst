@@ -39,6 +39,13 @@ Documentation on using django-scribbler is available on
 `Read The Docs <http://readthedocs.org/docs/django-scribbler/>`_.
 
 
+License
+--------------------------------------
+
+django-scribbler is released under the BSD License. See the 
+`LICENSE <https://github.com/mlavin/django-scribbler/blob/master/LICENSE>`_ file for more details.
+
+
 Contributing
 --------------------------------------
 
