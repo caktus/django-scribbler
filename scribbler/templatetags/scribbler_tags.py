@@ -41,7 +41,8 @@ class ScribbleNode(template.Node):
                 scribble = Scribble.objects.get(slug=slug, url=url)
             except Scribble.DoesNotExist:
                 scribble = Scribble(slug=slug, url=url, content=self.raw)
-            cache.set(key, scribble, CACHE_TIMEOUT)
+            if CACHE_TIMEOUT:
+                cache.set(key, scribble, CACHE_TIMEOUT)
         if scribble.pk:
             scribble_template = template.Template(scribble.content)
         else:
