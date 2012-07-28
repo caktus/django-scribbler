@@ -21,6 +21,7 @@ if not settings.configured:
         SITE_ID=1,
         SECRET_KEY='super-secret',
         TEMPLATE_CONTEXT_PROCESSORS=(
+            'django.contrib.auth.context_processors.auth',
             'django.core.context_processors.request',
         ),
         ROOT_URLCONF='scribbler.tests.urls',

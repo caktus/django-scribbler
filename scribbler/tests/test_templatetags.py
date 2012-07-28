@@ -1,5 +1,6 @@
 "Test for template tags."
 
+from django.contrib.auth.models import Permission
 from django.core.cache import cache
 from django.template import Template, TemplateSyntaxError
 from django.template.context import RequestContext
@@ -104,3 +105,44 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
             # Render twice but should be one DB lookup
             result = self.render_template_tag(slug='"header"')
             self.assertTrue('<p>New content.</p>' in result)
+
+    def test_unauthenticated_controls(self):
+        "Unauthenticated users will not see the scribble controls."
+        result = self.render_template_tag(slug='"sidebar"')
+        self.assertFalse('<form' in result)
+        self.assertFalse('with-controls' in result)
+
+    def test_no_permissions_controls(self):
+        "Authenticated users without permissions will not see the scribble controls."
+        self.request.user = self.create_user()
+        result = self.render_template_tag(slug='"sidebar"')
+        self.assertFalse('<form' in result)
+        self.assertFalse('with-controls' in result)
+
+    def test_scribble_editor(self):
+        "Authenticated users with permission to edit will see the scribble controls."
+        change_perm = Permission.objects.get(
+            codename='change_scribble', 
+            content_type__app_label='scribbler', 
+            content_type__model='scribble',
+        )
+        user = self.create_user()
+        user.user_permissions.add(change_perm) 
+        self.request.user = user # Fake the auth middleware
+        result = self.render_template_tag(slug='"sidebar"')
+        self.assertTrue('<form' in result)
+        self.assertTrue('with-controls' in result)
+
+    def test_scribble_creator(self):
+        "Authenticated users with permission to create will see the scribble controls."
+        add_perm = Permission.objects.get(
+            codename='add_scribble', 
+            content_type__app_label='scribbler', 
+            content_type__model='scribble',
+        )
+        user = self.create_user()
+        user.user_permissions.add(add_perm) 
+        self.request.user = user # Fake the auth middleware
+        result = self.render_template_tag(slug='"other"')
+        self.assertTrue('<form' in result)
+        self.assertTrue('with-controls' in result)
