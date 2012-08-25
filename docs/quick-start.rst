@@ -65,7 +65,7 @@ This is done with the ``syncdb`` management command built into Django::
 
     python manage.py syncdb
 
-django-all-access uses `South <http://south.aeracode.org/>`_ to handle database migrations. 
+django-scribbler uses `South <http://south.aeracode.org/>`_ to handle database migrations. 
 If you are also using South then you should run ``migrate`` instead::
 
     python manage.py migrate scribbler
