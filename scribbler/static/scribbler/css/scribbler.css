@@ -80,6 +80,7 @@
   bottom: 0;
   width: 100%;
   height: 0;
+  z-index: 10000;
 }
 #scribbleEditorContainer .controls {
   font-family: Helvetica, Arial, sans-serif;
