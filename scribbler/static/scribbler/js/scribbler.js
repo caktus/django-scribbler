@@ -51,7 +51,6 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 this.scribbles.each(function(i, elem) {
                     // Bind event handlers for each scribble
                     $(elem).click(function(e) {
-                        e.preventDefault();
                         ScribbleEditor.open($(this));
                     });
                 });
