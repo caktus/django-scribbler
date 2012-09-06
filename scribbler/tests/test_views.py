@@ -64,7 +64,7 @@ class PreviewTestCase(BaseViewTestCase):
         data = self.get_valid_data()
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
-        results = json.loads(response.content)
+        results = json.loads(response.content.decode('utf-8'))
         self.assertTrue(results['valid'])
         self.assertFalse('error' in results)
         self.assertEqual(results['html'], "{0}".format(date.today().year))
@@ -75,7 +75,7 @@ class PreviewTestCase(BaseViewTestCase):
         data['content'] = '{% now %}'
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
-        results = json.loads(response.content)
+        results = json.loads(response.content.decode('utf-8'))
         self.assertFalse(results['valid'])
         self.assertEqual(results['html'], '')
         self.assertEqual(results['error']['line'], 1)
@@ -122,7 +122,7 @@ class CreateTestCase(BaseViewTestCase):
         data = self.get_valid_data()
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
-        results = json.loads(response.content)
+        results = json.loads(response.content.decode('utf-8'))
         self.assertTrue(results['valid'])
         pk = results['id']
         scribble = Scribble.objects.get(pk=pk)
@@ -134,7 +134,7 @@ class CreateTestCase(BaseViewTestCase):
         data['content'] = '{% now %}'
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
-        results = json.loads(response.content)
+        results = json.loads(response.content.decode('utf-8'))
         self.assertFalse(results['valid'])
         self.assertEqual(results['id'], None)
         self.assertEqual(Scribble.objects.count(), 0)
@@ -179,7 +179,7 @@ class EditTestCase(BaseViewTestCase):
         data = self.get_valid_data()
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
-        results = json.loads(response.content)
+        results = json.loads(response.content.decode('utf-8'))
         self.assertTrue(results['valid'])
         self.assertEqual(results['id'], self.scribble.pk)
         scribble = Scribble.objects.get(pk=self.scribble.pk)
@@ -191,7 +191,7 @@ class EditTestCase(BaseViewTestCase):
         data['content'] = '{% now %}'
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
-        results = json.loads(response.content)
+        results = json.loads(response.content.decode('utf-8'))
         self.assertFalse(results['valid'])
         self.assertEqual(results['id'], None)
         scribble = Scribble.objects.get(pk=self.scribble.pk)
