@@ -70,6 +70,11 @@ If you are also using South then you should run ``migrate`` instead::
 
     python manage.py migrate scribbler
 
+.. note::
+
+    The latest release of South does not support Python 3. If you want to try
+    django-scribbler with Python 3 you will have go without South for the time being.
+
 
 User Permissions
 ------------------------------------
