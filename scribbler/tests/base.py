@@ -14,7 +14,7 @@ class ScribblerDataTestCase(TestCase):
     "Base test case for creating scribbler models."
 
     def get_random_string(self, length=10):
-        return ''.join(random.choice(string.ascii_letters) for x in xrange(length))
+        return ''.join(random.choice(string.ascii_letters) for x in range(length))
 
     def create_scribble(self, **kwargs):
         "Factory method for creating Scribbles."
