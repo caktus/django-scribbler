@@ -5,6 +5,11 @@ from django.core.cache import cache
 from django.db import models
 from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
+try:
+    from django.utils.six import PY3
+except ImportError:
+    # Django < 1.5. No Python 3 support
+    PY3 = False
 
 
 from .conf import CACHE_TIMEOUT, CACHE_KEY_FUNCTION
@@ -20,8 +25,12 @@ class Scribble(models.Model):
     url = models.CharField(max_length=255, blank=True, default="")
     content = models.TextField(blank=True, default="")
 
-    def __unicode__(self):
+    def __str__(self):
         return '{0} - {1}'.format(self.slug, self.url)
+
+    if not PY3:
+        __unicode__ = __str__
+        __str__ = lambda self: self.__unicode__().encode('utf-8')
 
     @models.permalink
     def get_save_url(self):
