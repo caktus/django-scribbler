@@ -4,6 +4,12 @@ Release History
 Release and change history for django-scribbler
 
 
+v0.2.0 (Released TBD)
+------------------------------------
+
+- Added experimental Python >= 3.2 support when using Django 1.5dev
+
+
 v0.1.1 (Released 2012-08-25)
 ------------------------------------
 
