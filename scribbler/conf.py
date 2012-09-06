@@ -15,7 +15,7 @@ CACHE_PREFIX = 'scribbler'
 
 def default_cache_key(slug, url):
     "Construct a cache key for a given slug/url pair."
-    sha = hashlib.sha1(b'{0}#{1}'.format(url, slug))
+    sha = hashlib.sha1('{0}#{1}'.format(url, slug).encode('ascii'))
     return '{0}:{1}'.format(CACHE_PREFIX, sha.hexdigest())
 
 
