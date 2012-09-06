@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404

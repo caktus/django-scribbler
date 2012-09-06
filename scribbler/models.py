@@ -1,4 +1,5 @@
 "Models for storing snippet content."
+from __future__ import unicode_literals
 
 from django.core.cache import cache
 from django.db import models
@@ -14,13 +15,13 @@ class Scribble(models.Model):
 
     created_time = models.DateTimeField(auto_now_add=True, editable=False)
     modified_time = models.DateTimeField(auto_now=True, editable=False)
-    name = models.CharField(max_length=255, blank=True, default=u"")
-    slug = models.SlugField(max_length=255, blank=True, default=u"")
-    url = models.CharField(max_length=255, blank=True, default=u"")
-    content = models.TextField(blank=True, default=u"")
+    name = models.CharField(max_length=255, blank=True, default="")
+    slug = models.SlugField(max_length=255, blank=True, default="")
+    url = models.CharField(max_length=255, blank=True, default="")
+    content = models.TextField(blank=True, default="")
 
     def __unicode__(self):
-        return u'{0} - {1}'.format(self.slug, self.url)
+        return '{0} - {1}'.format(self.slug, self.url)
 
     @models.permalink
     def get_save_url(self):

@@ -1,4 +1,5 @@
 "Create/edit forms for scribble content."
+from __future__ import unicode_literals
 
 import sys
 

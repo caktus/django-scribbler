@@ -1,4 +1,5 @@
 "Template tags for rendering snippet content."
+from __future__ import unicode_literals
 
 from django import template
 from django.conf import settings
@@ -29,10 +30,10 @@ class ScribbleNode(template.Node):
         request = context.get('request', None)
         if request is None: # pragma: no cover
             if settings.DEBUG:
-                msg = u'"django.core.context_processors.request" is required to use django-scribbler'
+                msg = '"django.core.context_processors.request" is required to use django-scribbler'
                 raise ImproperlyConfigured(msg)
             else:
-                return u''
+                return ''
         url = request.path
         key = CACHE_KEY_FUNCTION(slug=slug, url=url)
         scribble = cache.get(key, None)
@@ -75,28 +76,28 @@ class ScribbleNode(template.Node):
 
 def rebuild_template_string(tokens):
     "Reconstruct the original template from a list of tokens."
-    result = u''
+    result = ''
     for token in tokens:
         value = token.contents
         if token.token_type == template.TOKEN_VAR:
-            value = u'{0} {1} {2}'.format(
+            value = '{0} {1} {2}'.format(
                 template.VARIABLE_TAG_START,
                 value,
                 template.VARIABLE_TAG_END,
             )
         elif token.token_type == template.TOKEN_BLOCK:
-            value = u'{0} {1} {2}'.format(
+            value = '{0} {1} {2}'.format(
                 template.BLOCK_TAG_START,
                 value,
                 template.BLOCK_TAG_END,
             )
         elif token.token_type == template.TOKEN_COMMENT:
-            value = u'{0} {1} {2}'.format(
+            value = '{0} {1} {2}'.format(
                 template.COMMENT_TAG_START,
                 value,
                 template.COMMENT_TAG_END,
             )
-        result = u'{0}{1}'.format(result, value)
+        result = '{0}{1}'.format(result, value)
     return result     
 
 
@@ -114,7 +115,7 @@ def scribble(parser, token):
     try:
         tag_name, slug = token.split_contents()
     except ValueError:
-        msg = u"{0} tag requires exactly one argument.".format(*token.contents.split())
+        msg = "{0} tag requires exactly one argument.".format(*token.contents.split())
         raise template.TemplateSyntaxError(msg)
     # Save original token state
     tokens = parser.tokens[:]

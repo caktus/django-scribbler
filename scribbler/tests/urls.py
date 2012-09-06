@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.http import HttpResponseNotFound, HttpResponseServerError
 try:
     # Django 1.4+
