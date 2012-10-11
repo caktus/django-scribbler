@@ -21,6 +21,8 @@ Features
 - Live in-place preview of content while editing
 - The full power of the Django template language in the snippet blocks
 
+A very simple demo site is available at http://scribbler-mlavin.dotcloud.com/ (username: demo password: demo) 
+
 
 Installation
 --------------------------------------
