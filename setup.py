@@ -17,11 +17,11 @@ def read_file(filename):
 setup(
     name='django-scribbler',
     version=__import__('scribbler').__version__,
-    author='Mark Lavin',
-    author_email='markdlavin@gmail.com',
+    author='Caktus Consulting Group',
+    author_email='solutions@caktusgroup.com',
     packages=find_packages(exclude=['example']),
     include_package_data=True,
-    url='https://github.com/mlavin/scribbler',
+    url='https://github.com/caktus/scribbler',
     license='BSD',
     description=' '.join(__import__('scribbler').__doc__.splitlines()).strip(),
     classifiers=[

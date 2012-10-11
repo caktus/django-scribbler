@@ -8,9 +8,9 @@ well as focus on giving the users instant feedback inspired by Bret Victor's
 `Inventing on Principle <http://vimeo.com/36579366>`_ talk.
 
 .. image::
-    https://secure.travis-ci.org/mlavin/django-scribbler.png?branch=master
+    https://secure.travis-ci.org/caktus/django-scribbler.png?branch=master
     :alt: Build Status
-        :target: https://secure.travis-ci.org/mlavin/django-scribbler
+        :target: https://secure.travis-ci.org/caktus/django-scribbler
 
 
 Features
@@ -48,12 +48,12 @@ License
 --------------------------------------
 
 django-scribbler is released under the BSD License. See the 
-`LICENSE <https://github.com/mlavin/django-scribbler/blob/master/LICENSE>`_ file for more details.
+`LICENSE <https://github.com/caktus/django-scribbler/blob/master/LICENSE>`_ file for more details.
 
 
 Contributing
 --------------------------------------
 
 If you think you've found a bug or are interested in contributing to this project
-check out `django-scribbler on Github <https://github.com/mlavin/django-scribbler>`_.
+check out `django-scribbler on Github <https://github.com/caktus/django-scribbler>`_.
 

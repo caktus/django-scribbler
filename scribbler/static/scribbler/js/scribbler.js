@@ -1,9 +1,9 @@
 /*
  * django-scribbler
- * Source: https://github.com/mlavin/django-scribbler
+ * Source: https://github.com/caktus/django-scribbler
  * Docs: http://django-scribbler.readthedocs.org/
  *
- * Copyright 2012, Mark Lavin
+ * Copyright 2012, Caktus Consulting Group, LLC
  * BSD License
  *
 */
