@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 try:
     # Django 1.4+
     from django.conf.urls import patterns, url

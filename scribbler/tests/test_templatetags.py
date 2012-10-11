@@ -1,4 +1,5 @@
 "Test for template tags."
+from __future__ import unicode_literals
 
 from django.contrib.auth.models import Permission
 from django.core.cache import cache
@@ -70,7 +71,7 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
         "Slug is required by the tag."
         self.assertRaises(TemplateSyntaxError, self.render_template_tag, slug='')
 
-    @skipIf(not CACHE_TIMEOUT, u"Caching is disabled.")
+    @skipIf(not CACHE_TIMEOUT, "Caching is disabled.")
     def test_cache_scribble_lookup(self):
         "DB lookups should be cached."
         cache.clear()
@@ -81,7 +82,7 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
             result = self.render_template_tag(slug='"sidebar"')
             self.assertTrue('<p>Scribble content.</p>' in result)
 
-    @skipIf(not CACHE_TIMEOUT, u"Caching is disabled.")
+    @skipIf(not CACHE_TIMEOUT, "Caching is disabled.")
     def test_cache_lookup_miss(self):
         "Scribbles not in the DB should also be cached to prevent unnecessary lookup."
         self.scribble.delete()
@@ -93,7 +94,7 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
             result = self.render_template_tag(slug='"sidebar"')
             self.assertTrue('<p>Default.</p>' in result)
 
-    @skipIf(not CACHE_TIMEOUT, u"Caching is disabled.")
+    @skipIf(not CACHE_TIMEOUT, "Caching is disabled.")
     def test_cached_on_save(self):
         "Scribbles are cached on their save."
         cache.clear()

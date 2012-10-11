@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import os
 from setuptools import setup, find_packages
 
@@ -21,7 +23,7 @@ setup(
     include_package_data=True,
     url='https://github.com/mlavin/scribbler',
     license='BSD',
-    description=u' '.join(__import__('scribbler').__doc__.splitlines()).strip(),
+    description=' '.join(__import__('scribbler').__doc__.splitlines()).strip(),
     classifiers=[
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Intended Audience :: Developers',
