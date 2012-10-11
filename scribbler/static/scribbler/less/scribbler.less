@@ -22,6 +22,7 @@
 @red: #FFE0E0;
 @redDarker: #BD3535;
 
+@blue: #2A8FBD;
 
 /* Mixins
 ======================== */
@@ -187,6 +188,21 @@
                 border: 1px solid darken(@green, 15%);
                 &:hover {
                     #gradient .vertical (darken(@green, 10%), darken(@green, 20%));
+                    color: darken(@white, 10%);
+                    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+                }
+                &:active {
+                    color: rgba(255,255,255,.75);
+                    position: relative;
+                    top: 1px;
+                }
+                text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+            }
+            &.draft {
+                #gradient .vertical (@blue, darken(@blue, 15%));
+                border: 1px solid darken(@blue, 15%);
+                &:hover {
+                    #gradient .vertical (darken(@blue, 10%), darken(@blue, 20%));
                     color: darken(@white, 10%);
                     text-shadow: 0 -1px 0 rgba(0,0,0,.25);
                 }

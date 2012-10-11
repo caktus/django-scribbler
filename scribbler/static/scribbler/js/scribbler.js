@@ -82,7 +82,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             });
             this.controls.draft = $('<a>Save as Draft</a>')
             .attr({title: 'Save as Draft', href: "#"})
-            .addClass('btn save').click(function(e) {
+            .addClass('btn draft').click(function(e) {
                 e.preventDefault();
                 ScribbleEditor.createDraft();
             });
@@ -243,6 +243,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 }
                 if (scribble) {
                     this.editor.setValue(scribble);
+                    this.submitPreview();
                     this.needsDraft = false;
                     this.setStatus("Restored content from a draft...");
                 }
