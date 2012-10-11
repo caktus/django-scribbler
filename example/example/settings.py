@@ -1,4 +1,5 @@
 # Django settings for example project.
+import json
 import os
 
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
@@ -56,7 +57,7 @@ MEDIA_ROOT = ''
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -169,3 +170,25 @@ LOGGING = {
         },
     }
 }
+
+
+ENV_FILE = '/home/dotcloud/environment.json'
+if os.path.exists(ENV_FILE):
+    # We are on Dotcloud
+    with open('/home/dotcloud/environment.json') as f:
+        env = json.load(f)
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'scribbler-demo',
+            'USER': env['DOTCLOUD_DB_SQL_LOGIN'],
+            'PASSWORD': env['DOTCLOUD_DB_SQL_PASSWORD'],
+            'HOST': env['DOTCLOUD_DB_SQL_HOST'],
+            'PORT': int(env['DOTCLOUD_DB_SQL_PORT']),
+        }
+    }
+
+    MEDIA_ROOT = '/home/dotcloud/data/media/'
+
+    STATIC_ROOT = '/home/dotcloud/volatile/static/'
