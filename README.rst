@@ -57,3 +57,6 @@ Contributing
 If you think you've found a bug or are interested in contributing to this project
 check out `django-scribbler on Github <https://github.com/caktus/django-scribbler>`_.
 
+Development sponsored by `Caktus Consulting Group, LLC
+<http://www.caktusgroup.com/services>`_.
+
