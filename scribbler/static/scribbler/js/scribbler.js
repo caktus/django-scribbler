@@ -30,6 +30,8 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
         current: {},
         editor: null,
         scribbles: null,
+        needsSave: false,
+        needsDraft: false,
         init: function() {
             this.scribbles = $('.scribble-wrapper.with-controls');
             if (this.scribbles.length > 0) {
@@ -41,7 +43,11 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                     mode: "text/html",
                     tabMode: "indent",
                     lineNumbers: true,
-                    onChange: function(editor) {ScribbleEditor.submitPreview();}
+                    onChange: function(editor) {
+                        ScribbleEditor.needsSave = true;
+                        ScribbleEditor.needsDraft = true;
+                        ScribbleEditor.submitPreview();
+                    }
                 };
                 this.editor = CodeMirror(
                     document.getElementById("scribbleEditorContainer"),
@@ -83,7 +89,11 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             // Error message
             this.controls.errors = $('<span></span>')
             .addClass('error-msg');
+            // Status message
+            this.controls.status = $('<span></span>')
+            .addClass('status-msg');
             footerControls.append(
+                this.controls.status,
                 this.controls.errors,
                 this.controls.close,
                 this.controls.draft,
@@ -103,6 +113,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 this.controls.save.show();
                 this.editor.setOption('readOnly', false);
                 this.editor.setValue($('[name$=content]', this.current.form).val());
+                this.restoreDraft();
             } else {
                 this.controls.save.hide();
                 this.editor.setOption('readOnly', true);
@@ -184,6 +195,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
         },
         renderSave: function(response) {
             if (response.valid) {
+                this.needsSave = false;
                 this.current.form.data('save', response.url);
                 this.current.content.html(this.current.preview.html());
                 this.close();
@@ -192,10 +204,60 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             }
         },
         createDraft: function() {
-
+            var scribble = null;
+            var path = window.location.pathname;
+            var slug = '';
+            if (this.current.form) {
+                // Check for localstorage and fallback to cookie
+                scribble = this.editor.getValue();
+                slug = this.current.form.data('prefix');
+                if (typeof(localStorage) !== 'undefined' && localStorage !== null) {
+                    localStorage[path + slug] = scribble;
+                } else {
+                    document.cookie = encodeURIComponent(slug) + '=' + encodeURIComponent(scribble) + ';' + 'path=' + path;
+                }
+                this.needsDraft = false;
+                this.setStatus("Draft saved...");
+            }
         },
         restoreDraft: function() {
-
+            var scribble = null;
+            var path = window.location.pathname;
+            var slug = '';
+            var i, key, value, cookies = document.cookie.split(";");
+            if (this.current.form) {
+                // Check for localstorage and fallback to cookie
+                slug = this.current.form.data('prefix');
+                if (typeof(localStorage) !== 'undefined' && localStorage !== null) {
+                    scribble = localStorage[path + slug];
+                } else {
+                    for (i = 0; i < cookies.length; i++) {
+                        key = cookies[i].substr(0, cookies[i].indexOf("="));
+                        value = cookies[i].substr(cookies[i].indexOf("=") + 1);
+                        key = decodeURIComponent(key.replace(/\+/g, " "));
+                        if (key === cookieName) {
+                            scribble = decodeURIComponent(value.replace(/\+/g, " "));
+                            break;
+                        }
+                    }
+                }
+                if (scribble) {
+                    this.editor.setValue(scribble);
+                    this.needsDraft = false;
+                    this.setStatus("Restored content from a draft...");
+                }
+            }
+        },
+        setStatus: function(msg) {
+            // Append status message
+            this.controls.status.fadeIn(500);
+            this.controls.status.html(msg);
+            // Callback to fade out the message
+            setTimeout(function() {
+                ScribbleEditor.controls.status.fadeOut(500, function() {
+                    ScribbleEditor.controls.status.html("");
+                });
+            }, 2000);
         }
     };
 
