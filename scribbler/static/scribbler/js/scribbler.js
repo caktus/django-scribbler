@@ -74,12 +74,19 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 e.preventDefault();
                 ScribbleEditor.submitSave();
             });
+            this.controls.draft = $('<a>Save as Draft</a>')
+            .attr({title: 'Save as Draft', href: "#"})
+            .addClass('btn save').click(function(e) {
+                e.preventDefault();
+                ScribbleEditor.createDraft();
+            });
             // Error message
             this.controls.errors = $('<span></span>')
             .addClass('error-msg');
             footerControls.append(
                 this.controls.errors,
                 this.controls.close,
+                this.controls.draft,
                 this.controls.save
             );
             this.element.append(footerControls);
@@ -183,6 +190,12 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             } else {
                 this.controls.errors.html("<strong>Error:</strong> Content is not valid");
             }
+        },
+        createDraft: function() {
+
+        },
+        restoreDraft: function() {
+
         }
     };
 
