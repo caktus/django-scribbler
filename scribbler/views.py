@@ -10,6 +10,7 @@ from django.views.decorators.http import require_POST
 
 from .forms import ScribbleForm
 from .models import Scribble
+from .utils import get_variables
 
 
 def build_scribble_context(scribble, request):
@@ -39,6 +40,7 @@ def preview_scribble(request):
         template = Template(form.cleaned_data.get('content', ''))
         context = build_scribble_context(form.instance, request)
         results['html'] = template.render(context)
+        results['variables'] = get_variables(context)
     else:
         if hasattr(form, 'exc_info'):
             exc_type, exc_value, tb = form.exc_info
