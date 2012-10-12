@@ -4,6 +4,15 @@ Release History
 Release and change history for django-scribbler
 
 
+v0.2.1 (Released 2012-10-12)
+------------------------------------
+
+Bug Fixes
+_________________
+
+- Preview was broken when scribble was saved due to unique constraint. See #34
+
+
 v0.2.0 (Released 2012-10-12)
 ------------------------------------
 

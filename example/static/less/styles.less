@@ -1,0 +1,136 @@
+/*
+ * django-scribbler
+ * Source: https://github.com/caktus/django-scribbler
+ * Docs: http://django-scribbler.readthedocs.org/
+ *
+ * Copyright 2012, Caktus Consulting Group, LLC
+ * BSD License
+ *
+*/
+
+/* Bootstrap imports
+================================================== */
+@import "bootstrap/reset.less";
+@import "bootstrap/variables.less";
+@import "bootstrap/mixins.less";
+@import "bootstrap/scaffolding.less";
+@import "bootstrap/grid.less";
+@import "bootstrap/layouts.less";
+@import "bootstrap/type.less";
+@import "bootstrap/code.less";
+@import "bootstrap/forms.less";
+@import "bootstrap/tables.less";
+@import "bootstrap/buttons.less";
+@import "bootstrap/alerts.less";
+@import "bootstrap/close.less";
+@import "bootstrap/navs.less";
+@import "bootstrap/navbar.less";
+@import "bootstrap/dropdowns.less";
+@import "bootstrap/carousel.less";
+@import "bootstrap/hero-unit.less";
+@import "bootstrap/responsive.less";
+@import "bootstrap/utilities.less";
+@import "bootstrap/tooltip.less";
+@import "bootstrap/sprites.less";
+@import "bootstrap/breadcrumbs.less";
+@import "bootstrap/component-animations.less";
+@import "bootstrap/wells.less";
+@import "bootstrap/labels-badges.less";
+@import "bootstrap/pagination.less";
+
+/* Variables
+======================== */
+@baseFontFamily: @serifFontFamily;
+@scribblerRed: #CD0000;
+
+/* Generic styles
+======================== */
+body { 
+	margin: 0;
+	background: @grayLighter; 
+	&.login-home {
+		#gradient .radial;
+		background-repeat: repeat;
+	}
+}
+
+@font-face {
+    font-family: 'cutiveregular';
+    src: url('../fonts/cutive-regular-webfont.eot');
+    src: url('../fonts/cutive-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/cutive-regular-webfont.woff') format('woff'),
+         url('../fonts/cutive-regular-webfont.ttf') format('truetype'),
+         url('../fonts/cutive-regular-webfont.svg#cutiveregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+span { font-weight: bold; }
+
+h1 {
+	font-family: 'cutiveregular', Georgia, serif;
+	color: @scribblerRed;
+	font-weight: normal;
+	font-size: 36px;
+}
+
+p.lead {
+	font-family: 'cutiveregular', Georgia, serif;
+	font-weight: normal;
+	margin-bottom: 40px;
+}
+
+.content {
+	margin-top: 100px;
+}
+
+#page {
+	margin: 0 auto;
+    max-width: 979px;
+    padding: 20px;
+    position: relative;
+    width: 80%;
+    .clearfix;
+    background-color: @white;
+    .box-shadow(0 0 10px @grayLight);
+    border: 1px @grayLighter solid;
+    font-size: 15px;
+}
+
+/* Login form styles
+======================== */
+#login-content {
+	margin: 100px auto 20px;
+    text-align: center;
+    width: 100%;
+    .modal {
+    	background-color: @white;
+    	color: @gray;
+	    .border-radius(8px);
+	    .box-shadow(0 0 15px @black);
+	    margin: 0 auto;
+	    padding: 10px 39px;
+	    width: 275px;
+    }
+    form { padding-top: 15px; }
+    .errorlist {
+    	list-style: none;
+    	color: @white;
+    }
+    input[type=submit] {
+    	font-weight: bold;
+    }
+    
+}
+
+small {
+   text-align: center;
+   font-family: 'cutiveregular', Georgia, serif;
+   font-weight: normal;
+   margin: 50px auto 20px;
+   display: block;
+   color: @white;
+   font-size: 13px;
+   span:last-child { padding-left: 15px;}
+}
