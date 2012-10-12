@@ -47,6 +47,13 @@ class ScribbleForm(forms.ModelForm, ScribbleFormMixin):
         return self.instance.get_delete_url()
 
 
+class PreviewForm(ScribbleForm):
+
+    def clean(self):
+        "Override default clean to not check for slug/url uniqueness."
+        return self.cleaned_data
+
+
 class FieldScribbleForm(forms.Form, ScribbleFormMixin):
     content = forms.CharField(widget=forms.Textarea)
 

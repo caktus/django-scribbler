@@ -192,3 +192,6 @@ if os.path.exists(ENV_FILE):
     MEDIA_ROOT = '/home/dotcloud/data/media/'
 
     STATIC_ROOT = '/home/dotcloud/volatile/static/'
+
+    DEBUG = False
+    TEMPLATE_DEBUG = DEBUG
