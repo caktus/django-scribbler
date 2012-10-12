@@ -74,6 +74,21 @@ or::
 from inside the ``docs/`` directory. 
 
 
+Building the CSS
+------------------------------------
+
+The CSS used by django-scribbler is built using `LESS <http://lesscss.org/>`_. No changes
+should be made to the ``scribbler.css`` directly. Instead changes should be made to the ``scribbler.less``
+file. After changes are made to ``scribbler.less`` you can create the new CSS with the
+Node based complier::
+
+    # Install less from the NPM package
+    npm install less -g
+    lessc scribbler/static/scribbler/less/scribbler.less > scribbler/static/scribbler/css/scribbler.css
+
+The example project uses the client-side LESS compiler to make local development easier.
+
+
 Coding Standards
 ------------------------------------
 
