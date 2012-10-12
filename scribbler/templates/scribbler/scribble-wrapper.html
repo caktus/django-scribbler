@@ -1,4 +1,5 @@
-<div class="scribble-wrapper scribble-{{ scribble.slug }} {% if show_controls %}with-controls{% endif %}">
+{% if scribble_form %}
+<div class="scribble-wrapper scribble-{{ scribble_form.get_data_prefix }} {% if show_controls %}with-controls{% endif %}">
     <div class="scribble-content original">
         {{ rendered_scribble }}
     </div>
@@ -11,3 +12,6 @@
         </div>
     {% endif %}
 </div>
+{% else %}
+    <div>{{ rendered_scribble }}</div>
+{% endif %}

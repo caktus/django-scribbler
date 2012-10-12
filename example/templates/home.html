@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/libs/codemirror.css">
     <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}scribbler/less/scribbler.less">
     <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}less/styles.less">
-     <script src="{{ STATIC_URL }}js/less-1.3.0.min.js"></script>   
+     <script src="{{ STATIC_URL }}js/less-1.3.0.min.js"></script>
 </head>
 <body {% if not user.is_authenticated %}class="login-home"{% endif %}>
     <div class="content">
@@ -21,10 +21,14 @@
         {% if user.is_authenticated %}
         <div id="page">
             <h2>scribbler. <span>demo</span></h2>
-            <p class="lead">Hover over the text below and click to start editing the scribble.</p>
+            <p class="lead">Hover over the text below and click to start editing the scribbles.</p>
             {% scribble 'header' %}
                 <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
             {% endscribble %}
+            <p>Your first name is:</p>
+            {% scribble_field user 'first_name' %}
+            <p>Your username is:</p>
+            {% scribble_field user 'username' %}
         </div>
         {% else %}
             <div id="login-content">
