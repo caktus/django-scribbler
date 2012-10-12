@@ -16,9 +16,9 @@
     return arr.indexOf(item) != -1;
   }
 
-  var TAG_RE = /\{\%[^\%\}]*$/;
-  var VARIABLE_RE = /\{\{[^\}\}]*$/;
-  var FILTER_RE = /\|[^\%\}]*$/;
+  var TAG_RE = /\{\%\s?[^\s\%\}]*$/;
+  var VARIABLE_RE = /\{\{\s?[^\s\}\}]*$/;
+  var FILTER_RE = /\|[^\s\%\}]*$/;
 
   var django_tags = ("autoescape block comment cycle debug extends filter " +
     "firstof for if ifchanged ifequal ifnotequal include load now regroup " +
