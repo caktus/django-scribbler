@@ -1,9 +1,9 @@
 "Tests for utility functions."
 from __future__ import unicode_literals
-from copy import copy
 
-from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.template import RequestContext
+from django.test.client import RequestFactory
 
 from .test_views import BaseViewTestCase
 
@@ -44,41 +44,42 @@ class FlattenTestCase(TestCase):
         self.assertEqual(list(_flatten(data)), ['abc', 'abc', 'abc', 'abc'])
 
 
+def test_processor(request):
+    return {
+        'custom_processor_var': 1,
+    }
+
+
 class GetVariablesTestCase(BaseViewTestCase):
     """TestCase for get_variables"""
 
     def setUp(self):
-        super(GetVariablesTestCase, self).setUp()
-        self.url = reverse('preview-scribble')
-        self.data = {
-            'slug': 'test',
-            'url': '/',
-            'content': '{% now "Y" %}'
-        }
-        self.globals = ['csrf_token', 'perms', 'request', 'user']
+        factory = RequestFactory()
+        self.request = factory.get('/foo/')
+        self.known_globals = ['csrf_token', 'request', 'user']
 
-    def _get_context(self, url=None):
-        url = url or self.url
-        return self.client.post(url, data=self.data).context
+    def _get_context(self, dict_=None, processors=None):
+        return RequestContext(self.request, dict_, processors=processors)
 
-    def test_no_block(self):
+    def test_global_context_processors(self):
         """
-        Assure get_variables doesn't return the template block as a context
-        variable
-        """
-        variables = get_variables(self._get_context())
-        self.assertTrue('block' not in variables)
-
-    def test_context_processors(self):
-        """
-        Assure get_variables contains all variables from context processors
+        Assure get_variables contains known global context processors such as
+        request and user
         """
         variables = set(get_variables(self._get_context()))
-        self.assertTrue(variables.issuperset(set(self.globals)))
+        self.assertTrue(variables.issuperset(set(self.known_globals)))
 
     def test_returned_variable(self):
         """
-        Assure get_variables returns variables unique to the test_view
+        Assure get_variables returns variables unique to the context
         """
-        variables = get_variables(self._get_context())
-        self.assertTrue('scribble' in variables)
+        variables = get_variables(self._get_context({}))
+        self.assertTrue('a' not in variables)
+        variables = get_variables(self._get_context({'a': 3}))
+        self.assertTrue('a' in variables)
+
+    def test_custom_processors(self):
+        variables = get_variables(self._get_context({}, processors=[]))
+        self.assertTrue('custom_processor_var' not in variables)
+        variables = get_variables(self._get_context({}, processors=[test_processor]))
+        self.assertTrue('custom_processor_var' in variables)
