@@ -53,7 +53,7 @@ class FieldScribbleForm(forms.Form, ScribbleFormMixin):
     def __init__(self, content_type, instance_pk, field_name, *args, **kwargs):
         field_value = kwargs.pop('field_value', None)
         if 'data' not in kwargs:
-            kwargs['prefix'] = '{0}:{1}'.format(content_type.pk, instance_pk)
+            kwargs['prefix'] = '{0}:{1}:{2}'.format(content_type.pk, instance_pk, field_name)
         super(FieldScribbleForm, self).__init__(*args, **kwargs)
         self.content_type = content_type
         self.instance_pk = instance_pk
