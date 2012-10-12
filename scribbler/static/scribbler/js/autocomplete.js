@@ -48,17 +48,6 @@
       complete.style.left = pos.x + "px";
       complete.style.top = pos.yBot + "px";
 
-      /*
-       Trying to place autocomplete widget in the editor
-
-      // Removed for now because this breaks everything.
-
-      var editor_div = document.getElementById(editor.selector);
-      var code_mirror_div = editor_div.getElementsByClassName('CodeMirror')[0]
-      var cm_inner_div = code_mirror_div.getElementsByClassName('cm-s-default')[0];
-      cm_inner_div.appendChild(complete);
-      */
-
       document.body.appendChild(complete);
 
       // If we're at the edge of the screen, then we want the menu to appear on the left of the cursor.
