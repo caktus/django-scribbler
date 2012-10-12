@@ -30,6 +30,8 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
         current: {},
         editor: null,
         scribbles: null,
+        needsSave: false,
+        needsDraft: false,
         init: function() {
             this.scribbles = $('.scribble-wrapper.with-controls');
             if (this.scribbles.length > 0) {
@@ -41,7 +43,13 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                     mode: "text/html",
                     tabMode: "indent",
                     lineNumbers: true,
-                    onChange: function(editor) {ScribbleEditor.submitPreview();}
+                    onChange: function(editor) {
+                        ScribbleEditor.needsSave = true;
+                        ScribbleEditor.controls.save.removeClass('inactive');
+                        ScribbleEditor.needsDraft = true;
+                        ScribbleEditor.controls.draft.removeClass('inactive');
+                        ScribbleEditor.submitPreview();
+                    }
                 };
                 this.editor = CodeMirror(
                     document.getElementById("scribbleEditorContainer"),
@@ -70,16 +78,27 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             // Save button
             this.controls.save = $('<a>Save</a>')
             .attr({title: 'Save', href: "#"})
-            .addClass('btn save').click(function(e) {
+            .addClass('btn save inactive').click(function(e) {
                 e.preventDefault();
                 ScribbleEditor.submitSave();
+            });
+            this.controls.draft = $('<a>Save as Draft</a>')
+            .attr({title: 'Save as Draft', href: "#"})
+            .addClass('btn draft inactive').click(function(e) {
+                e.preventDefault();
+                ScribbleEditor.createDraft();
             });
             // Error message
             this.controls.errors = $('<span></span>')
             .addClass('error-msg');
+            // Status message
+            this.controls.status = $('<span></span>')
+            .addClass('status-msg');
             footerControls.append(
+                this.controls.status,
                 this.controls.errors,
                 this.controls.close,
+                this.controls.draft,
                 this.controls.save
             );
             this.element.append(footerControls);
@@ -91,18 +110,25 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             this.current.can_save = this.current.form.data('save');
             this.current.can_delete = this.current.form.data('delete');
             this.element.show();
-            this.element.animate({height: '300px'}, 500);   
             if (this.current.can_save) {
                 this.controls.save.show();
                 this.editor.setOption('readOnly', false);
                 this.editor.setValue($('[name$=content]', this.current.form).val());
+                this.restoreDraft();
             } else {
                 this.controls.save.hide();
                 this.editor.setOption('readOnly', true);
                 this.editor.setValue('You do not have permission to edit this content.');
             }
-            this.editor.focus();
+            this.element.animate({height: '300px'}, 500, function(){ScribbleEditor.editor.focus();});
             this.visible = true;
+            // Start background draft saving
+            var checkDraft = function() {
+                if (ScribbleEditor.needsDraft) {
+                    ScribbleEditor.createDraft();
+                }
+            }
+            this.backgroundDraft = setInterval(checkDraft, 3000);
         },
         close: function() {
             this.current.preview.hide();
@@ -112,9 +138,12 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             this.editor.setValue('');
             this.element.animate({height: 0}, 500);
             this.visible = false;
+            if (this.backgroundDraft) {
+                clearInterval(this.backgroundDraft);
+            }
         },
-        submitPreview: function() {
-            if (this.current.form && !this.rendering && !this.editor.getOption('readOnly')) {
+        submitPreview: function(force) {
+            if (this.current.form && (force || (!this.rendering && !this.editor.getOption('readOnly')))) {
                 this.rendering = true;
                 // Submit the form and display the preview
                 $.post(
@@ -136,12 +165,12 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 this.current.preview.html(response.html);
                 this.current.preview.show();
                 this.current.content.hide();
-                this.controls.save.show();
+                this.controls.save.removeClass('inactive');
             } else {
                 this.errorLine = response.error.line - 1;
                 this.editor.setLineClass(this.errorLine, null, "activeline");
                 this.controls.errors.html("<strong>Error:</strong> " + response.error.message);
-                this.controls.save.hide();
+                this.controls.save.addClass('inactive');
             }
             this.rendering = false;
         },
@@ -177,12 +206,92 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
         },
         renderSave: function(response) {
             if (response.valid) {
+                this.deleteDraft();
+                this.needsSave = false;
+                this.controls.save.addClass('inactive');
                 this.current.form.data('save', response.url);
                 this.current.content.html(this.current.preview.html());
                 this.close();
             } else {
                 this.controls.errors.html("<strong>Error:</strong> Content is not valid");
             }
+        },
+        createDraft: function() {
+            var scribble = null;
+            var path = window.location.pathname;
+            var slug = '';
+            if (this.current.form) {
+                // Check for localstorage and fallback to cookie
+                scribble = this.editor.getValue();
+                slug = this.current.form.data('prefix');
+                if (typeof(localStorage) !== 'undefined' && localStorage !== null) {
+                    localStorage[path + slug] = scribble;
+                } else {
+                    document.cookie = encodeURIComponent(slug) + '=' + encodeURIComponent(scribble) + ';' + 'path=' + path;
+                }
+                this.needsDraft = false;
+                this.controls.draft.addClass('inactive');
+                this.setStatus("Draft saved...");
+            }
+        },
+        restoreDraft: function() {
+            var scribble = null;
+            var path = window.location.pathname;
+            var slug = '';
+            var i, key, value, cookies = document.cookie.split(";");
+            if (this.current.form) {
+                // Check for localstorage and fallback to cookie
+                slug = this.current.form.data('prefix');
+                if (typeof(localStorage) !== 'undefined' && localStorage !== null) {
+                    scribble = localStorage[path + slug];
+                } else {
+                    for (i = 0; i < cookies.length; i++) {
+                        key = cookies[i].substr(0, cookies[i].indexOf("="));
+                        value = cookies[i].substr(cookies[i].indexOf("=") + 1);
+                        key = decodeURIComponent(key.replace(/\+/g, " "));
+                        if (key === cookieName) {
+                            scribble = decodeURIComponent(value.replace(/\+/g, " "));
+                            break;
+                        }
+                    }
+                }
+                if (scribble) {
+                    this.editor.setValue(scribble);
+                    this.submitPreview(true);
+                    this.needsDraft = false;
+                    this.controls.draft.addClass('inactive');
+                    this.setStatus("Restored content from a draft...");
+                }
+            }
+        },
+        deleteDraft: function() {
+            var path = window.location.pathname;
+            var slug = '';
+            var yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() -1);
+            if (this.current.form) {
+                // Check for localstorage and fallback to cookie
+                slug = this.current.form.data('prefix');
+                if (typeof(localStorage) !== 'undefined' && localStorage !== null) {
+                    localStorage.removeItem(path + slug);
+                } else {
+                    document.cookie = encodeURIComponent(slug) + '=' + encodeURIComponent('') +
+                    ';expires=' + yesterday.toUTCString() + ';path=' + path;
+                }
+                this.needsDraft = true;
+                this.controls.draft.removeClass('inactive');
+            }
+        },
+        setStatus: function(msg) {
+            // Append status message
+            this.controls.status.fadeIn(500);
+            this.controls.status.html(msg);
+            // Callback to fade out the message
+            setTimeout(function() {
+                ScribbleEditor.controls.status.fadeOut(500, function() {
+                    ScribbleEditor.controls.status.html("");
+                });
+            }, 2000);
         }
     };
 
