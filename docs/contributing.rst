@@ -82,6 +82,15 @@ and `Django contributing style <https://docs.djangoproject.com/en/dev/internals/
 standards. Please note that these are only guidelines. Overall code consistency
 and readability are more important than strict adherence to these guides.
 
+The Javascript is configured for some basic `JSHint <http://www.jshint.com/>`_ checks. Changes
+to the Javascript should pass without errors. You can check the Javascript file on the command line
+with Node based `CLI tool <https://github.com/jshint/jshint>`_::
+
+    # Install jslint from the NPM package
+    npm install jshint -g
+    # Check the scribbler JS
+    jshint scribbler/static/scribbler/js/scribbler.js
+
 
 Submitting a Pull Request
 ------------------------------------
