@@ -110,7 +110,6 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             this.current.can_save = this.current.form.data('save');
             this.current.can_delete = this.current.form.data('delete');
             this.element.show();
-            this.element.animate({height: '300px'}, 500);   
             if (this.current.can_save) {
                 this.controls.save.show();
                 this.editor.setOption('readOnly', false);
@@ -121,7 +120,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 this.editor.setOption('readOnly', true);
                 this.editor.setValue('You do not have permission to edit this content.');
             }
-            this.editor.focus();
+            this.element.animate({height: '300px'}, 500, function(){ScribbleEditor.editor.focus();});
             this.visible = true;
         },
         close: function() {
