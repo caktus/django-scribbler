@@ -197,6 +197,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
         },
         renderSave: function(response) {
             if (response.valid) {
+                this.deleteDraft();
                 this.needsSave = false;
                 this.controls.save.addClass('inactive');
                 this.current.form.data('save', response.url);
@@ -252,6 +253,24 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                     this.controls.draft.addClass('inactive');
                     this.setStatus("Restored content from a draft...");
                 }
+            }
+        },
+        deleteDraft: function() {
+            var path = window.location.pathname;
+            var slug = '';
+            var yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() -1);
+            if (this.current.form) {
+                // Check for localstorage and fallback to cookie
+                slug = this.current.form.data('prefix');
+                if (typeof(localStorage) !== 'undefined' && localStorage !== null) {
+                    localStorage.removeItem(path + slug);
+                } else {
+                    document.cookie = encodeURIComponent(slug) + '=' + encodeURIComponent('') +
+                    ';expires=' + yesterday.toUTCString() + ';path=' + path;
+                }
+                this.needsDraft = true;
+                this.controls.draft.removeClass('inactive');
             }
         },
         setStatus: function(msg) {
