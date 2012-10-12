@@ -304,11 +304,10 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             this.scribbles = $('.scribble-wrapper.with-controls');
             if (this.scribbles.length > 0) {
                 this.element = $('<div id="scribbleMenuContainer"></div>');
-                //this.element.hide();
                 this.buildControls();
+                this.element.css('top', -1000);
                 $('body').append(this.element);
                 this.close();
-                //this.element.show();
             }
         },
         buildControls: function() {
