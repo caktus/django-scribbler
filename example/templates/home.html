@@ -4,7 +4,7 @@
 <html lang="en" class="no-js">
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}{% endblock %}</title>
+    <title>django-scribbler || Example Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{% block meta-description %}{% endblock %}">
     <meta name="author" content="{% block meta-author %}{% endblock %}">
@@ -12,32 +12,43 @@
     {% block extra-meta %}{% endblock %}
     <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/libs/codemirror.css">
     <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}scribbler/less/scribbler.less">
-    <style>
-        body { 
-            margin: 0;
-        }
-        .container {
-            width: 1080px;
-        }
-    </style>
-    <script src="{{ STATIC_URL }}js/less-1.3.0.min.js"></script>
-    {% block extra-css %}{% endblock %}
+    <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}less/styles.less">
+     <script src="{{ STATIC_URL }}js/less-1.3.0.min.js"></script>   
 </head>
-<body id="{% block body-id %}body{% endblock %}" class="{% block body-class %}body{% endblock %}">
-    <div class="container main">
+<body {% if not user.is_authenticated %}class="login-home"{% endif %}>
+    <div class="content">
         {% block content %}
+        {% if user.is_authenticated %}
+        <div id="page">
+            <h1>django-scribbler <span>demo</span></h1>
+            <p class="lead">Hover over the text below and click to start editing the scribble.</p>
             {% scribble 'header' %}
                 <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
             {% endscribble %}
-            {% if request.user.is_authenticated %}
-                <p>Your first name is:</p>
-                {% scribble_field request.user 'first_name' %}
-                <p>Your username is:</p>
-                {% scribble_field request.user 'username' %}
-            {% endif %}
+            <p>Your first name is:</p>
+            {% scribble_field user 'first_name' %}
+            <p>Your username is:</p>
+            {% scribble_field user 'username' %}
+        </div>
+        {% else %}
+            <div id="login-content">
+                {{ form.non_field_errors }}
+                <div class="modal">
+                    <h1>django-scribbler.</h1>
+                    <form method="post" action=".">
+                        {% csrf_token %}
+                        <div class="control-group{% if form.errors %} error{% endif %}">
+                            <input type="text" class="input-large" maxlength="30" name="username" id="id_username{% if form.errors %} inputError{% endif %}" placeholder="Username">
+                            <input type="password" class="input-large" id="id_password{% if form.errors %} inputError{% endif %}" name="password" placeholder="Password">
+                        </div>
+                        <input class="btn" type="submit" value="SUBMIT">
+                    </form>
+                </div>
+            </div>
+            <small><span>Username:</span> demo <span>Password:</span> demo</small>
+        {% endif %}
         {% endblock %}
     </div>
     <script data-main="{{ STATIC_URL }}scribbler/js/scribbler" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
-    {% block extra-js %}{% endblock %}
 </body>
 </html>
