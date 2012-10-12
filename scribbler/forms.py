@@ -33,3 +33,10 @@ class ScribbleForm(forms.ModelForm):
                 self.exc_info = sys.exc_info()
                 raise forms.ValidationError('Invalid Django Template')
         return content
+
+
+class PreviewForm(ScribbleForm):
+
+    def clean(self):
+        "Override default clean to not check for slug/url uniqueness."
+        return self.cleaned_data

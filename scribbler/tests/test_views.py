@@ -95,6 +95,16 @@ class PreviewTestCase(BaseViewTestCase):
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 403)
 
+    def test_preview_existing(self):
+        "Preview content for a scribble which exists. See #34."
+        data = self.get_valid_data()
+        scribble = self.create_scribble(**data)
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 200)
+        results = json.loads(response.content.decode('utf-8'))
+        self.assertTrue(results['valid'])
+        self.assertFalse('error' in results)
+
 
 class CreateTestCase(BaseViewTestCase):
     "Creating a new scribble."
