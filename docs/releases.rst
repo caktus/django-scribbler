@@ -7,10 +7,22 @@ Release and change history for django-scribbler
 v0.2.0 (Released 2012-10-12)
 ------------------------------------
 
+The editor now saves drafts on the client side by default. Python 3 support is
+added when using the lastest Django master. There is also some additional documentation.
+
+A unique constraint was added and upgrading from v0.1 does require a migration::
+
+    manage.py migrate scribbler
+
 - Added experimental Python >= 3.2 support when using Django 1.5dev
 - Caktus Consulting Group has taken over the primary development
 - Added the ability to save as a draft on the client side
 - Added an official contributing guide
+
+Bug Fixes
+_________________
+
+- Added unique constraint for url/slug pair. South migration is included.
 
 
 v0.1.1 (Released 2012-08-25)
