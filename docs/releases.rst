@@ -10,6 +10,7 @@ v0.2.0 (Released TBD)
 - Added experimental Python >= 3.2 support when using Django 1.5dev
 - Caktus Consulting Group has taken over the primary development
 - Added the ability to save as a draft on the client side
+- Added an official contributing guide
 
 
 v0.1.1 (Released 2012-08-25)
