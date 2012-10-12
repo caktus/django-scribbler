@@ -12,14 +12,14 @@ require.config({
     paths: {
         jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
         codemirror: '../libs/codemirror-compressed',
-        autocomplete: 'autocomplete',
+        simplehint: '../libs/simple-hint',
         djangohint: 'djangohint'
     },
     shim: {
         codemirror: {
             exports: 'CodeMirror'
         },
-        autocomplete: {
+        simplehint: {
             exports: 'CodeMirror',
             deps:['djangohint']
         },
@@ -30,7 +30,7 @@ require.config({
     }
 });
 
-require(['jquery', 'codemirror', 'autocomplete'], function($, CodeMirror) {
+require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
     var ScribbleEditor = {
         visible: false,
         rendering: false,
@@ -61,6 +61,9 @@ require(['jquery', 'codemirror', 'autocomplete'], function($, CodeMirror) {
                         ScribbleEditor.submitPreview();
                     },
                     extraKeys: {'Tab': 'autocomplete'}
+                };
+                CodeMirror.commands.autocomplete = function(editor) {
+                    CodeMirror.simpleHint(editor, CodeMirror.djangoHint);
                 };
                 this.editor = CodeMirror(
                     document.getElementById("scribbleEditorContainer"),

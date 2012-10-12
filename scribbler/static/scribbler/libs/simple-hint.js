@@ -5,7 +5,7 @@
     for (var opt in defaults)
       if (defaults.hasOwnProperty(opt))
         options[opt] = (givenOptions && givenOptions.hasOwnProperty(opt) ? givenOptions : defaults)[opt];
-
+    
     function collectHints(previousToken) {
       // We want a single cursor position.
       if (editor.somethingSelected()) return;
@@ -26,7 +26,7 @@
       }
       // When there is only one completion, use it directly.
       if (options.completeSingle && completions.length == 1) {
-        insert(completions[0] + result.token.closing);
+        insert(completions[0]);
         return true;
       }
 
@@ -47,9 +47,7 @@
       var pos = editor.cursorCoords();
       complete.style.left = pos.x + "px";
       complete.style.top = pos.yBot + "px";
-
       document.body.appendChild(complete);
-
       // If we're at the edge of the screen, then we want the menu to appear on the left of the cursor.
       var winW = window.innerWidth || Math.max(document.body.offsetWidth, document.documentElement.offsetWidth);
       if(winW - pos.x < sel.clientWidth)
@@ -99,8 +97,5 @@
     closeOnBackspace: true,
     closeOnTokenChange: false,
     completeSingle: true
-  };
-  CodeMirror.commands.autocomplete = function(editor) {
-      CodeMirror.simpleHint(editor, CodeMirror.djangoHint);
   };
 })();
