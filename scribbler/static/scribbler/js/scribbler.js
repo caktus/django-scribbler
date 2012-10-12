@@ -122,6 +122,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             }
             this.element.animate({height: '300px'}, 500, function(){ScribbleEditor.editor.focus();});
             this.visible = true;
+            ScribbleMenu.close();
             // Start background draft saving
             var checkDraft = function() {
                 if (ScribbleEditor.needsDraft) {
@@ -303,13 +304,16 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             this.scribbles = $('.scribble-wrapper.with-controls');
             if (this.scribbles.length > 0) {
                 this.element = $('<div id="scribbleMenuContainer"></div>');
+                //this.element.hide();
                 this.buildControls();
                 $('body').append(this.element);
+                this.close();
+                //this.element.show();
             }
         },
         buildControls: function() {
             // Build control bar
-            var menuControls = $('<div></div>').addClass('controls clearfix');
+            this.menuControls = $('<div></div>').addClass('controls clearfix');
             // Open/Close button
             this.controls.tab = $('<a>Toggle Menu</a>')
             .attr({title: 'Toggle Menu', href: '#'})
@@ -327,22 +331,21 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             .attr({title: 'Show All Scribbles', href: "#"})
             .addClass('btn reveal').click(function(e) {
                 e.preventDefault();
+                ScribbleMenu.scribbles.addClass('highlight');
             });
-            menuControls.append(
-                this.controls.close,
-                this.controls.save
-            );
-            this.element.append(menuControls);
+            this.menuControls.append(this.controls.reveal);
+            this.element.append(this.menuControls);
+            this.element.append(this.controls.tab);
         },
         open: function(scribble) {
-            this.element.show();
-            this.controls.save.show();
-            this.element.animate({height: '300px'}, 500);
+            this.element.animate({top: 0}, 500);
             this.visible = true;
         },
         close: function() {
-            this.element.animate({height: 0}, 500);
+            var height = this.menuControls.height();
+            this.element.animate({top: -1 * (5 + height)}, 500);
             this.visible = false;
+            this.scribbles.removeClass('highlight');
         }
     };
 

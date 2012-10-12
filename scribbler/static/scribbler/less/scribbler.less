@@ -120,6 +120,10 @@
         }
     }
 
+    &.highlight {
+        background: @yellow;
+    }
+
     // Styles below hide editor and preview on page load
     .scribble-controls {
         #hide;
@@ -239,6 +243,17 @@
 
 }
 
+
+/* Scribbler menu styles
+==================================== */
+
+#scribbleMenuContainer {
+    position: fixed;
+    top: 0;
+    left: 45%;
+    z-index: 10000;
+    text-align: center;
+}
 
 /* Codemirror customization styles
 ==================================== */
