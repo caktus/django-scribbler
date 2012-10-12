@@ -8,7 +8,7 @@ from django.utils import simplejson as json
 from django.views.debug import ExceptionReporter
 from django.views.decorators.http import require_POST
 
-from .forms import ScribbleForm
+from .forms import ScribbleForm, PreviewForm
 from .models import Scribble
 
 
@@ -33,7 +33,7 @@ def preview_scribble(request):
         'valid': False,
         'html': '',
     }
-    form = ScribbleForm(request.POST)
+    form = PreviewForm(request.POST)
     if form.is_valid():
         results['valid'] = True
         template = Template(form.cleaned_data.get('content', ''))
