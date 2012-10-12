@@ -32,6 +32,9 @@ class Scribble(models.Model):
         __unicode__ = __str__
         __str__ = lambda self: self.__unicode__().encode('utf-8')
 
+    class Meta(object):
+        unique_together = ('slug', 'url')
+
     @models.permalink
     def get_save_url(self):
         if self.pk:
