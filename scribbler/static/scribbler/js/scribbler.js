@@ -45,7 +45,9 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                     lineNumbers: true,
                     onChange: function(editor) {
                         ScribbleEditor.needsSave = true;
+                        ScribbleEditor.controls.save.removeClass('inactive');
                         ScribbleEditor.needsDraft = true;
+                        ScribbleEditor.controls.draft.removeClass('inactive');
                         ScribbleEditor.submitPreview();
                     }
                 };
@@ -76,13 +78,13 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             // Save button
             this.controls.save = $('<a>Save</a>')
             .attr({title: 'Save', href: "#"})
-            .addClass('btn save').click(function(e) {
+            .addClass('btn save inactive').click(function(e) {
                 e.preventDefault();
                 ScribbleEditor.submitSave();
             });
             this.controls.draft = $('<a>Save as Draft</a>')
             .attr({title: 'Save as Draft', href: "#"})
-            .addClass('btn draft').click(function(e) {
+            .addClass('btn draft inactive').click(function(e) {
                 e.preventDefault();
                 ScribbleEditor.createDraft();
             });
@@ -154,12 +156,12 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 this.current.preview.html(response.html);
                 this.current.preview.show();
                 this.current.content.hide();
-                this.controls.save.show();
+                this.controls.save.removeClass('inactive');
             } else {
                 this.errorLine = response.error.line - 1;
                 this.editor.setLineClass(this.errorLine, null, "activeline");
                 this.controls.errors.html("<strong>Error:</strong> " + response.error.message);
-                this.controls.save.hide();
+                this.controls.save.addClass('inactive');
             }
             this.rendering = false;
         },
@@ -196,6 +198,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
         renderSave: function(response) {
             if (response.valid) {
                 this.needsSave = false;
+                this.controls.save.addClass('inactive');
                 this.current.form.data('save', response.url);
                 this.current.content.html(this.current.preview.html());
                 this.close();
@@ -217,6 +220,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                     document.cookie = encodeURIComponent(slug) + '=' + encodeURIComponent(scribble) + ';' + 'path=' + path;
                 }
                 this.needsDraft = false;
+                this.controls.draft.addClass('inactive');
                 this.setStatus("Draft saved...");
             }
         },
@@ -245,6 +249,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                     this.editor.setValue(scribble);
                     this.submitPreview();
                     this.needsDraft = false;
+                    this.controls.draft.addClass('inactive');
                     this.setStatus("Restored content from a draft...");
                 }
             }
