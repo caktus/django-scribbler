@@ -133,8 +133,8 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             this.element.animate({height: 0}, 500);
             this.visible = false;
         },
-        submitPreview: function() {
-            if (this.current.form && !this.rendering && !this.editor.getOption('readOnly')) {
+        submitPreview: function(force) {
+            if (this.current.form && (force || (!this.rendering && !this.editor.getOption('readOnly')))) {
                 this.rendering = true;
                 // Submit the form and display the preview
                 $.post(
@@ -248,7 +248,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 }
                 if (scribble) {
                     this.editor.setValue(scribble);
-                    this.submitPreview();
+                    this.submitPreview(true);
                     this.needsDraft = false;
                     this.controls.draft.addClass('inactive');
                     this.setStatus("Restored content from a draft...");
