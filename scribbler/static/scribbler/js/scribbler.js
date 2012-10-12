@@ -295,5 +295,59 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
         }
     };
 
-    $(document).ready(function(){ScribbleEditor.init();});
+    var ScribbleMenu = {
+        visible: false,
+        controls: {},
+        scribbles: null,
+        init: function() {
+            this.scribbles = $('.scribble-wrapper.with-controls');
+            if (this.scribbles.length > 0) {
+                this.element = $('<div id="scribbleMenuContainer"></div>');
+                this.buildControls();
+                $('body').append(this.element);
+            }
+        },
+        buildControls: function() {
+            // Build control bar
+            var menuControls = $('<div></div>').addClass('controls clearfix');
+            // Open/Close button
+            this.controls.tab = $('<a>Toggle Menu</a>')
+            .attr({title: 'Toggle Menu', href: '#'})
+            .addClass('tab')
+            .click(function(e) {
+                e.preventDefault();
+                if (ScribbleMenu.visible) {
+                    ScribbleMenu.close();
+                } else {
+                    ScribbleMenu.open();
+                }
+            });
+            // Reveal button
+            this.controls.reveal = $('<a>Show All Scribbles</a>')
+            .attr({title: 'Show All Scribbles', href: "#"})
+            .addClass('btn reveal').click(function(e) {
+                e.preventDefault();
+            });
+            menuControls.append(
+                this.controls.close,
+                this.controls.save
+            );
+            this.element.append(menuControls);
+        },
+        open: function(scribble) {
+            this.element.show();
+            this.controls.save.show();
+            this.element.animate({height: '300px'}, 500);
+            this.visible = true;
+        },
+        close: function() {
+            this.element.animate({height: 0}, 500);
+            this.visible = false;
+        }
+    };
+
+    $(document).ready(function(){
+        ScribbleEditor.init();
+        ScribbleMenu.init();
+    });
 });
