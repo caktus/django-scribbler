@@ -59,7 +59,7 @@ require(['jquery', 'codemirror', 'autocomplete'], function($, CodeMirror) {
                         ScribbleEditor.needsDraft = true;
                         ScribbleEditor.controls.draft.removeClass('inactive');
                         ScribbleEditor.submitPreview();
-                    }
+                    },
                     extraKeys: {'Tab': 'autocomplete'}
                 };
                 this.editor = CodeMirror(
