@@ -122,6 +122,13 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             }
             this.element.animate({height: '300px'}, 500, function(){ScribbleEditor.editor.focus();});
             this.visible = true;
+            // Start background draft saving
+            var checkDraft = function() {
+                if (ScribbleEditor.needsDraft) {
+                    ScribbleEditor.createDraft();
+                }
+            }
+            this.backgroundDraft = setInterval(checkDraft, 3000);
         },
         close: function() {
             this.current.preview.hide();
@@ -131,6 +138,9 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             this.editor.setValue('');
             this.element.animate({height: 0}, 500);
             this.visible = false;
+            if (this.backgroundDraft) {
+                clearInterval(this.backgroundDraft);
+            }
         },
         submitPreview: function(force) {
             if (this.current.form && (force || (!this.rendering && !this.editor.getOption('readOnly')))) {
