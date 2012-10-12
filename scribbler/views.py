@@ -71,12 +71,10 @@ def create_edit_scribble(request, scribble_id=None):
     form = ScribbleForm(request.POST, instance=scribble)
     results = {
         'valid': False,
-        'id': None,
     }
     if form.is_valid():
         results['valid'] = True
         scribble = form.save()
-        results['id'] = scribble.id
     results['url'] = scribble.get_save_url()
     content = json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False)
     return HttpResponse(content, content_type='application/json')

@@ -124,8 +124,7 @@ class CreateTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 200)
         results = json.loads(response.content.decode('utf-8'))
         self.assertTrue(results['valid'])
-        pk = results['id']
-        scribble = Scribble.objects.get(pk=pk)
+        scribble = Scribble.objects.get(slug=data['slug'], url=data['url'])
         self.assertEqual(scribble.content, data['content'])
 
     def test_invalid_template(self):
@@ -136,7 +135,6 @@ class CreateTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 200)
         results = json.loads(response.content.decode('utf-8'))
         self.assertFalse(results['valid'])
-        self.assertEqual(results['id'], None)
         self.assertEqual(Scribble.objects.count(), 0)
 
     def test_login_required(self):
@@ -181,7 +179,6 @@ class EditTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 200)
         results = json.loads(response.content.decode('utf-8'))
         self.assertTrue(results['valid'])
-        self.assertEqual(results['id'], self.scribble.pk)
         scribble = Scribble.objects.get(pk=self.scribble.pk)
         self.assertEqual(scribble.content, data['content'])
 
@@ -193,7 +190,6 @@ class EditTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 200)
         results = json.loads(response.content.decode('utf-8'))
         self.assertFalse(results['valid'])
-        self.assertEqual(results['id'], None)
         scribble = Scribble.objects.get(pk=self.scribble.pk)
         self.assertNotEqual(scribble.content, data['content'])
 
