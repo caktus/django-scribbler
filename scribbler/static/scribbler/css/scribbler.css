@@ -1,9 +1,9 @@
 /*
  * django-scribbler
- * Source: https://github.com/mlavin/django-scribbler
+ * Source: https://github.com/caktus/django-scribbler
  * Docs: http://django-scribbler.readthedocs.org/
  *
- * Copyright 2012, Mark Lavin
+ * Copyright 2012, Caktus Consulting Group, LLC
  * BSD License
  *
 */
@@ -168,6 +168,61 @@
   color: rgba(255, 255, 255, 0.75);
   position: relative;
   top: 1px;
+}
+#scribbleEditorContainer .controls a.save.inactive {
+  background-color: #bdbdbd;
+  background-image: -moz-linear-gradient(top, #e6e6e6, #808080);
+  background-image: -ms-linear-gradient(top, #e6e6e6, #808080);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e6e6e6), to(#808080));
+  background-image: -webkit-linear-gradient(top, #e6e6e6, #808080);
+  background-image: -o-linear-gradient(top, #e6e6e6, #808080);
+  background-image: linear-gradient(top, #e6e6e6, #808080);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e6e6e6', endColorstr='#808080', GradientType=0);
+  border: 1px solid #0d0d0d;
+}
+#scribbleEditorContainer .controls a.draft {
+  background-color: #247ca4;
+  background-image: -moz-linear-gradient(top, #2a8fbd, #1c607e);
+  background-image: -ms-linear-gradient(top, #2a8fbd, #1c607e);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#2a8fbd), to(#1c607e));
+  background-image: -webkit-linear-gradient(top, #2a8fbd, #1c607e);
+  background-image: -o-linear-gradient(top, #2a8fbd, #1c607e);
+  background-image: linear-gradient(top, #2a8fbd, #1c607e);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2a8fbd', endColorstr='#1c607e', GradientType=0);
+  border: 1px solid #1c607e;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+#scribbleEditorContainer .controls a.draft:hover {
+  background-color: #1d6383;
+  background-image: -moz-linear-gradient(top, #216f93, #17506a);
+  background-image: -ms-linear-gradient(top, #216f93, #17506a);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#216f93), to(#17506a));
+  background-image: -webkit-linear-gradient(top, #216f93, #17506a);
+  background-image: -o-linear-gradient(top, #216f93, #17506a);
+  background-image: linear-gradient(top, #216f93, #17506a);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#216f93', endColorstr='#17506a', GradientType=0);
+  color: #e6e6e6;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+#scribbleEditorContainer .controls a.draft:active {
+  color: rgba(255, 255, 255, 0.75);
+  position: relative;
+  top: 1px;
+}
+#scribbleEditorContainer .controls a.draft.inactive {
+  background-color: #bdbdbd;
+  background-image: -moz-linear-gradient(top, #e6e6e6, #808080);
+  background-image: -ms-linear-gradient(top, #e6e6e6, #808080);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e6e6e6), to(#808080));
+  background-image: -webkit-linear-gradient(top, #e6e6e6, #808080);
+  background-image: -o-linear-gradient(top, #e6e6e6, #808080);
+  background-image: linear-gradient(top, #e6e6e6, #808080);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e6e6e6', endColorstr='#808080', GradientType=0);
+  border: 1px solid #0d0d0d;
 }
 #scribbleEditorContainer .controls a.close {
   background: url("../img/btn-close.png") no-repeat scroll 0 0 transparent;
