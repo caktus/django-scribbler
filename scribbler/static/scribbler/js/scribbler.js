@@ -11,16 +11,26 @@
 require.config({
     paths: {
         jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
-        codemirror: '../libs/codemirror-compressed'
+        codemirror: '../libs/codemirror-compressed',
+        simplehint: '../libs/simple-hint',
+        djangohint: 'djangohint'
     },
     shim: {
         codemirror: {
             exports: 'CodeMirror'
+        },
+        simplehint: {
+            exports: 'CodeMirror',
+            deps:['djangohint']
+        },
+        djangohint: {
+            exports: 'CodeMirror',
+            deps:['codemirror']
         }
     }
 });
 
-require(['jquery', 'codemirror'], function($, CodeMirror) {
+require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
     var ScribbleEditor = {
         visible: false,
         rendering: false,
@@ -49,12 +59,17 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                         ScribbleEditor.needsDraft = true;
                         ScribbleEditor.controls.draft.removeClass('inactive');
                         ScribbleEditor.submitPreview();
-                    }
+                    },
+                    extraKeys: {'Tab': 'autocomplete'}
+                };
+                CodeMirror.commands.autocomplete = function(editor) {
+                    CodeMirror.simpleHint(editor, CodeMirror.djangoHint);
                 };
                 this.editor = CodeMirror(
                     document.getElementById("scribbleEditorContainer"),
                     options
                 );
+                this.editor.selector = "scribbleEditorContainer";
                 // Bind editor to the scribbles
                 this.scribbles.each(function(i, elem) {
                     // Bind event handlers for each scribble
@@ -148,8 +163,11 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 // Submit the form and display the preview
                 $.post(
                     this.current.form.attr('action'),
-                    this.getFormData(), 
+                    this.getFormData(),
                     function(response) {
+                        if (response.valid) {
+                            CodeMirror.update_variables(response.variables);
+                        }
                         ScribbleEditor.renderPreview(response);
                     },
                     'json'
@@ -297,3 +315,4 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
 
     $(document).ready(function(){ScribbleEditor.init();});
 });
+
