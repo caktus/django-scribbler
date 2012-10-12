@@ -86,7 +86,7 @@ The Javascript is configured for some basic `JSHint <http://www.jshint.com/>`_ c
 to the Javascript should pass without errors. You can check the Javascript file on the command line
 with Node based `CLI tool <https://github.com/jshint/jshint>`_::
 
-    # Install jslint from the NPM package
+    # Install jshint from the NPM package
     npm install jshint -g
     # Check the scribbler JS
     jshint scribbler/static/scribbler/js/scribbler.js
