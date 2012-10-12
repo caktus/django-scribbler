@@ -127,7 +127,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 if (ScribbleEditor.needsDraft) {
                     ScribbleEditor.createDraft();
                 }
-            }
+            };
             this.backgroundDraft = setInterval(checkDraft, 3000);
         },
         close: function() {
