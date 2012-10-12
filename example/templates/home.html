@@ -29,6 +29,12 @@
             {% scribble 'header' %}
                 <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
             {% endscribble %}
+            {% if request.user.is_authenticated %}
+                <p>Your first name is:</p>
+                {% scribble_field request.user 'first_name' %}
+                <p>Your username is:</p>
+                {% scribble_field request.user 'username' %}
+            {% endif %}
         {% endblock %}
     </div>
     <script data-main="{{ STATIC_URL }}scribbler/js/scribbler" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>

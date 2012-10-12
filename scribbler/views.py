@@ -7,8 +7,9 @@ from django.template import RequestContext, Template
 from django.utils import simplejson as json
 from django.views.debug import ExceptionReporter
 from django.views.decorators.http import require_POST
+from django.contrib.contenttypes.models import ContentType
 
-from .forms import ScribbleForm
+from .forms import ScribbleForm, FieldScribbleForm
 from .models import Scribble
 
 
@@ -60,7 +61,7 @@ def create_edit_scribble(request, scribble_id=None):
     "Create a new Scribble or edit an existing one."
     if not request.user.is_authenticated():
         return HttpResponseForbidden()
-    if scribble_id is not None:    
+    if scribble_id is not None:
         scribble = get_object_or_404(Scribble, pk=scribble_id)
         if not request.user.has_perm('scribbler.change_scribble'):
             return HttpResponseForbidden()
@@ -78,6 +79,26 @@ def create_edit_scribble(request, scribble_id=None):
         scribble = form.save()
         results['id'] = scribble.id
     results['url'] = scribble.get_save_url()
+    content = json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False)
+    return HttpResponse(content, content_type='application/json')
+
+
+@require_POST
+def edit_scribble_field(request, ct_pk, instance_pk, field_name):
+    if not request.user.is_authenticated():
+        return HttpResponseForbidden()
+    content_type = get_object_or_404(ContentType, pk=ct_pk)
+    perm_name = '{0}.change_{1}'.format(content_type.app_label, content_type.name)
+    if not request.user.has_perm(perm_name):
+        return httpResponseForbidden()
+    form = FieldScribbleForm(content_type, instance_pk, field_name, data=request.POST)
+    results = {
+        'valid': False,
+    }
+    if form.is_valid():
+        results['valid'] = True
+        form.save()
+    results['url'] = form.get_save_url()
     content = json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False)
     return HttpResponse(content, content_type='application/json')
 
