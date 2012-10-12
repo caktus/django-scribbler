@@ -49,7 +49,7 @@ def preview_scribble(request):
         else:
             # Not sure what to do here
             results['error'] = {
-                'message': '',
+                'message': 'Content is not valid',
                 'line': '',
             }
     content = json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False)
@@ -96,6 +96,12 @@ def edit_scribble_field(request, ct_pk, instance_pk, field_name):
     if form.is_valid():
         results['valid'] = True
         form.save()
+    else:
+        key = 'content' if 'content' in form.errors else '__all__'
+        results['error'] = {
+            'message': ','.join(e for e in form.errors[key]),
+            'line': '',
+        }
     results['url'] = form.get_save_url()
     content = json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False)
     return HttpResponse(content, content_type='application/json')

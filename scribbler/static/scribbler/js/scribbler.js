@@ -213,7 +213,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 this.current.content.html(this.current.preview.html());
                 this.close();
             } else {
-                this.controls.errors.html("<strong>Error:</strong> Content is not valid");
+                this.controls.errors.html("<strong>Error:</strong> " + response.error.message)
             }
         },
         createDraft: function() {
