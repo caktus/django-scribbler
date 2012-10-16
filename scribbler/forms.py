@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import sys
 
 from django import forms
+from django.db.models import ObjectDoesNotExist, FieldDoesNotExist
 from django.template import StringOrigin
 from django.template.debug import DebugLexer, DebugParser
 from django.views.debug import ExceptionReporter
@@ -66,11 +67,22 @@ class FieldScribbleForm(forms.Form, ScribbleFormMixin):
         self.instance_pk = instance_pk
         self.field_name = field_name
         self.fields['content'].initial = field_value
-        self.fields['content'].required = not content_type.model_class()._meta.get_field_by_name(field_name)[0].blank
+        try:
+            self.fields['content'].required = not content_type.model_class()._meta.get_field_by_name(field_name)[0].blank
+        except FieldDoesNotExist:
+            # Error will be caught on form validation
+            pass
 
     def clean(self):
         if not self.errors:
-            current_instance = self.content_type.model_class().objects.get(pk=self.instance_pk)
+            ModelClass = self.content_type.model_class()
+            try:
+                current_instance = ModelClass.objects.get(pk=self.instance_pk)
+            except ObjectDoesNotExist as e:
+                raise forms.ValidationError(e)
+            if not hasattr(current_instance, self.field_name):
+                raise forms.ValidationError('{0} model has no field named {1}'.format(
+                    ModelClass.__name__, self.field_name))
             setattr(current_instance, self.field_name, self.cleaned_data['content'])
             current_instance.full_clean()
         return self.cleaned_data
