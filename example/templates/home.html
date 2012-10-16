@@ -25,10 +25,8 @@
             {% scribble 'header' %}
                 <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
             {% endscribble %}
-            <p>Your first name is:</p>
-            {% scribble_field user 'first_name' %}
-            <p>Your username is:</p>
-            {% scribble_field user 'username' %}
+            <p>{{ user.username }}, tell us what's been happening today:</p>
+            {% scribble_field days_log 'happenings' %}
         </div>
         {% else %}
             <div id="login-content">
