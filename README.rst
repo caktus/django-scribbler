@@ -17,6 +17,7 @@ Features
 --------------------------------------
 
 - Simple template tag for defining snippet blocks with default text
+- Template tag for displaying and editing fields from arbitrary models
 - Front-end editing of snippets with the powerful `CodeMirror <http://codemirror.net/>`_ editor
 - Live in-place preview of content while editing
 - The full power of the Django template language in the snippet blocks

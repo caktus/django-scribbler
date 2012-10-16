@@ -84,6 +84,10 @@ and ``scribbler.change_scribble`` permissions. You can configure uses to have
 these permissions through the users section of the Django admin. Superusers have
 all of these permissions by default.
 
+Similarly, to edit fields from models on the front-end, users must have "change"
+permission for the models being edited. Again these permissions can be configured
+through the users section of the Django admin.
+
 
 Include Static Resources
 ------------------------------------
