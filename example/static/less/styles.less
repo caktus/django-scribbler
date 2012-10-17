@@ -81,7 +81,6 @@ h2 { color: @scribblerRed; }
 p.lead {
 	font-family: 'cutiveregular', Georgia, serif;
 	font-weight: normal;
-	margin-bottom: 40px;
 }
 
 .content {
@@ -89,16 +88,18 @@ p.lead {
 }
 
 #page {
-	margin: 0 auto;
-    max-width: 979px;
+  margin: 0 auto;
+  max-width: 979px;
+  position: relative;
+  width: 80%;
+  .clearfix;
+  .scribbler-test { 
     padding: 20px;
-    position: relative;
-    width: 80%;
-    .clearfix;
     background-color: @white;
     .box-shadow(0 0 10px @grayLight);
     border: 1px @grayLighter solid;
     font-size: 15px;
+  }
 }
 
 /* Login form styles

@@ -23,11 +23,13 @@
         <div id="page">
             <h2>scribbler. <span>demo</span></h2>
             <p class="lead">Hover over the text below and click to start editing the scribbles.</p>
-            {% scribble 'header' %}
-                <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
-            {% endscribble %}
-            <p>{{ user.username }}, tell us what's been happening today:</p>
-            {% scribble_field days_log 'happenings' %}
+            <div class="scribbler-test">
+                {% scribble 'header' %}
+                    <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
+                {% endscribble %}
+                <p>{{ user.username }}, tell us what's been happening today:</p>
+                {% scribble_field days_log 'happenings' %}
+            </div>
         </div>
         {% else %}
             <div id="login-content">
