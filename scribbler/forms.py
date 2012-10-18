@@ -24,6 +24,8 @@ class ScribbleFormMixin(object):
                 parser.parse()
             except Exception as e:
                 self.exc_info = sys.exc_info()
+                if not hasattr(self.exc_info[1], 'django_template_source'):
+                    self.exc_info[1].django_template_source = origin, (0, 0)
                 raise forms.ValidationError('Invalid Django Template')
         return content
 
