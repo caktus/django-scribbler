@@ -171,7 +171,12 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                         ScribbleEditor.renderPreview(response);
                     },
                     'json'
-                );
+                ).error(function() {
+                    var pos = ScribbleEditor.editor.getCursor();
+                    ScribbleEditor._setError("Unexpected Server Error", pos.line);
+                }).complete(function() {
+                    ScribbleEditor.rendering = false;
+                });
             }
         },
         renderPreview: function(response) {
@@ -185,12 +190,14 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 this.current.content.hide();
                 this.controls.save.removeClass('inactive');
             } else {
-                this.errorLine = response.error.line - 1;
-                this.editor.setLineClass(this.errorLine, null, "activeline");
-                this.controls.errors.html("<strong>Error:</strong> " + response.error.message);
-                this.controls.save.addClass('inactive');
+                this._setError(response.error.message, response.error.line - 1);
             }
-            this.rendering = false;
+        },
+        _setError: function(msg, line) {
+            this.errorLine = line;
+            this.editor.setLineClass(this.errorLine, null, "activeline");
+            this.controls.errors.html("<strong>Error:</strong> " + msg);
+            this.controls.save.addClass('inactive');
         },
         getFormData: function() {
             var result = {};
@@ -231,7 +238,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 this.current.content.html(this.current.preview.html());
                 this.close();
             } else {
-                this.controls.errors.html("<strong>Error:</strong> " + response.error.message)
+                this.controls.errors.html("<strong>Error:</strong> " + response.error.message);
             }
         },
         createDraft: function() {
