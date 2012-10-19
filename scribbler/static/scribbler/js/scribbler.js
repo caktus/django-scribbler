@@ -35,6 +35,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
         visible: false,
         rendering: false,
         errorLine: null,
+        valid: true,
         element: null,
         controls: {},
         current: {},
@@ -173,7 +174,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                     'json'
                 ).error(function() {
                     var pos = ScribbleEditor.editor.getCursor();
-                    ScribbleEditor._setError("Unexpected Server Error", pos.line);
+                    ScribbleEditor._setError("Unexpected Server Error");
                 }).complete(function() {
                     ScribbleEditor.rendering = false;
                 });
@@ -184,6 +185,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 this.editor.setLineClass(this.errorLine, null, null);
             }
             this.controls.errors.html('');
+            this.valid = response.valid;
             if (response.valid) {
                 this.current.preview.html(response.html);
                 this.current.preview.show();
@@ -194,9 +196,12 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             }
         },
         _setError: function(msg, line) {
-            this.errorLine = line;
-            this.editor.setLineClass(this.errorLine, null, "activeline");
+            if (typeof(line) !== 'undefined' && line !== null) {
+                this.errorLine = line;
+                this.editor.setLineClass(this.errorLine, null, "activeline");
+            }
             this.controls.errors.html("<strong>Error:</strong> " + msg);
+            this.valid = false;
             this.controls.save.addClass('inactive');
         },
         getFormData: function() {
@@ -217,7 +222,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             return result;
         },
         submitSave: function() {
-            if (this.current.form && !this.errorLine) {
+            if (this.current.form && this.valid) {
                 // Submit the form and change current content
                 $.post(
                     this.current.form.data('save'),
@@ -226,7 +231,9 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                         ScribbleEditor.renderSave(response);
                     },
                     'json'
-                );
+                ).error(function() {
+                    ScribbleEditor._setError("Unexpected Server Error");
+                });
             }
         },
         renderSave: function(response) {
@@ -238,7 +245,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 this.current.content.html(this.current.preview.html());
                 this.close();
             } else {
-                this.controls.errors.html("<strong>Error:</strong> " + response.error.message);
+                this._setError(response.error.message);
             }
         },
         createDraft: function() {
