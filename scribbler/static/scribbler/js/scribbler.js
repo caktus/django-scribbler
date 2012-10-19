@@ -175,9 +175,9 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                         ScribbleEditor.renderPreview(response);
                     },
                     'json'
-                ).error(function() {
-                    var pos = ScribbleEditor.editor.getCursor();
-                    ScribbleEditor._setError("Unexpected Server Error");
+                ).error(function(data, textStatus) {
+                    var msg = 'Server response was "' + textStatus + '"';
+                    ScribbleEditor._setError(msg);
                 }).complete(function() {
                     ScribbleEditor.rendering = false;
                 });
@@ -234,8 +234,9 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                         ScribbleEditor.renderSave(response);
                     },
                     'json'
-                ).error(function() {
-                    ScribbleEditor._setError("Unexpected Server Error");
+                ).error(function(data, textStatus) {
+                    var msg = 'Server response was "' + textStatus + '"';
+                    ScribbleEditor._setError(msg);
                 });
             }
         },
