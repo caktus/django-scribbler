@@ -120,6 +120,9 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             this.element.append(footerControls);
         },
         open: function(scribble) {
+            if (this.visible) {
+                this.close();
+            }
             this.current.content = $('.scribble-content.original', scribble);
             this.current.preview = $('.scribble-content.preview', scribble);
             this.current.form = $('.scribble-form', scribble);
