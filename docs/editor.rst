@@ -17,6 +17,8 @@ rendering the scribble includes anything added by the set of
 ``LANGUAGE_CODE``, the current ``user`` and others. Developers may choose to add
 context processors to include additional content for rendering scribbles.
 
+.. image:: /_static/images/context-screenshot.png
+
 
 Tempate Tag/Filter Completion
 ------------------------------------
@@ -26,6 +28,8 @@ complete template tags when ``{% `` has been opened. The built-in filters can
 be tab-completed when the pipe ``|`` character is detected inside of a variable node.
 Currently this will only complete the built-in tags and filter and will not include any
 additional tags or filters which might be added by loading additional libaries inside the scribble.
+
+.. image:: /_static/images/filter-screenshot.png
 
 
 Saving Drafts
