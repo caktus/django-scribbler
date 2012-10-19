@@ -9,7 +9,7 @@ when working with Django templates.
 Context Inspection
 ------------------------------------
 
-When using the editor you can inspect the current context by starting a variable
+When using the editor, you can inspect the current context by starting a variable
 node with ``{{ `` and hitting tab. As noted in the quick start introduction,
 scribble content can be any valid Django template. The context provided when 
 rendering the scribble includes anything added by the set of
@@ -31,9 +31,9 @@ additional tags or filters which might be added by loading additional libaries i
 Saving Drafts
 ------------------------------------
 
-While editting the scribble content, the editor will periodically save the current
+While editing the scribble content, the editor will periodically save the current
 editor content as a draft. These drafts are saved on the client side using local storage
 (if supported by the browser) or a cookie. While that means you won't be able to see
 or use these drafts in another browser, it does mean that you work will not be lost
-if there is a failure on the server will saving changes or making edits. When the editor
+if there is a failure on the server while saving changes or making edits. When the editor
 is opened it will restore any draft that is found.
