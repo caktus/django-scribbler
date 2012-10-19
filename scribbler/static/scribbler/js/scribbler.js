@@ -175,8 +175,8 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                         ScribbleEditor.renderPreview(response);
                     },
                     'json'
-                ).error(function(data, textStatus) {
-                    var msg = 'Server response was "' + textStatus + '"';
+                ).error(function(jqXHR, textStatus, errorThrown) {
+                    var msg = 'Server response was "' + errorThrown + '"';
                     ScribbleEditor._setError(msg);
                 }).complete(function() {
                     ScribbleEditor.rendering = false;
@@ -234,8 +234,8 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                         ScribbleEditor.renderSave(response);
                     },
                     'json'
-                ).error(function(data, textStatus) {
-                    var msg = 'Server response was "' + textStatus + '"';
+                ).error(function(jqXHR, textStatus, errorThrown) {
+                    var msg = 'Server response was "' + errorThrown + '"';
                     ScribbleEditor._setError(msg);
                 });
             }
