@@ -27,7 +27,7 @@
                 {% scribble 'header' %}
                     <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
                 {% endscribble %}
-                <p>{{ user.username }}, tell us what's been happening today:</p>
+                <p>Tell us what's been happening today:</p>
                 {% scribble_field days_log 'happenings' %}
             </div>
         </div>
