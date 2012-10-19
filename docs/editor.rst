@@ -25,4 +25,15 @@ Similar to how the editor can tab-complete the context variables, you can tab
 complete template tags when ``{% `` has been opened. The built-in filters can
 be tab-completed when the pipe ``|`` character is detected inside of a variable node.
 Currently this will only complete the built-in tags and filter and will not include any
-additional tags or filters which might be added by loading additional libaries inside the scribble. 
+additional tags or filters which might be added by loading additional libaries inside the scribble.
+
+
+Saving Drafts
+------------------------------------
+
+While editting the scribble content, the editor will periodically save the current
+editor content as a draft. These drafts are saved on the client side using local storage
+(if supported by the browser) or a cookie. While that means you won't be able to see
+or use these drafts in another browser, it does mean that you work will not be lost
+if there is a failure on the server will saving changes or making edits. When the editor
+is opened it will restore any draft that is found.
