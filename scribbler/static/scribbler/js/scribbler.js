@@ -35,6 +35,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
         visible: false,
         rendering: false,
         errorLine: null,
+        valid: true,
         element: null,
         controls: {},
         current: {},
@@ -119,6 +120,9 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             this.element.append(footerControls);
         },
         open: function(scribble) {
+            if (this.visible) {
+                this.close();
+            }
             this.current.content = $('.scribble-content.original', scribble);
             this.current.preview = $('.scribble-content.preview', scribble);
             this.current.form = $('.scribble-form', scribble);
@@ -171,7 +175,12 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                         ScribbleEditor.renderPreview(response);
                     },
                     'json'
-                );
+                ).error(function(jqXHR, textStatus, errorThrown) {
+                    var msg = 'Server response was "' + errorThrown + '"';
+                    ScribbleEditor._setError(msg);
+                }).complete(function() {
+                    ScribbleEditor.rendering = false;
+                });
             }
         },
         renderPreview: function(response) {
@@ -179,18 +188,24 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 this.editor.setLineClass(this.errorLine, null, null);
             }
             this.controls.errors.html('');
+            this.valid = response.valid;
             if (response.valid) {
                 this.current.preview.html(response.html);
                 this.current.preview.show();
                 this.current.content.hide();
                 this.controls.save.removeClass('inactive');
             } else {
-                this.errorLine = response.error.line - 1;
-                this.editor.setLineClass(this.errorLine, null, "activeline");
-                this.controls.errors.html("<strong>Error:</strong> " + response.error.message);
-                this.controls.save.addClass('inactive');
+                this._setError(response.error.message, response.error.line - 1);
             }
-            this.rendering = false;
+        },
+        _setError: function(msg, line) {
+            if (typeof(line) !== 'undefined' && line !== null) {
+                this.errorLine = line;
+                this.editor.setLineClass(this.errorLine, null, "activeline");
+            }
+            this.controls.errors.html("<strong>Error:</strong> " + msg);
+            this.valid = false;
+            this.controls.save.addClass('inactive');
         },
         getFormData: function() {
             var result = {};
@@ -210,7 +225,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             return result;
         },
         submitSave: function() {
-            if (this.current.form && !this.errorLine) {
+            if (this.current.form && this.valid) {
                 // Submit the form and change current content
                 $.post(
                     this.current.form.data('save'),
@@ -219,7 +234,10 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                         ScribbleEditor.renderSave(response);
                     },
                     'json'
-                );
+                ).error(function(jqXHR, textStatus, errorThrown) {
+                    var msg = 'Server response was "' + errorThrown + '"';
+                    ScribbleEditor._setError(msg);
+                });
             }
         },
         renderSave: function(response) {
@@ -231,7 +249,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 this.current.content.html(this.current.preview.html());
                 this.close();
             } else {
-                this.controls.errors.html("<strong>Error:</strong> " + response.error.message)
+                this._setError(response.error.message);
             }
         },
         createDraft: function() {
