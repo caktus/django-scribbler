@@ -102,6 +102,7 @@ html_theme_options = {
     'links': {
         'pypi': 'http://pypi.python.org/pypi/django-scribbler',
         'github': 'https://github.com/caktus/django-scribbler',
+        'demo': 'http://scribbler-mlavin.dotcloud.com/',
     }
 }
 

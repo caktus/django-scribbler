@@ -1,0 +1,2 @@
+# Requirements for ReadTheDocs to build the documentation
+caktus-sphinx-theme==0.1.0
