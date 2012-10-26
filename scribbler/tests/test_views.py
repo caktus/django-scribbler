@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.utils import simplejson as json
 
+from . import DaysLog
 from .base import ScribblerDataTestCase, Scribble
 
 
@@ -34,15 +35,15 @@ class BaseViewTestCase(ScribblerDataTestCase):
             content_type__app_label='scribbler',
             content_type__model='scribble',
         )
-        self.change_user_perm = Permission.objects.get(
-            codename='change_user',
-            content_type__app_label='auth',
-            content_type__model='user',
+        self.change_dayslog_perm = Permission.objects.get(
+            codename='change_dayslog',
+            content_type__app_label='scribbler',
+            content_type__model='dayslog',
         )
         self.user.user_permissions.add(self.change_perm)
         self.user.user_permissions.add(self.add_perm)
         self.user.user_permissions.add(self.delete_perm)
-        self.user.user_permissions.add(self.change_user_perm)
+        self.user.user_permissions.add(self.change_dayslog_perm)
 
 
 class PreviewTestCase(BaseViewTestCase):
@@ -174,6 +175,7 @@ class EditFieldTestCase(BaseViewTestCase):
     url_name = 'edit-scribble-field'
 
     def setUp(self):
+        self.days_log = DaysLog.objects.create(happenings=self.get_random_string())
         super(EditFieldTestCase, self).setUp()
         self.url = reverse(self.url_name, kwargs=self.get_valid_kwargs())
 
@@ -185,9 +187,9 @@ class EditFieldTestCase(BaseViewTestCase):
 
     def get_valid_kwargs(self):
         return {
-            'ct_pk': ContentType.objects.get_for_model(self.user).pk,
-            'instance_pk': self.user.pk,
-            'field_name': 'username',
+            'ct_pk': ContentType.objects.get_for_model(self.days_log).pk,
+            'instance_pk': self.days_log.pk,
+            'field_name': 'happenings',
         }
 
     def test_post_required(self):
@@ -201,8 +203,8 @@ class EditFieldTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 200)
         results = json.loads(response.content.decode('utf-8'))
         self.assertTrue(results['valid'])
-        user = User.objects.get(pk=self.user.pk)
-        self.assertEqual(user.username, data['content'])
+        days_log = DaysLog.objects.get(pk=self.days_log.pk)
+        self.assertEqual(days_log.happenings, data['content'])
 
     def test_field_validation_failure(self):
         data = {
@@ -220,9 +222,9 @@ class EditFieldTestCase(BaseViewTestCase):
         self.assertEqual(user.username, self.user.username)
 
     def test_model_validation_failure(self):
-        user2 = self.create_user()
+        log2 = DaysLog.objects.create(happenings="Duplicate value")
         data = {
-            'content': user2.username,
+            'content': log2.happenings,
         }
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
@@ -277,7 +279,7 @@ class EditFieldTestCase(BaseViewTestCase):
 
     def test_permission_required(self):
         "Return 403 if user is does not have permissions to edit the scribble."
-        self.user.user_permissions.remove(self.change_user_perm)
+        self.user.user_permissions.remove(self.change_dayslog_perm)
         data = self.get_valid_data()
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 403)
