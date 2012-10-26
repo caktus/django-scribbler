@@ -3,7 +3,7 @@ Release History
 
 Release and change history for django-scribbler
 
-v0.3.0 (Not Yet Released)
+v0.3.0 (Released 2012-10-26)
 ------------------------------------
 
 Features
