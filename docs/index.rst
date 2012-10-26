@@ -15,12 +15,3 @@ Contents
     editor
     contributing
     releases
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
