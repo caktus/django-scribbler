@@ -348,9 +348,9 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
         },
         buildControls: function() {
             // Build control bar
-            this.menuControls = $('<div></div>').addClass('controls clearfix');
+            this.menuControls = $('<div></div>').addClass('control-panel');
             // Open/Close button
-            this.controls.tab = $('<a>Toggle Menu</a>')
+            this.controls.tab = $('<a><span class="hot-dog"></span><span class="hot-dog"></span><span class="hot-dog"></span></a>')
             .attr({title: 'Toggle Menu', href: '#'})
             .addClass('tab')
             .click(function(e) {
@@ -362,9 +362,9 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 }
             });
             // Reveal button
-            this.controls.reveal = $('<a>Show All Scribbles</a>')
-            .attr({title: 'Show All Scribbles', href: "#"})
-            .addClass('btn reveal').click(function(e) {
+            this.controls.reveal = $('<a>Show all scribbles</a>')
+            .attr({title: 'Show all scribbles', href: "#"})
+            .addClass('reveal').click(function(e) {
                 e.preventDefault();
                 ScribbleMenu.scribbles.addClass('highlight');
             });
@@ -373,12 +373,12 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             this.element.append(this.controls.tab);
         },
         open: function(scribble) {
-            this.element.animate({top: 0}, 500);
+            this.element.animate({top: 0}, 150);
             this.visible = true;
         },
         close: function() {
             var height = this.menuControls.height();
-            this.element.animate({top: -1 * (5 + height)}, 500);
+            this.element.animate({top: -1 * (5 + height)}, 200);
             this.visible = false;
             this.scribbles.removeClass('highlight');
         }
