@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 from datetime import date
 
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission, User
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.utils import simplejson as json
 
@@ -19,23 +20,29 @@ class BaseViewTestCase(ScribblerDataTestCase):
         self.user = self.create_user(username='test', password='test')
         self.client.login(username='test', password='test')
         self.change_perm = Permission.objects.get(
-            codename='change_scribble', 
-            content_type__app_label='scribbler', 
+            codename='change_scribble',
+            content_type__app_label='scribbler',
             content_type__model='scribble',
         )
         self.add_perm = Permission.objects.get(
             codename='add_scribble', 
-            content_type__app_label='scribbler', 
+            content_type__app_label='scribbler',
             content_type__model='scribble',
         )
         self.delete_perm = Permission.objects.get(
-            codename='delete_scribble', 
-            content_type__app_label='scribbler', 
+            codename='delete_scribble',
+            content_type__app_label='scribbler',
             content_type__model='scribble',
+        )
+        self.change_user_perm = Permission.objects.get(
+            codename='change_user',
+            content_type__app_label='auth',
+            content_type__model='user',
         )
         self.user.user_permissions.add(self.change_perm)
         self.user.user_permissions.add(self.add_perm)
         self.user.user_permissions.add(self.delete_perm)
+        self.user.user_permissions.add(self.change_user_perm)
 
 
 class PreviewTestCase(BaseViewTestCase):
@@ -157,6 +164,120 @@ class CreateTestCase(BaseViewTestCase):
     def test_permission_required(self):
         "Return 403 if user is does not have permissions to create scribbles."
         self.user.user_permissions.remove(self.add_perm)
+        data = self.get_valid_data()
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 403)
+
+
+class EditFieldTestCase(BaseViewTestCase):
+    "Edit a model instance field via scribbler."
+    url_name = 'edit-scribble-field'
+
+    def setUp(self):
+        super(EditFieldTestCase, self).setUp()
+        self.url = reverse(self.url_name, kwargs=self.get_valid_kwargs())
+
+    def get_valid_data(self):
+        data = {
+            'content': self.get_random_string(),
+        }
+        return data
+
+    def get_valid_kwargs(self):
+        return {
+            'ct_pk': ContentType.objects.get_for_model(self.user).pk,
+            'instance_pk': self.user.pk,
+            'field_name': 'username',
+        }
+
+    def test_post_required(self):
+        "Edit field view requires a POST."
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 405, "GET should not be allowed.")
+
+    def test_successful_edit(self):
+        data = self.get_valid_data()
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 200)
+        results = json.loads(response.content.decode('utf-8'))
+        self.assertTrue(results['valid'])
+        user = User.objects.get(pk=self.user.pk)
+        self.assertEqual(user.username, data['content'])
+
+    def test_field_validation_failure(self):
+        data = {
+            'content': '',
+        }
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 200)
+        results = json.loads(response.content.decode('utf-8'))
+        self.assertFalse(results['valid'])
+        self.assertTrue('error' in results)
+        err_info = results['error']
+        self.assertTrue('message' in err_info)
+        self.assertTrue('required' in err_info['message'], err_info['message'])
+        user = User.objects.get(pk=self.user.pk)
+        self.assertEqual(user.username, self.user.username)
+
+    def test_model_validation_failure(self):
+        user2 = self.create_user()
+        data = {
+            'content': user2.username,
+        }
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 200)
+        results = json.loads(response.content.decode('utf-8'))
+        self.assertFalse(results['valid'])
+        self.assertTrue('error' in results)
+        err_info = results['error']
+        self.assertTrue('message' in err_info)
+        self.assertTrue('already exists' in err_info['message'], err_info['message'])
+        user = User.objects.get(pk=self.user.pk)
+        self.assertEqual(user.username, self.user.username)
+
+    def test_invalid_ct_pk(self):
+        kwargs = self.get_valid_kwargs()
+        kwargs['ct_pk'] = ContentType.objects.order_by('-id')[0].pk + 1
+        url = reverse(self.url_name, kwargs=kwargs)
+        response = self.client.post(url, data=self.get_valid_data())
+        self.assertEqual(response.status_code, 404)
+
+    def test_invalid_instance_pk(self):
+        kwargs = self.get_valid_kwargs()
+        kwargs['instance_pk'] = User.objects.order_by('-id')[0].pk + 1
+        url = reverse(self.url_name, kwargs=kwargs)
+        response = self.client.post(url, data=self.get_valid_data())
+        self.assertEqual(response.status_code, 200)
+        results = json.loads(response.content.decode('utf-8'))
+        self.assertFalse(results['valid'])
+        self.assertTrue('error' in results)
+        err_info = results['error']
+        self.assertTrue('message' in err_info)
+        self.assertTrue('does not exist' in err_info['message'], err_info['message'])
+
+    def test_invalid_field_name(self):
+        kwargs = self.get_valid_kwargs()
+        kwargs['field_name'] = 'ussserrname'
+        url = reverse(self.url_name, kwargs=kwargs)
+        response = self.client.post(url, data=self.get_valid_data())
+        self.assertEqual(response.status_code, 200)
+        results = json.loads(response.content.decode('utf-8'))
+        self.assertFalse(results['valid'])
+        self.assertTrue('error' in results)
+        err_info = results['error']
+        self.assertTrue('message' in err_info)
+        self.assertTrue('has no field named' in err_info['message'], err_info['message'])
+
+    def test_login_required(self):
+        "Return 403 if user is not authenticated."
+        self.client.logout()
+        data = self.get_valid_data()
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 403)
+
+    def test_permission_required(self):
+        "Return 403 if user is does not have permissions to edit the scribble."
+        self.user.user_permissions.remove(self.change_user_perm)
         data = self.get_valid_data()
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 403)

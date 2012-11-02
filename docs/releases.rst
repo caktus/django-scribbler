@@ -3,6 +3,15 @@ Release History
 
 Release and change history for django-scribbler
 
+v0.3.0 (Not Yet Released)
+------------------------------------
+
+Features
+_________________
+
+- Autocomplete for Django template tags and filters
+- New scribble_field template tag to allow editing of fields in arbitrary models
+
 
 v0.2.1 (Released 2012-10-12)
 ------------------------------------

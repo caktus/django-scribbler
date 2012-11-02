@@ -123,8 +123,8 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
     def test_scribble_editor(self):
         "Authenticated users with permission to edit will see the scribble controls."
         change_perm = Permission.objects.get(
-            codename='change_scribble', 
-            content_type__app_label='scribbler', 
+            codename='change_scribble',
+            content_type__app_label='scribbler',
             content_type__model='scribble',
         )
         user = self.create_user()
@@ -138,12 +138,62 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
         "Authenticated users with permission to create will see the scribble controls."
         add_perm = Permission.objects.get(
             codename='add_scribble', 
-            content_type__app_label='scribbler', 
+            content_type__app_label='scribbler',
             content_type__model='scribble',
         )
         user = self.create_user()
         user.user_permissions.add(add_perm) 
         self.request.user = user # Fake the auth middleware
         result = self.render_template_tag(slug='"other"')
+        self.assertTrue('<form' in result)
+        self.assertTrue('with-controls' in result)
+
+
+class RenderScribbleFieldTestCase(ScribblerDataTestCase):
+    "Tag to render a model field instance scribble."
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.request = self.factory.get('/foo/')
+        self.user = self.create_user()
+
+    def render_template_tag(self, model_instance, field_name, context=None):
+        "Render the template tag."
+        context = context or {}
+        context['model_instance'] = model_instance
+        template = Template("""
+            {{% load scribbler_tags %}}{{% scribble_field model_instance '{0}' %}}
+        """.format(field_name))
+        context = RequestContext(self.request, context)
+        return template.render(context)
+
+    def test_basic_rendering(self):
+        "Render a scribble field."
+        result = self.render_template_tag(self.user, 'username')
+        self.assertTrue(self.user.username in result)
+
+    def test_unauthenticated_controls(self):
+        "Unauthenticated users will not see the scribble controls."
+        result = self.render_template_tag(self.user, 'username')
+        self.assertFalse('<form' in result)
+        self.assertFalse('with-controls' in result)
+
+    def test_no_permissions_controls(self):
+        "Authenticated users without permissions will not see the scribble controls."
+        self.request.user = self.user  # Fake the auth middleware
+        result = self.render_template_tag(self.user, 'username')
+        self.assertFalse('<form' in result)
+        self.assertFalse('with-controls' in result)
+
+    def test_scribble_editor(self):
+        "Authenticated users with permission to edit will see the scribble controls."
+        change_perm = Permission.objects.get(
+            codename='change_user',
+            content_type__app_label='auth',
+            content_type__model='user',
+        )
+        self.user.user_permissions.add(change_perm)
+        self.request.user = self.user  # Fake the auth middleware
+        result = self.render_template_tag(self.user, 'username')
         self.assertTrue('<form' in result)
         self.assertTrue('with-controls' in result)

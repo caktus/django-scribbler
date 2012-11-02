@@ -84,6 +84,10 @@ and ``scribbler.change_scribble`` permissions. You can configure uses to have
 these permissions through the users section of the Django admin. Superusers have
 all of these permissions by default.
 
+Similarly, to edit fields from models on the front-end, users must have "change"
+permission for the models being edited. Again these permissions can be configured
+through the users section of the Django admin.
+
 
 Include Static Resources
 ------------------------------------
@@ -129,5 +133,21 @@ matching scribble in the database is not found.
     Scribble content can be any valid Django template. However the content does
     not include all of the context of the template. Only the context provided
     by the set of ``TEMPLATE_CONTEXT_PROCESSORS``.
+
+A second scribbler tag, ``scribble_field``, allows for editing fields of model instances.
+For example, suppose you have a ``DaysLog`` model with a field named ``happenings``. Suppose
+an instance of this model is passed into your template in the template variable ``days_log``.
+Then the ``happenings`` field of this ``DaysLog`` instance can be displayed and edited on the
+page by including this ``scribble_field`` template tag in the template for the page:
+
+.. code-block:: html
+
+    {% load scribbler_tags %}
+    {% scribble_field days_log 'happenings' %}
+
+.. note::
+
+    The logged-in user must have "change" permission for the model in order for
+    the model instance to be editable on the page.
 
 That should be enough to get you up and running with django-scribbler.

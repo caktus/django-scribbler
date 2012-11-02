@@ -11,20 +11,31 @@
 require.config({
     paths: {
         jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
-        codemirror: '../libs/codemirror-compressed'
+        codemirror: '../libs/codemirror-compressed',
+        simplehint: '../libs/simple-hint',
+        djangohint: 'djangohint'
     },
     shim: {
         codemirror: {
             exports: 'CodeMirror'
+        },
+        simplehint: {
+            exports: 'CodeMirror',
+            deps:['djangohint']
+        },
+        djangohint: {
+            exports: 'CodeMirror',
+            deps:['codemirror']
         }
     }
 });
 
-require(['jquery', 'codemirror'], function($, CodeMirror) {
+require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
     var ScribbleEditor = {
         visible: false,
         rendering: false,
         errorLine: null,
+        valid: true,
         element: null,
         controls: {},
         current: {},
@@ -49,12 +60,17 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                         ScribbleEditor.needsDraft = true;
                         ScribbleEditor.controls.draft.removeClass('inactive');
                         ScribbleEditor.submitPreview();
-                    }
+                    },
+                    extraKeys: {'Tab': 'autocomplete'}
+                };
+                CodeMirror.commands.autocomplete = function(editor) {
+                    CodeMirror.simpleHint(editor, CodeMirror.djangoHint);
                 };
                 this.editor = CodeMirror(
                     document.getElementById("scribbleEditorContainer"),
                     options
                 );
+                this.editor.selector = "scribbleEditorContainer";
                 // Bind editor to the scribbles
                 this.scribbles.each(function(i, elem) {
                     // Bind event handlers for each scribble
@@ -104,6 +120,9 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             this.element.append(footerControls);
         },
         open: function(scribble) {
+            if (this.visible) {
+                this.close();
+            }
             this.current.content = $('.scribble-content.original', scribble);
             this.current.preview = $('.scribble-content.preview', scribble);
             this.current.form = $('.scribble-form', scribble);
@@ -149,12 +168,20 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 // Submit the form and display the preview
                 $.post(
                     this.current.form.attr('action'),
-                    this.getFormData(), 
+                    this.getFormData(),
                     function(response) {
+                        if (response.valid) {
+                            CodeMirror.update_variables(response.variables);
+                        }
                         ScribbleEditor.renderPreview(response);
                     },
                     'json'
-                );
+                ).error(function(jqXHR, textStatus, errorThrown) {
+                    var msg = 'Server response was "' + errorThrown + '"';
+                    ScribbleEditor._setError(msg);
+                }).complete(function() {
+                    ScribbleEditor.rendering = false;
+                });
             }
         },
         renderPreview: function(response) {
@@ -162,18 +189,24 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 this.editor.setLineClass(this.errorLine, null, null);
             }
             this.controls.errors.html('');
+            this.valid = response.valid;
             if (response.valid) {
                 this.current.preview.html(response.html);
                 this.current.preview.show();
                 this.current.content.hide();
                 this.controls.save.removeClass('inactive');
             } else {
-                this.errorLine = response.error.line - 1;
-                this.editor.setLineClass(this.errorLine, null, "activeline");
-                this.controls.errors.html("<strong>Error:</strong> " + response.error.message);
-                this.controls.save.addClass('inactive');
+                this._setError(response.error.message, response.error.line - 1);
             }
-            this.rendering = false;
+        },
+        _setError: function(msg, line) {
+            if (typeof(line) !== 'undefined' && line !== null) {
+                this.errorLine = line;
+                this.editor.setLineClass(this.errorLine, null, "activeline");
+            }
+            this.controls.errors.html("<strong>Error:</strong> " + msg);
+            this.valid = false;
+            this.controls.save.addClass('inactive');
         },
         getFormData: function() {
             var result = {};
@@ -193,7 +226,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
             return result;
         },
         submitSave: function() {
-            if (this.current.form && !this.errorLine) {
+            if (this.current.form && this.valid) {
                 // Submit the form and change current content
                 $.post(
                     this.current.form.data('save'),
@@ -202,7 +235,10 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                         ScribbleEditor.renderSave(response);
                     },
                     'json'
-                );
+                ).error(function(jqXHR, textStatus, errorThrown) {
+                    var msg = 'Server response was "' + errorThrown + '"';
+                    ScribbleEditor._setError(msg);
+                });
             }
         },
         renderSave: function(response) {
@@ -214,7 +250,7 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
                 this.current.content.html(this.current.preview.html());
                 this.close();
             } else {
-                this.controls.errors.html("<strong>Error:</strong> Content is not valid");
+                this._setError(response.error.message);
             }
         },
         createDraft: function() {
@@ -353,3 +389,4 @@ require(['jquery', 'codemirror'], function($, CodeMirror) {
         ScribbleMenu.init();
     });
 });
+
