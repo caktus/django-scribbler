@@ -38,7 +38,7 @@
   width: 100%;
 }
 .scribble-wrapper.with-controls .original:hover {
-  background: #fdf6e3;
+  /*background: #fdf6e3;*/
   -webkit-transition: background 0.4s linear;
   -moz-transition: background 0.4s linear;
   -ms-transition: background 0.4s linear;
@@ -46,7 +46,7 @@
   transition: background 0.4s linear;
 }
 .scribble-wrapper.with-controls.mk .original:hover {
-  background: #fdf6e3;
+  /*background: #fdf6e3;*/
   -webkit-transition: background 0.4s linear;
   -moz-transition: background 0.4s linear;
   -ms-transition: background 0.4s linear;
@@ -54,7 +54,7 @@
   transition: background 0.4s linear;
 }
 .scribble-wrapper .preview {
-  background: #fdf6e3;
+  /*background: #fdf6e3;*/
 }
 .scribble-wrapper.active .scribble-controls .preview,
 .scribble-wrapper.active .scribble-controls .delete,
