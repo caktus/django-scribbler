@@ -1,0 +1,18 @@
+{% load markup %}
+{% if scribble_form %}
+<div class="scribble-wrapper scribble-{{ scribble_form.get_data_prefix }} {% if show_controls %}with-controls{% endif %}">
+    <div class="scribble-content original">
+        {{ rendered_scribble|markdown:'codehilite,extra' }}
+    </div>
+    {% if show_controls %}
+        {% with scribble_form as form %}
+            {% include "scribbler/edit-form.html" %}
+        {% endwith %}
+        <pre class="scribble-default">{{ raw_content }}</pre>
+        <div class="scribble-content preview">
+        </div>
+    {% endif %}
+</div>
+{% else %}
+    <div>{{ rendered_scribble }}</div>
+{% endif %}

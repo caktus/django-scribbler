@@ -4,7 +4,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext, Template
-from django.utils import simplejson as json
+import json
 from django.views.debug import ExceptionReporter
 from django.views.decorators.http import require_POST
 from django.contrib.contenttypes.models import ContentType
