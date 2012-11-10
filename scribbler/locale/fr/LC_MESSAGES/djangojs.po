@@ -1,0 +1,30 @@
+#: static/js/scribbler/js/scribbler.js:92
+#: static/js/scribbler/js/scribbler.js:93
+msgid "Close"
+msgstr "Fermer"
+
+#: static/js/scribbler/js/scribbler.js:100
+#: static/js/scribbler/js/scribbler.js:101
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: static/js/scribbler/js/scribbler.js:106
+#: static/js/scribbler/js/scribbler.js:107
+msgid "Save as Draft"
+msgstr "Sauvegarder comme brouillon"
+
+#: static/js/scribbler/js/scribbler.js:145
+msgid "You do not have permission to edit this content."
+msgstr "Vous n'avez pas la permission d'éditer ce contenu."
+
+#: static/js/scribbler/js/scribbler.js:211
+msgid "Error:"
+msgstr "Erreur : "
+
+#: static/js/scribbler/js/scribbler.js:243
+msgid "Server response was"
+msgstr "La réponse du serveur était "
+
+#: static/js/scribbler/js/scribbler.js:275
+msgid "Draft saved..."
+msgstr "Brouillon sauvegardé..."

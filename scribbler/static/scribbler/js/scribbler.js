@@ -196,6 +196,7 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
             this.valid = response.valid;
             var converter = new Showdown.converter();
             if (response.valid) {
+                // @todo http://krasimirtsonev.com/blog/article/javascript-managing-events-dispatch-listen
                 this.current.preview.html(converter.makeHtml(response.html));
                 this.current.preview.show();
                 this.current.content.hide();
@@ -305,7 +306,7 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
                     this.submitPreview(true);
                     this.needsDraft = false;
                     this.controls.draft.addClass('inactive');
-                    this.setStatus("Restored content from a draft...");
+                    this.setStatus(gettext('Restored content from a draft...'));
                 }
             }
         },
