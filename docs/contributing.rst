@@ -22,7 +22,7 @@ You can clone the repository from Github::
 However this checkout will be read only. If you want to contribute code you should
 create a fork and clone your fork. You can then add the main repository as a remote::
 
-    git clone git@github.com:<your-username>/scribbler.git
+    git clone git@github.com:<your-username>/django-scribbler.git
     git remote add upstream git://github.com/caktus/django-scribbler.git
     git fetch upstream
 

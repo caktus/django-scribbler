@@ -158,7 +158,7 @@ def scribble_field(context, model_instance, field_name):
     if user:
         perm_name = '{0}.change_{1}'.format(
             model_content_type.app_label,
-            model_content_type.name
+            model_content_type.model,
         )
         can_edit = user.has_perm(perm_name)
     if can_edit:

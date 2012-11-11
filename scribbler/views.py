@@ -88,7 +88,7 @@ def edit_scribble_field(request, ct_pk, instance_pk, field_name):
     if not request.user.is_authenticated():
         return HttpResponseForbidden()
     content_type = get_object_or_404(ContentType, pk=ct_pk)
-    perm_name = '{0}.change_{1}'.format(content_type.app_label, content_type.name)
+    perm_name = '{0}.change_{1}'.format(content_type.app_label, content_type.model)
     if not request.user.has_perm(perm_name):
         return HttpResponseForbidden()
     form = FieldScribbleForm(content_type, instance_pk, field_name, data=request.POST)

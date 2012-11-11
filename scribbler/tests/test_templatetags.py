@@ -8,6 +8,7 @@ from django.template.context import RequestContext
 from django.test.client import RequestFactory
 from django.utils.unittest import skipIf
 
+from . import DaysLog
 from .base import ScribblerDataTestCase
 from scribbler.conf import CACHE_TIMEOUT
 
@@ -156,6 +157,7 @@ class RenderScribbleFieldTestCase(ScribblerDataTestCase):
         self.factory = RequestFactory()
         self.request = self.factory.get('/foo/')
         self.user = self.create_user()
+        self.days_log = DaysLog.objects.create(happenings=self.get_random_string())
 
     def render_template_tag(self, model_instance, field_name, context=None):
         "Render the template tag."
@@ -169,31 +171,31 @@ class RenderScribbleFieldTestCase(ScribblerDataTestCase):
 
     def test_basic_rendering(self):
         "Render a scribble field."
-        result = self.render_template_tag(self.user, 'username')
-        self.assertTrue(self.user.username in result)
+        result = self.render_template_tag(self.days_log, 'happenings')
+        self.assertTrue(self.days_log.happenings in result)
 
     def test_unauthenticated_controls(self):
         "Unauthenticated users will not see the scribble controls."
-        result = self.render_template_tag(self.user, 'username')
+        result = self.render_template_tag(self.days_log, 'happenings')
         self.assertFalse('<form' in result)
         self.assertFalse('with-controls' in result)
 
     def test_no_permissions_controls(self):
         "Authenticated users without permissions will not see the scribble controls."
         self.request.user = self.user  # Fake the auth middleware
-        result = self.render_template_tag(self.user, 'username')
+        result = self.render_template_tag(self.days_log, 'happenings')
         self.assertFalse('<form' in result)
         self.assertFalse('with-controls' in result)
 
     def test_scribble_editor(self):
         "Authenticated users with permission to edit will see the scribble controls."
         change_perm = Permission.objects.get(
-            codename='change_user',
-            content_type__app_label='auth',
-            content_type__model='user',
+            codename='change_dayslog',
+            content_type__app_label='scribbler',
+            content_type__model='dayslog',
         )
         self.user.user_permissions.add(change_perm)
         self.request.user = self.user  # Fake the auth middleware
-        result = self.render_template_tag(self.user, 'username')
+        result = self.render_template_tag(self.days_log, 'happenings')
         self.assertTrue('<form' in result)
         self.assertTrue('with-controls' in result)
