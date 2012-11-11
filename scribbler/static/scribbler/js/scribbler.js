@@ -47,6 +47,7 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
         scribbles: null,
         needsSave: false,
         needsDraft: false,
+        lineWrapping: true,
         init: function () {
             this.scribbles = $('.scribble-wrapper.with-controls');
             if (this.scribbles.length > 0) {
