@@ -141,6 +141,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             }
             this.element.animate({height: '300px'}, 500, function(){ScribbleEditor.editor.focus();});
             this.visible = true;
+            ScribbleMenu.close();
             // Start background draft saving
             var checkDraft = function() {
                 if (ScribbleEditor.needsDraft) {
@@ -331,6 +332,61 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
         }
     };
 
-    $(document).ready(function(){ScribbleEditor.init();});
+    var ScribbleMenu = {
+        visible: false,
+        controls: {},
+        scribbles: null,
+        init: function() {
+            this.scribbles = $('.scribble-wrapper.with-controls');
+            if (this.scribbles.length > 0) {
+                this.element = $('<div id="scribbleMenuContainer"></div>');
+                this.buildControls();
+                this.element.css('top', -1000);
+                $('body').append(this.element);
+                this.close();
+            }
+        },
+        buildControls: function() {
+            // Build control bar
+            this.menuControls = $('<div></div>').addClass('control-panel');
+            // Open/Close button
+            this.controls.tab = $('<a><span class="hot-dog"></span><span class="hot-dog"></span><span class="hot-dog"></span></a>')
+            .attr({title: 'Toggle Menu', href: '#'})
+            .addClass('tab')
+            .click(function(e) {
+                e.preventDefault();
+                if (ScribbleMenu.visible) {
+                    ScribbleMenu.close();
+                } else {
+                    ScribbleMenu.open();
+                }
+            });
+            // Reveal button
+            this.controls.reveal = $('<a>Show all scribbles</a>')
+            .attr({title: 'Show all scribbles', href: "#"})
+            .addClass('reveal').click(function(e) {
+                e.preventDefault();
+                ScribbleMenu.scribbles.addClass('highlight');
+            });
+            this.menuControls.append(this.controls.reveal);
+            this.element.append(this.menuControls);
+            this.element.append(this.controls.tab);
+        },
+        open: function(scribble) {
+            this.element.animate({top: 0}, 150);
+            this.visible = true;
+        },
+        close: function() {
+            var height = this.menuControls.height();
+            this.element.animate({top: -1 * (5 + height)}, 200);
+            this.visible = false;
+            this.scribbles.removeClass('highlight');
+        }
+    };
+
+    $(document).ready(function(){
+        ScribbleEditor.init();
+        ScribbleMenu.init();
+    });
 });
 
