@@ -59,6 +59,7 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
                     mode: "text/html",
                     tabMode: "indent",
                     lineNumbers: true,
+                    lineWrapping: true,
                     onChange: function (editor) {
                         ScribbleEditor.needsSave = true;
                         ScribbleEditor.controls.save.removeClass('inactive');
