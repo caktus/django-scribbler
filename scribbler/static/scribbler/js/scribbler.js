@@ -199,7 +199,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             if (response.valid) {
                 // Give a chance to hack on response.html content
                 ScribbleEditor.html = response.html;
-                if (eve !== undefined) {
+                if (typeof eve !== undefined) {
                     eve('scribbleEditor.renderPreview');
                 }
                 this.current.preview.html(ScribbleEditor.html);
@@ -279,7 +279,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 }
                 this.needsDraft = false;
                 this.controls.draft.addClass('inactive');
-                this.setStatus("Draft saved...");
+                this.setStatus(gettext('Draft saved...'));
             }
         },
         restoreDraft: function() {
