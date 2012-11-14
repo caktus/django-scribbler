@@ -6,7 +6,7 @@
     </div>
     {% if show_controls %}
         {% with scribble_form as form %}
-            {% include "scribbler/edit-form.html" %}
+            {% include "scribbler/edit-mk-form.html" %}
         {% endwith %}
         <pre class="scribble-default">{{ raw_content }}</pre>
         <div class="scribble-content preview">
@@ -16,3 +16,11 @@
 {% else %}
     <div>{{ rendered_scribble }}</div>
 {% endif %}
+<script>
+    window.onload = function () {
+        eve.on('scribbleEditor.renderPreview', function () {
+            var converter = new Showdown.converter();
+            ScribbleEditor.html = converter.makeHtml(ScribbleEditor.html);
+        });
+    };
+</script>

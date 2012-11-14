@@ -137,7 +137,7 @@ def scribble_field(context, model_instance, field_name):
     {% scribble_field model_instance 'field_name' %}
     """
 
-    # TODO: This should maybe be a utility funciton
+    # TODO: This should maybe be a utility function
     request = context.get('request', None)
     if request is None:  # pragma: no cover
         if settings.DEBUG:
@@ -193,10 +193,7 @@ def scribble_markdown_field(context, model_instance, field_name):
 
     model_content_type = ContentType.objects.get_for_model(model_instance)
     field_value = getattr(model_instance, field_name)
-    scribble_template = template.Template(field_value)
-    scribble_context = build_scribble_context(None, request)
-    rendered_content = scribble_template.render(scribble_context)
-    context['rendered_scribble'] = rendered_content
+    context['rendered_scribble'] = field_value
 
     user = context.get('user', None)
     can_edit = False
