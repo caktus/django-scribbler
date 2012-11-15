@@ -363,7 +363,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             // Open/Close button
             this.controls.tab = $('<a><span class="hot-dog"></span><span class="hot-dog"></span><span class="hot-dog"></span></a>')
             .attr({title: gettext('Toggle Menu'), href: '#'})
-            .addClass('tab')
+            .addClass('tab hide-on-print')
             .click(function(e) {
                 e.preventDefault();
                 if (ScribbleMenu.visible) {
