@@ -179,7 +179,7 @@ def scribble_markdown_field(context, model_instance, field_name):
     Renders a markdown-able and scribble-able field from a model instance.
 
     Usage:
-    {% scribble_marldown_field model_instance 'field_name' %}
+    {% scribble_markdown_field model_instance 'field_name' %}
     """
 
     # TODO: This should maybe be a utility function
