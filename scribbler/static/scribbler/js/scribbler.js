@@ -1,3 +1,8 @@
+/*jslint browser: true*/
+/*global require, eve*/
+var gettext = gettext || function (text) { 'use strict'; return text; },
+    ScribbleEditor;
+
 /*
  * django-scribbler
  * Source: https://github.com/caktus/django-scribbler
@@ -13,7 +18,7 @@ require.config({
         jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
         codemirror: '../libs/codemirror-compressed',
         simplehint: '../libs/simple-hint',
-        djangohint: 'djangohint'
+        djangohint: 'djangohint',
     },
     shim: {
         codemirror: {
@@ -31,7 +36,7 @@ require.config({
 });
 
 require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
-    var ScribbleEditor = {
+    ScribbleEditor = {
         visible: false,
         rendering: false,
         errorLine: null,
@@ -54,6 +59,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                     mode: "text/html",
                     tabMode: "indent",
                     lineNumbers: true,
+                    lineWrapping: true,
                     onChange: function(editor) {
                         ScribbleEditor.needsSave = true;
                         ScribbleEditor.controls.save.removeClass('inactive');
@@ -74,7 +80,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 // Bind editor to the scribbles
                 this.scribbles.each(function(i, elem) {
                     // Bind event handlers for each scribble
-                    $(elem).click(function(e) {
+                    $(elem).dblclick(function(e) {
                         ScribbleEditor.open($(this));
                     });
                 });
@@ -84,22 +90,22 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             // Build control bar
             var footerControls = $('<div></div>').addClass('controls clearfix');
             // Close button
-            this.controls.close = $('<a>Close</a>')
-            .attr({title: 'Close', href: '#'})
+            this.controls.close = $('<a>' + gettext('Close') + '</a>')
+            .attr({title: gettext('Close'), href: '#'})
             .addClass('close')
             .click(function(e) {
                 e.preventDefault();
                 ScribbleEditor.close();
             });
             // Save button
-            this.controls.save = $('<a>Save</a>')
-            .attr({title: 'Save', href: "#"})
+            this.controls.save = $('<a>' + gettext('Save') + '</a>')
+            .attr({title: gettext('Save'), href: "#"})
             .addClass('btn save inactive').click(function(e) {
                 e.preventDefault();
                 ScribbleEditor.submitSave();
             });
-            this.controls.draft = $('<a>Save as Draft</a>')
-            .attr({title: 'Save as Draft', href: "#"})
+            this.controls.draft = $('<a>' + gettext('Save as Draft') + '</a>')
+            .attr({title: gettext('Save as Draft'), href: "#"})
             .addClass('btn draft inactive').click(function(e) {
                 e.preventDefault();
                 ScribbleEditor.createDraft();
@@ -137,7 +143,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             } else {
                 this.controls.save.hide();
                 this.editor.setOption('readOnly', true);
-                this.editor.setValue('You do not have permission to edit this content.');
+                this.editor.setValue(gettext('You do not have permission to edit this content.'));
             }
             this.element.animate({height: '300px'}, 500, function(){ScribbleEditor.editor.focus();});
             this.visible = true;
@@ -191,7 +197,12 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             this.controls.errors.html('');
             this.valid = response.valid;
             if (response.valid) {
-                this.current.preview.html(response.html);
+                // Give a chance to hack on response.html content
+                ScribbleEditor.html = response.html;
+                if (typeof eve !== undefined) {
+                    eve('scribbleEditor.renderPreview');
+                }
+                this.current.preview.html(ScribbleEditor.html);
                 this.current.preview.show();
                 this.current.content.hide();
                 this.controls.save.removeClass('inactive');
@@ -204,7 +215,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 this.errorLine = line;
                 this.editor.setLineClass(this.errorLine, null, "activeline");
             }
-            this.controls.errors.html("<strong>Error:</strong> " + msg);
+            this.controls.errors.html('<strong>' + gettext('Error:') + '</strong> ' + msg);
             this.valid = false;
             this.controls.save.addClass('inactive');
         },
@@ -236,7 +247,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                     },
                     'json'
                 ).error(function(jqXHR, textStatus, errorThrown) {
-                    var msg = 'Server response was "' + errorThrown + '"';
+                    var msg = gettext('Server response was') + '"' + errorThrown + '"';
                     ScribbleEditor._setError(msg);
                 });
             }
@@ -268,7 +279,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 }
                 this.needsDraft = false;
                 this.controls.draft.addClass('inactive');
-                this.setStatus("Draft saved...");
+                this.setStatus(gettext('Draft saved...'));
             }
         },
         restoreDraft: function() {
@@ -297,7 +308,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                     this.submitPreview(true);
                     this.needsDraft = false;
                     this.controls.draft.addClass('inactive');
-                    this.setStatus("Restored content from a draft...");
+                    this.setStatus(gettext('Restored content from a draft...'));
                 }
             }
         },
@@ -351,8 +362,8 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
             this.menuControls = $('<div></div>').addClass('control-panel');
             // Open/Close button
             this.controls.tab = $('<a><span class="hot-dog"></span><span class="hot-dog"></span><span class="hot-dog"></span></a>')
-            .attr({title: 'Toggle Menu', href: '#'})
-            .addClass('tab')
+            .attr({title: gettext('Toggle Menu'), href: '#'})
+            .addClass('tab hide-on-print')
             .click(function(e) {
                 e.preventDefault();
                 if (ScribbleMenu.visible) {
@@ -362,8 +373,8 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 }
             });
             // Reveal button
-            this.controls.reveal = $('<a>Show all scribbles</a>')
-            .attr({title: 'Show all scribbles', href: "#"})
+            this.controls.reveal = $('<a>' + gettext('Show all scribbles') + '</a>')
+            .attr({title: gettext('Show all scribbles'), href: "#"})
             .addClass('reveal').click(function(e) {
                 e.preventDefault();
                 ScribbleMenu.scribbles.addClass('highlight');
@@ -389,4 +400,3 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
         ScribbleMenu.init();
     });
 });
-
