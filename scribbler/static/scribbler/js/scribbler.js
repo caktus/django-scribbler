@@ -80,7 +80,7 @@ require(['jquery', 'codemirror', 'simplehint'], function($, CodeMirror) {
                 // Bind editor to the scribbles
                 this.scribbles.each(function(i, elem) {
                     // Bind event handlers for each scribble
-                    $(elem).click(function(e) {
+                    $(elem).dblclick(function(e) {
                         ScribbleEditor.open($(this));
                     });
                 });
