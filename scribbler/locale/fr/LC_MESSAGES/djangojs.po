@@ -1,0 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-19 12:18+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+#: static/scribbler/js/scribbler.js:96 static/scribbler/js/scribbler.js.c:97
+msgid "Close"
+msgstr "Fermer"
+
+#: static/scribbler/js/scribbler.js:104 static/scribbler/js/scribbler.js:105
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: static/scribbler/js/scribbler.js:110 static/scribbler/js/scribbler.js:111
+msgid "Save as Draft"
+msgstr "Sauvergarder comme brouillon"
+
+#: static/scribbler/js/scribbler.js:149
+msgid "You do not have permission to edit this content."
+msgstr "Vous n'avez pas la permission d'éditer ce contenu."
+
+#: static/scribbler/js/scribbler.js:216
+msgid "Error:"
+msgstr "Erreur :"
+
+#: static/scribbler/js/scribbler.js:248
+msgid "Server response was"
+msgstr "La réponse du serveur était"
+
+#: static/scribbler/js/scribbler.js:280
+msgid "Draft saved..."
+msgstr "Brouillon sauvegardé..."
+
+#: static/scribbler/js/scribbler.js:313
+msgid "Restored content from a draft..."
+msgstr "Contenu restauré depuis un brouillon..."
+
+#: static/scribbler/js/scribbler.js:367
+msgid "Toggle Menu"
+msgstr "Afficher/Masquer le menu"
+
+#: static/scribbler/js/scribbler.js:378 static/scribbler/js/scribbler.js:379
+msgid "Show all scribbles"
+msgstr "Montrer tous les scribbles"
