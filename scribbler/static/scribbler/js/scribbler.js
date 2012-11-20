@@ -402,4 +402,3 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
         ScribbleMenu.init();
     });
 });
-
