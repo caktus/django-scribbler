@@ -13,7 +13,7 @@ from django.views.debug import ExceptionReporter
 from django.views.decorators.http import require_POST
 from django.contrib.contenttypes.models import ContentType
 
-from .forms import ScribbleForm, PreviewForm, FieldScribbleForm
+from .forms import ScribbleForm, PreviewForm, FieldScribbleForm, MkFieldScribbleForm
 from .models import Scribble
 from .utils import get_variables
 
@@ -128,3 +128,45 @@ def delete_scribble(request, scribble_id):
     }
     content = json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False)
     return HttpResponse(content, content_type='application/json')
+
+
+@require_POST
+def edit_scribble_mk_field(request, ct_pk, instance_pk, field_name):
+    if not request.user.is_authenticated():
+        return HttpResponseForbidden()
+    content_type = get_object_or_404(ContentType, pk=ct_pk)
+    perm_name = '{0}.change_{1}'.format(content_type.app_label, content_type.model)
+    if not request.user.has_perm(perm_name):
+        return HttpResponseForbidden()
+    form = MkFieldScribbleForm(content_type, instance_pk, field_name, data=request.POST)
+    results = {
+        'valid': False,
+    }
+    if form.is_valid():
+        results['valid'] = True
+        form.save()
+    else:
+        key = 'content' if 'content' in form.errors else '__all__'
+        results['error'] = {
+            'message': ','.join(e for e in form.errors[key]),
+            'line': '',
+        }
+    results['url'] = form.get_save_mk_url()
+    content = json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False)
+    return HttpResponse(content, content_type='application/json')
+
+
+@require_POST
+def preview_mk_scribble(request):
+    "Render scribble content or return error information."
+    if not request.user.is_authenticated():
+        return HttpResponseForbidden()
+    can_edit = request.user.has_perm('scribbler.change_scribble')
+    can_create = request.user.has_perm('scribbler.add_scribble')
+    if not (can_edit or can_create):
+        return HttpResponseForbidden()
+    results = {
+        'valid': True,
+        'html': request.POST['content']
+    }
+    return HttpResponse(json.dumps(results, cls=DjangoJSONEncoder, ensure_ascii=False), content_type='application/json')

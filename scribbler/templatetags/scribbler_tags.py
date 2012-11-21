@@ -8,7 +8,7 @@ from django.contrib.contenttypes.generic import ContentType
 from django.core.exceptions import ImproperlyConfigured
 
 from scribbler.conf import CACHE_TIMEOUT, CACHE_KEY_FUNCTION
-from scribbler.forms import ScribbleForm, FieldScribbleForm
+from scribbler.forms import ScribbleForm, FieldScribbleForm, MkFieldScribbleForm
 from scribbler.models import Scribble
 from scribbler.views import build_scribble_context
 
@@ -29,7 +29,7 @@ class ScribbleNode(template.Node):
     def render(self, context):
         slug = self.slug.resolve(context)
         request = context.get('request', None)
-        if request is None: # pragma: no cover
+        if request is None:  # pragma: no cover
             if settings.DEBUG:
                 msg = '"django.core.context_processors.request" is required to use django-scribbler'
                 raise ImproperlyConfigured(msg)
@@ -139,7 +139,7 @@ def scribble_field(context, model_instance, field_name):
 
     # TODO: This should maybe be a utility funciton
     request = context.get('request', None)
-    if request is None: # pragma: no cover
+    if request is None:  # pragma: no cover
         if settings.DEBUG:
             msg = '"django.core.context_processors.request" is required to use django-scribbler'
             raise ImproperlyConfigured(msg)
@@ -172,3 +172,44 @@ def scribble_field(context, model_instance, field_name):
     wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
     return wrapper_template.render(context)
 
+
+@register.simple_tag(takes_context=True)
+def scribble_mk_field(context, model_instance, field_name):
+    """
+    Renders a markdown-able and scribble-able field from a model instance.
+
+    Usage:
+    {% scribble_mk_field model_instance 'field_name' %}
+    """
+
+    # TODO: This should maybe be a utility function
+    request = context.get('request', None)
+    if request is None:  # pragma: no cover
+        if settings.DEBUG:
+            msg = '"django.core.context_processors.request" is required to use django-scribbler'
+            raise ImproperlyConfigured(msg)
+        else:
+            return ''
+
+    model_content_type = ContentType.objects.get_for_model(model_instance)
+    field_value = getattr(model_instance, field_name)
+    context['rendered_scribble'] = field_value
+
+    user = context.get('user', None)
+    can_edit = False
+    if user:
+        perm_name = '{0}.change_{1}'.format(
+            model_content_type.app_label,
+            model_content_type.model,
+        )
+        can_edit = user.has_perm(perm_name)
+    if can_edit:
+        context['scribble_form'] = MkFieldScribbleForm(
+            model_content_type, model_instance.pk, field_name, field_value=field_value)
+    context['show_controls'] = can_edit
+    context['can_add_scribble'] = False
+    context['can_edit_scribble'] = can_edit
+    context['can_delete_scribble'] = False
+    context['raw_content'] = field_value
+    wrapper_template = template.loader.get_template('scribbler/scribble-mk-wrapper.html')
+    return wrapper_template.render(context)
