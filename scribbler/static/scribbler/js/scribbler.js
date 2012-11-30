@@ -9,9 +9,10 @@
 */
 
 /*jslint browser: true, newcap: true */
-/*global require*/
+/*global require, eve*/
 
-var gettext = gettext || function (text) { 'use strict'; return text; };
+var gettext = gettext || function (text) { 'use strict'; return text; },
+    SCRIBBLE = SCRIBBLE || {};
 
 require.config({
     paths: {
@@ -200,7 +201,11 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
             this.controls.errors.html('');
             this.valid = response.valid;
             if (response.valid) {
-                this.current.preview.html(response.html);
+                SCRIBBLE.html = response.html;
+                if (typeof eve !== undefined) {
+                    eve('scribbleEditor.renderPreview');
+                }
+                this.current.preview.html(SCRIBBLE.html);
                 this.current.preview.show();
                 this.current.content.hide();
                 this.controls.save.removeClass('inactive');
