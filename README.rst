@@ -57,7 +57,10 @@ Contributing
 
 If you think you've found a bug or are interested in contributing to this project
 check out `django-scribbler on Github <https://github.com/caktus/django-scribbler>`_. A
-full contributing guide can be found in the `online documentation <http://django-scribbler.readthedocs.org/en/latest/contributing.html>`_
+full contributing guide can be found in the `online documentation <http://django-scribbler.readthedocs.org/en/latest/contributing.html>`_.
+
+If you are interested in translating django-scribbler into your native language
+you can join the `Transifex project <https://www.transifex.com/projects/p/django-scribbler/>`_.
 
 Development sponsored by `Caktus Consulting Group, LLC
 <http://www.caktusgroup.com/services>`_.

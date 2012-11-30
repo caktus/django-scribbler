@@ -12,6 +12,15 @@ You can contribute to the project by submitting bug reports, feature requests
 or documentation updates through the Github `issues <https://github.com/caktus/django-scribbler/issues>`_.
 
 
+Translate django-scribbler
+--------------------------------------
+
+We are working towards translating django-scribbler into different languages. There
+are only a few strings to translate so it is a great way to be involved with the project. 
+The translations are managed through `Transifex <https://www.transifex.com/projects/p/django-scribbler/>`_. 
+Please do not submit translate requests/updates to the Github repo.
+
+
 Getting the Source
 ------------------------------------
 
