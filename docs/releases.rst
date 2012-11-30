@@ -3,6 +3,17 @@ Release History
 
 Release and change history for django-scribbler
 
+
+v0.4.0 (Released TBD)
+------------------------------------
+
+Features
+_________________
+
+- Top level menu to reveal all editable sections on the page
+- i18n support and intial French translation thanks to Nicolas Ippolito
+
+
 v0.3.0 (Released 2012-10-26)
 ------------------------------------
 
