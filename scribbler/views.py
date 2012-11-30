@@ -1,14 +1,11 @@
 from __future__ import unicode_literals
 
+import json
+
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext, Template
-try:
-    import json
-    assert json  # silence pyflakes
-except ImportError:
-    from django.utils import simplejson as json  # Python 2.4 fallback
 from django.views.debug import ExceptionReporter
 from django.views.decorators.http import require_POST
 from django.contrib.contenttypes.models import ContentType
