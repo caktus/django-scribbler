@@ -29,12 +29,14 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
         # so we need to clear the cache between runs
         cache.clear()
 
-    def render_template_tag(self, slug, context=None, default='<p>Default.</p>'):
+    def render_template_tag(self, slug, context=None, default='<p>Default.</p>', url=None):
         "Render the template tag."
         context = context or {}
-        template = Template("""
-            {{% load scribbler_tags %}}{{% scribble {0} %}}{1}{{% endscribble %}}
-        """.format(slug, default))
+        if not url:
+            tag = '{{% load scribbler_tags %}}{{% scribble {0} %}}{1}{{% endscribble %}}'
+        else:
+            tag = '{{% load scribbler_tags %}}{{% scribble {0} {2} %}}{1}{{% endscribble %}}'
+        template = Template(tag.format(slug, default, url))
         context = RequestContext(self.request, context)
         return template.render(context)
 
@@ -71,6 +73,19 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
     def test_no_slug_given(self):
         "Slug is required by the tag."
         self.assertRaises(TemplateSyntaxError, self.render_template_tag, slug='')
+
+    def test_shared_scribble(self):
+        "Render a scribble by the slug url pair."
+        self.create_scribble(
+            url='/shared/', slug='shared',
+            content='<p>Shared scribble content.</p>'
+        )
+        result = self.render_template_tag(slug='"shared"', url='"/shared/"')
+        self.assertTrue('<p>Shared scribble content.</p>' in result)
+        # switch context and render the shared scribble
+        self.request = self.factory.get('/bar/')
+        result = self.render_template_tag(slug='"shared"', url='"/shared/"')
+        self.assertTrue('<p>Shared scribble content.</p>' in result)
 
     @skipIf(not CACHE_TIMEOUT, "Caching is disabled.")
     def test_cache_scribble_lookup(self):
@@ -129,7 +144,7 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
             content_type__model='scribble',
         )
         user = self.create_user()
-        user.user_permissions.add(change_perm) 
+        user.user_permissions.add(change_perm)
         self.request.user = user # Fake the auth middleware
         result = self.render_template_tag(slug='"sidebar"')
         self.assertTrue('<form' in result)
@@ -138,12 +153,12 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
     def test_scribble_creator(self):
         "Authenticated users with permission to create will see the scribble controls."
         add_perm = Permission.objects.get(
-            codename='add_scribble', 
+            codename='add_scribble',
             content_type__app_label='scribbler',
             content_type__model='scribble',
         )
         user = self.create_user()
-        user.user_permissions.add(add_perm) 
+        user.user_permissions.add(add_perm)
         self.request.user = user # Fake the auth middleware
         result = self.render_template_tag(slug='"other"')
         self.assertTrue('<form' in result)

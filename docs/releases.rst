@@ -13,6 +13,7 @@ _________________
 - Top level menu to reveal all editable sections on the page
 - i18n support and intial French translation thanks to Nicolas Ippolito
 - Created Transifex group for translations
+- Added optional parameter to scribble tag to support shared scribbles thanks to David Ray
 
 
 v0.3.0 (Released 2012-10-26)
