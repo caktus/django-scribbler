@@ -21,21 +21,25 @@ class ScribbleNode(template.Node):
 
     child_nodelists = ('nodelist_default', )
 
-    def __init__(self, slug, nodelist, raw):
+    def __init__(self, slug, nodelist, raw, url=None):
         self.slug = template.Variable(slug)
         self.nodelist_default = nodelist
         self.raw = raw
+        self.url = template.Variable(url) if url else None
 
     def render(self, context):
         slug = self.slug.resolve(context)
         request = context.get('request', None)
-        if request is None: # pragma: no cover
+        if request is None:  # pragma: no cover
             if settings.DEBUG:
                 msg = '"django.core.context_processors.request" is required to use django-scribbler'
                 raise ImproperlyConfigured(msg)
             else:
                 return ''
-        url = request.path
+        if self.url:
+            url = self.url.resolve(context)
+        else:
+            url = request.path
         key = CACHE_KEY_FUNCTION(slug=slug, url=url)
         scribble = cache.get(key, None)
         if scribble is None:
@@ -112,12 +116,22 @@ def scribble(parser, token):
     {% scribble 'sidebar' %}
         <p>This is the default.</p>
     {% endscribble %}
+
+    Usage with optional parameter:
+    {% scribble 'sidebar' 'shared-scribble' %}
+        <p>This is the default.</p>
+    {% endscribble %}
+
     """
-    try:
-        tag_name, slug = token.split_contents()
-    except ValueError:
-        msg = "{0} tag requires exactly one argument.".format(*token.contents.split())
+    bits = token.split_contents()
+    if len(bits) == 1 or len(bits) > 3:
+        msg = "{0} tag expects a syntax of {0} 'slug' ['shared''].".format(*token.contents.split())
         raise template.TemplateSyntaxError(msg)
+    elif len(bits) == 2:
+        tag_name, slug = bits
+        url = None
+    else:
+        tag_name, slug, url = bits
     # Save original token state
     tokens = parser.tokens[:]
     nodelist = parser.parse(('endscribble', ))
@@ -125,7 +139,7 @@ def scribble(parser, token):
     tokens = filter(lambda t: t not in parser.tokens, tokens)
     parser.delete_first_token()
     raw = rebuild_template_string(tokens)
-    return ScribbleNode(slug=slug, nodelist=nodelist, raw=raw)
+    return ScribbleNode(slug=slug, nodelist=nodelist, raw=raw, url=url)
 
 
 @register.simple_tag(takes_context=True)
@@ -139,7 +153,7 @@ def scribble_field(context, model_instance, field_name):
 
     # TODO: This should maybe be a utility funciton
     request = context.get('request', None)
-    if request is None: # pragma: no cover
+    if request is None:  # pragma: no cover
         if settings.DEBUG:
             msg = '"django.core.context_processors.request" is required to use django-scribbler'
             raise ImproperlyConfigured(msg)
@@ -171,4 +185,3 @@ def scribble_field(context, model_instance, field_name):
     context['raw_content'] = field_value
     wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
     return wrapper_template.render(context)
-

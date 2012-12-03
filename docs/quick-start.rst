@@ -31,7 +31,7 @@ to include the current request in the template context.
 Note that ``TEMPLATE_CONTEXT_PROCESSORS`` is not included in the default settings
 created by ``startproject``. You should take care to ensure that the default
 context processors are included in this list. For a list of default
-``TEMPLATE_CONTEXT_PROCESSORS`` please see 
+``TEMPLATE_CONTEXT_PROCESSORS`` please see
 `the official Django docs <https://docs.djangoproject.com/en/1.4/ref/settings/#template-context-processors>`_.
 
 For the context processor to have any effect you need to make sure that the template
@@ -65,7 +65,7 @@ This is done with the ``syncdb`` management command built into Django::
 
     python manage.py syncdb
 
-django-scribbler uses `South <http://south.aeracode.org/>`_ to handle database migrations. 
+django-scribbler uses `South <http://south.aeracode.org/>`_ to handle database migrations.
 If you are also using South then you should run ``migrate`` instead::
 
     python manage.py migrate scribbler
@@ -104,8 +104,8 @@ scribbles on any page on your site these should be included in your base templat
 
 This uses `RequireJS <http://requirejs.org/>`_ to load the additional JS resources. The front-end
 editor uses `CodeMirror <http://codemirror.net/>`_ (currently using v2.32) which is included in the distribution.
-Both RequireJS and CodeMirror are available a MIT-style license compatible with 
-this project's BSD license. You can find the license files included in 
+Both RequireJS and CodeMirror are available a MIT-style license compatible with
+this project's BSD license. You can find the license files included in
 ``scribbler/static/scribbler/libs/``.
 
 
@@ -113,10 +113,11 @@ Place Scribbles in Your Template
 ------------------------------------
 
 You are now ready to place the scribble content blocks throughout your templates.
-This is done with the ``scribble`` block tag. It takes one argument which is the
-slug name for the scribble. Slugs must be unique per url/slug pair. That means you
-cannot use the same slug more than once in the template but you can use the same
-slug in different templates as long as they are rendered on different urls.
+This is done with the ``scribble`` block tag. The basic usage of the tag takes
+one argument which is the slug name for the scribble. Slugs must be unique per
+url/slug pair. That means you cannot use the same slug more than once in the
+template but you can use the same slug in different templates as long as they
+are rendered on different urls.
 
 .. code-block:: html
 
@@ -128,11 +129,25 @@ slug in different templates as long as they are rendered on different urls.
 The content inside the block is the default content that will be rendered if a
 matching scribble in the database is not found.
 
+The ``scribble`` tag can take an optional argument which allows for defining
+shared scribbles.
+
+.. code-block:: html
+
+    {% load scribbler_tags %}
+    {% scribble 'header' 'shared' %}
+        <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
+    {% endscribble %}
+
+The second argument defines a lookup vector to a shared scribble. This overrides
+the url portion of the url/slug pair, and allows for reuse across multiple templates.
+
 .. note::
 
     Scribble content can be any valid Django template. However the content does
     not include all of the context of the template. Only the context provided
     by the set of ``TEMPLATE_CONTEXT_PROCESSORS``.
+
 
 A second scribbler tag, ``scribble_field``, allows for editing fields of model instances.
 For example, suppose you have a ``DaysLog`` model with a field named ``happenings``. Suppose
