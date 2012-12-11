@@ -15,7 +15,7 @@ var gettext = gettext || function (text) { 'use strict'; return text; };
 
 require.config({
     paths: {
-        jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
+        jquery: '../libs/jquery.min',
         codemirror: '../libs/codemirror-compressed',
         simplehint: '../libs/simple-hint',
         djangohint: 'djangohint'
@@ -39,6 +39,8 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
     'use strict';
     var ScribbleEditor,
         ScribbleMenu;
+
+    $.noConflict(true);
 
     ScribbleEditor = {
         visible: false,
