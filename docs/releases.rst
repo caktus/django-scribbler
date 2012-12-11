@@ -18,7 +18,7 @@ _________________
 Bug Fixes
 _________________
 
-- Fixed bug with newly included jQuery overriding and existing version. See #53
+- Fixed bug with newly included jQuery overriding an existing version. See #53
 
 
 v0.3.0 (Released 2012-10-26)
