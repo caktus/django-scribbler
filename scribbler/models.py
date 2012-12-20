@@ -21,7 +21,7 @@ class Scribble(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, editable=False)
     modified_time = models.DateTimeField(auto_now=True, editable=False)
     name = models.CharField(max_length=255, blank=True, default="")
-    slug = models.SlugField(max_length=255, blank=True, default="")
+    slug = models.SlugField(max_length=64, blank=True, default="")
     url = models.CharField(max_length=255, blank=True, default="")
     content = models.TextField(blank=True, default="")
 
