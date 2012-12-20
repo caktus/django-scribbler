@@ -70,14 +70,6 @@ If you are also using South then you should run ``migrate`` instead::
 
     python manage.py migrate scribbler
 
-If you are using MySQL with UTF-8 encoding and South, your initial migration path 
-will be slightly more involved::
-
-    python manage.py migrate scribbler 0002 --fake
-    python manage.py migrate scribbler
-
-Refer to `Issue 61 <https://github.com/caktus/django-scribbler/issues/61>`_ for more details.
-
 .. note::
 
     The latest release of South does not support Python 3. If you want to try

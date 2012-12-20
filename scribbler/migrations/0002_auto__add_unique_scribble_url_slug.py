@@ -8,13 +8,17 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding unique constraint on 'Scribble', fields ['url', 'slug']
-        db.create_unique('scribbler_scribble', ['url', 'slug'])
+        # Workaround for https://github.com/caktus/django-scribbler/issues/61
+        if db.backend_name != 'mysql':
+            # Adding unique constraint on 'Scribble', fields ['url', 'slug']
+            db.create_unique('scribbler_scribble', ['url', 'slug'])
 
 
     def backwards(self, orm):
-        # Removing unique constraint on 'Scribble', fields ['url', 'slug']
-        db.delete_unique('scribbler_scribble', ['url', 'slug'])
+        # Workaround for https://github.com/caktus/django-scribbler/issues/61
+        if db.backend_name != 'mysql':
+            # Removing unique constraint on 'Scribble', fields ['url', 'slug']
+            db.delete_unique('scribbler_scribble', ['url', 'slug'])
 
 
     models = {
