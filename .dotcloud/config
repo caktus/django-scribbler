@@ -1,0 +1,6 @@
+{
+    "push_branch": "master", 
+    "application": "scribbler", 
+    "version": "0.9.3", 
+    "push_protocol": "git"
+}
