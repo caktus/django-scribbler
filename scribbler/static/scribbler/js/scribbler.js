@@ -115,6 +115,13 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
                     e.preventDefault();
                     ScribbleEditor.createDraft();
                 });
+            this.controls.discard = $('<a>' + gettext('Discard Draft') + '</a>')
+                .attr({title: gettext('Discard Draft'), href: "#"})
+                .addClass('btn discard inactive').click(function (e) {
+                    e.preventDefault();
+                    ScribbleEditor.editor.setValue($('[name$=content]', ScribbleEditor.current.form).val());
+                    ScribbleEditor.deleteDraft();
+                });
             // Error message
             this.controls.errors = $('<span></span>')
                 .addClass('error-msg');
@@ -125,6 +132,7 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
                 this.controls.status,
                 this.controls.errors,
                 this.controls.close,
+                this.controls.discard,
                 this.controls.draft,
                 this.controls.save
             );
@@ -279,6 +287,7 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
                 }
                 this.needsDraft = false;
                 this.controls.draft.addClass('inactive');
+                this.controls.discard.removeClass('inactive');
                 this.setStatus(gettext('Draft saved...'));
             }
         },
@@ -312,6 +321,7 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
                     this.submitPreview(true);
                     this.needsDraft = false;
                     this.controls.draft.addClass('inactive');
+                    this.controls.discard.removeClass('inactive');
                     this.setStatus(gettext('Restored content from a draft...'));
                 }
             }
@@ -332,6 +342,8 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
                 }
                 this.needsDraft = true;
                 this.controls.draft.removeClass('inactive');
+                this.controls.discard.addClass('inactive');
+                this.setStatus(gettext('Restored original content...'));
             }
         },
         setStatus: function (msg) {
