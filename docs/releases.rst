@@ -7,6 +7,11 @@ Release and change history for django-scribbler
 v0.4.0 (Released TBD)
 ------------------------------------
 
+The length of the slug field has been reduced to fix problems with the unique contraint
+on MySQL. Upgrading requires running a migration::
+
+    manage.py migrate scribbler
+
 Features
 _________________
 
@@ -19,6 +24,12 @@ Bug Fixes
 _________________
 
 - Fixed bug with newly included jQuery overriding an existing version. See #53
+- Fixed bug with unique index on MySQL thanks to David Ray. See #61
+
+Backwards Incompatible Changes
+_________________
+
+- The fix for #61 reduced the length of the slug field from 255 characters to 64
 
 
 v0.3.0 (Released 2012-10-26)
