@@ -27,7 +27,7 @@ _________________
 - Fixed bug with unique index on MySQL thanks to David Ray. See #61
 
 Backwards Incompatible Changes
-_________________
+__________________________________
 
 - The fix for #61 reduced the length of the slug field from 255 characters to 64
 
