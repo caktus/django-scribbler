@@ -172,7 +172,6 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
         close: function () {
             this.current.preview.hide();
             this.current.content.show();
-            $('[name$=content]', this.current.form).val(this.editor.getValue());
             this.current = {};
             this.editor.setValue('');
             this.element.animate({height: 0}, 500);
@@ -267,6 +266,7 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
                 this.controls.save.addClass('inactive');
                 this.current.form.data('save', response.url);
                 this.current.content.html(this.current.preview.html());
+                $('[name$=content]', this.current.form).val(this.editor.getValue());
                 this.close();
             } else {
                 this.setError(response.error.message);
