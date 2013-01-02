@@ -40,4 +40,5 @@ editor content as a draft. These drafts are saved on the client side using local
 (if supported by the browser) or a cookie. While that means you won't be able to see
 or use these drafts in another browser, it does mean that you work will not be lost
 if there is a failure on the server while saving changes or making edits. When the editor
-is opened it will restore any draft that is found.
+is opened it will restore any draft that is found. There is the option to discard a working draft.
+This will load the current scribble content into the editor.

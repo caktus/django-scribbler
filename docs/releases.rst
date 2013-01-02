@@ -19,6 +19,7 @@ _________________
 - i18n support and intial French translation thanks to Nicolas Ippolito
 - Created Transifex group for translations
 - Added optional parameter to scribble tag to support shared scribbles thanks to David Ray
+- Added the ability to discard a saved draft
 
 Bug Fixes
 _________________
