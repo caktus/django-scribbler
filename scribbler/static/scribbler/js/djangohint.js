@@ -85,11 +85,8 @@
     }
     token.string = token.string.replace(/[^\w]*/g, '');
 
-    if (!context) var context = [];
-    context.push(token);
-
     // Build list of found matches and return to autocompleter
-    var found = getCompletions(token, context, django_variables);
+    var found = getCompletions(token, [token], django_variables);
     return {
       token: token,
       list: found,
