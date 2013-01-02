@@ -4,7 +4,7 @@ Release History
 Release and change history for django-scribbler
 
 
-v0.4.0 (Released TBD)
+v0.4.0 (Released 2013-01-01)
 ------------------------------------
 
 The length of the slug field has been reduced to fix problems with the unique contraint
@@ -16,7 +16,7 @@ Features
 _________________
 
 - Top level menu to reveal all editable sections on the page
-- i18n support and intial French translation thanks to Nicolas Ippolito
+- i18n support and initial French translation thanks to Nicolas Ippolito
 - Created Transifex group for translations
 - Added optional parameter to scribble tag to support shared scribbles thanks to David Ray
 - Added the ability to discard a saved draft
