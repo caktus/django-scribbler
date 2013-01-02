@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-30 10:05-0500\n"
+"POT-Creation-Date: 2013-01-01 21:48-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,42 +17,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: static/scribbler/js/scribbler.js:96 static/scribbler/js/scribbler.js.c:97
+#: static/scribbler/js/scribbler.js:98 static/scribbler/js/scribbler.js.c:99
 msgid "Close"
 msgstr ""
 
-#: static/scribbler/js/scribbler.js:104 static/scribbler/js/scribbler.js:105
+#: static/scribbler/js/scribbler.js:106 static/scribbler/js/scribbler.js:107
 msgid "Save"
 msgstr ""
 
-#: static/scribbler/js/scribbler.js:110 static/scribbler/js/scribbler.js:111
+#: static/scribbler/js/scribbler.js:112 static/scribbler/js/scribbler.js:113
 msgid "Save as Draft"
 msgstr ""
 
-#: static/scribbler/js/scribbler.js:149
+#: static/scribbler/js/scribbler.js:118 static/scribbler/js/scribbler.js:119
+msgid "Discard Draft"
+msgstr ""
+
+#: static/scribbler/js/scribbler.js:159
 msgid "You do not have permission to edit this content."
 msgstr ""
 
-#: static/scribbler/js/scribbler.js:216
+#: static/scribbler/js/scribbler.js:225
 msgid "Error:"
 msgstr ""
 
-#: static/scribbler/js/scribbler.js:248
+#: static/scribbler/js/scribbler.js:257
 msgid "Server response was"
 msgstr ""
 
-#: static/scribbler/js/scribbler.js:280
+#: static/scribbler/js/scribbler.js:291
 msgid "Draft saved..."
 msgstr ""
 
-#: static/scribbler/js/scribbler.js:313
+#: static/scribbler/js/scribbler.js:325
 msgid "Restored content from a draft..."
 msgstr ""
 
-#: static/scribbler/js/scribbler.js:367
+#: static/scribbler/js/scribbler.js:346
+msgid "Restored original content..."
+msgstr ""
+
+#: static/scribbler/js/scribbler.js:381
 msgid "Toggle Menu"
 msgstr ""
 
-#: static/scribbler/js/scribbler.js:378 static/scribbler/js/scribbler.js:379
+#: static/scribbler/js/scribbler.js:392 static/scribbler/js/scribbler.js:393
 msgid "Show all scribbles"
 msgstr ""
