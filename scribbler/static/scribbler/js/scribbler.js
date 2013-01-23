@@ -86,7 +86,10 @@ require(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
                 this.scribbles.each(function (i, elem) {
                     // Bind event handlers for each scribble
                     $(elem).click(function (e) {
-                        ScribbleEditor.open($(this));
+                        // Allow click to follow links inside of scribble content
+                        if (e.target.nodeName !== 'A') {
+                            ScribbleEditor.open($(this));
+                        }
                     });
                 });
             }
