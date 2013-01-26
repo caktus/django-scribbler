@@ -14,7 +14,7 @@
     {% if debug %}
     <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}scribbler/less/scribbler.less">
     {% else %}
-    <link type="text/css" media="all" href="{{ STATIC_URL }}scribbler/css/scribbler.css">
+    <link rel="stylesheet" media="all" href="{{ STATIC_URL }}scribbler/css/scribbler.css">
     {% endif %}
     <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}less/styles.less">
     <script src="{{ STATIC_URL }}js/less-1.3.0.min.js"></script>
@@ -55,6 +55,6 @@
         {% endblock %}
     </div>
     <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
-    <script data-main="{{ STATIC_URL }}scribbler/js/scribbler" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
+    <script data-main="{{ STATIC_URL }}scribbler/js/scribbler{% if not debug %}-min{% endif %}" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
 </body>
 </html>
