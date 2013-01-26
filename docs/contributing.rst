@@ -95,18 +95,24 @@ Building the CSS
 The CSS used by django-scribbler is built using `LESS <http://lesscss.org/>`_. No changes
 should be made to the ``scribbler.css`` directly. Instead changes should be made to the ``scribbler.less``
 file. After changes are made to ``scribbler.less`` you can create the new compressed CSS with the
-Node based complier::
+Node based complier. In addition this uses the `RequireJS optimizer <https://github.com/jrburke/r.js>`_
+to inline the required ``codemirror.css``::
 
-    # Install less from the NPM package
-    npm install less -g
-    lessc scribbler/static/scribbler/less/scribbler.less --yui-compress > scribbler/static/scribbler/css/scribbler.css
+    # Install less and requirejs from the NPM package
+    npm install less requirejs -g
+	make build-css
 
-This can also be done with the ``make`` command::
+The example project uses the client-side LESS compiler to make local development easier.
 
-    make build-css
 
-This still requires having the LESS complier installed. The example project uses the client-side
-LESS compiler to make local development easier.
+Building the JS
+------------------------------------
+
+While it is not often needed for local development, the final released JS is bundled and minified
+using the same RequireJS optimizer used for the CSS. To build ``scribbler-min.js`` you should
+have the optimizer installed and run::
+
+	make build-js
 
 
 Coding Standards
