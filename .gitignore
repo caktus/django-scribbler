@@ -12,3 +12,7 @@
 docs/_build/*
 dist/*
 *.mo
+scribbler/static/scribbler/css/scribbler.css
+scribbler/static/scribbler/libs/codemirror/*
+scribbler/static/scribbler/libs/jquery.js
+scribbler/static/scribbler/libs/require.js

@@ -2,7 +2,7 @@ STATIC_DIR = ./scribbler/static/scribbler
 LIBS_DIR = ${STATIC_DIR}/libs
 # Library versions
 JQUERY_VERSION = '1.8.3'
-REQUIRE_VERSION = '2.0.4'
+REQUIRE_VERSION = '2.1.4'
 CODEMIRROR_VERSION = '2.38'
 
 fetch-static-libs:
