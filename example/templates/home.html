@@ -11,8 +11,11 @@
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}">
     <link href="{{ STATIC_URL }}img/favicon.png" rel="shortcut icon">
     {% block extra-meta %}{% endblock %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/libs/codemirror.css">
+    {% if debug %}
     <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}scribbler/less/scribbler.less">
+    {% else %}
+    <link type="text/css" media="all" href="{{ STATIC_URL }}scribbler/css/scribbler.css">
+    {% endif %}
     <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}less/styles.less">
     <script src="{{ STATIC_URL }}js/less-1.3.0.min.js"></script>
 </head>

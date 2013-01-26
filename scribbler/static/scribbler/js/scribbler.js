@@ -16,8 +16,12 @@ var gettext = gettext || function (text) { 'use strict'; return text; };
 require.config({
     paths: {
         jquery: '../libs/jquery',
-        codemirror: '../libs/codemirror-compressed',
-        simplehint: '../libs/simple-hint',
+        codemirror: '../libs/codemirror/lib/codemirror',
+        jsmode: '../libs/codemirror/mode/javascript/javascript',
+        cssmode: '../libs/codemirror/mode/css/css',
+        xmlmode: '../libs/codemirror/mode/xml/xml',
+        htmlmode: '../libs/codemirror/mode/htmlmixed/htmlmixed',
+        simplehint: '../libs/codemirror/lib/util/simple-hint',
         scribblereditor: 'scribbler-editor',
         scribblermenu: 'scribbler-menu',
         djangohint: 'djangohint'
@@ -33,6 +37,22 @@ require.config({
         djangohint: {
             exports: 'CodeMirror',
             deps: ['codemirror']
+        },
+        jsmode: {
+            exports: 'CodeMirror',
+            deps: ['codemirror']
+        },
+        cssmode: {
+            exports: 'CodeMirror',
+            deps: ['codemirror']
+        },
+        xmlmode: {
+            exports: 'CodeMirror',
+            deps: ['codemirror']
+        },
+        htmlmode: {
+            exports: 'CodeMirror',
+            deps: ['xmlmode', 'jsmode', 'cssmode']
         }
     }
 });

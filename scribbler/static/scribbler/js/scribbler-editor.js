@@ -1,6 +1,6 @@
 var gettext = gettext || function (text) { 'use strict'; return text; };
 
-define(['jquery', 'codemirror', 'simplehint'], function ($, CodeMirror) {
+define(['jquery', 'codemirror', 'simplehint', 'htmlmode'], function ($, CodeMirror) {
     'use strict';
 
     $.noConflict(true);
