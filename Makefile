@@ -1,4 +1,24 @@
 STATIC_DIR = ./scribbler/static/scribbler
+LIBS_DIR = ${STATIC_DIR}/libs
+# Library versions
+JQUERY_VERSION = '1.8.3'
+REQUIRE_VERSION = '2.0.4'
+CODEMIRROR_VERSION = '2.38'
+
+fetch-static-libs:
+	# Fetch JS library dependencies
+	# Requires wget
+	wget http://code.jquery.com/jquery-${JQUERY_VERSION}.js
+	mv jquery-${JQUERY_VERSION}.js ${LIBS_DIR}/jquery.js
+	wget http://requirejs.org/docs/release/${REQUIRE_VERSION}/comments/require.js
+	mv require.js ${LIBS_DIR}/require.js
+	wget http://codemirror.net/codemirror-${CODEMIRROR_VERSION}.zip
+	unzip codemirror-${CODEMIRROR_VERSION}.zip
+	rm -r ${LIBS_DIR}/codemirror
+	mkdir -p ${LIBS_DIR}/codemirror
+	mv -f codemirror-${CODEMIRROR_VERSION}/* ${LIBS_DIR}/codemirror
+	rm -r codemirror-${CODEMIRROR_VERSION}
+	rm codemirror-${CODEMIRROR_VERSION}.zip
 
 build-css:
 	# Build CSS from LESS
