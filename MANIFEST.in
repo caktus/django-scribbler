@@ -2,5 +2,16 @@ include AUTHORS
 include LICENSE
 include README.rst
 recursive-include scribbler/templates *
-recursive-include scribbler/static *
+recursive-include scribbler/static/css *
+recursive-include scribbler/static/img *
+recursive-include scribbler/static/js *
+recursive-include scribbler/static/less *
 recursive-include scribbler/locale *
+include scribbler/static/libs/CodeMirror-LICENSE
+recursive-include scribbler/static/libs/codemirror/keymap *
+recursive-include scribbler/static/libs/codemirror/lib *
+recursive-include scribbler/static/libs/codemirror/mode *
+include scribbler/static/libs/jquery.js
+include scribbler/static/libs/jQuery-LICENSE
+include scribbler/static/libs/require.js
+include scribbler/static/libs/Require-LICENSE

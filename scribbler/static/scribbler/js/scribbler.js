@@ -15,7 +15,7 @@ var gettext = gettext || function (text) { 'use strict'; return text; };
 
 require.config({
     paths: {
-        jquery: '../libs/jquery.min',
+        jquery: '../libs/jquery',
         codemirror: '../libs/codemirror-compressed',
         simplehint: '../libs/simple-hint',
         scribblereditor: 'scribbler-editor',
@@ -37,7 +37,7 @@ require.config({
     }
 });
 
-require(['jquery', 'scribblereditor', 'scribblermenu', ], function ($, ScribbleEditor, ScribbleMenu) {
+require(['jquery', 'scribblereditor', 'scribblermenu'], function ($, ScribbleEditor, ScribbleMenu) {
     'use strict';
 
     $(document).ready(function () {
