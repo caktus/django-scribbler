@@ -32,8 +32,14 @@ However this checkout will be read only. If you want to contribute code you shou
 create a fork and clone your fork. You can then add the main repository as a remote::
 
     git clone git@github.com:<your-username>/django-scribbler.git
+    cd django-scribbler
     git remote add upstream git://github.com/caktus/django-scribbler.git
     git fetch upstream
+
+django-scribbler requires a few static libraries which are not included in the repository. Before beginning
+development you should make sure you have these libraries with::
+    
+    make fetch-static-libs
 
 
 Running the Tests
@@ -95,7 +101,12 @@ Node based complier::
     npm install less -g
     lessc scribbler/static/scribbler/less/scribbler.less --yui-compress > scribbler/static/scribbler/css/scribbler.css
 
-The example project uses the client-side LESS compiler to make local development easier.
+This can also be done with the ``make`` command::
+
+    make build-css
+
+This still requires having the LESS complier installed. The example project uses the client-side
+LESS compiler to make local development easier.
 
 
 Coding Standards
@@ -114,6 +125,10 @@ with Node based `CLI tool <https://github.com/jshint/jshint>`_::
     npm install jshint -g
     # Check the scribbler JS
     jshint scribbler/static/scribbler/js/scribbler.js
+
+This can also be done with the ``make`` command::
+
+    make lint-js
 
 
 Submitting a Pull Request
