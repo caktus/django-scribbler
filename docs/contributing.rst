@@ -32,8 +32,14 @@ However this checkout will be read only. If you want to contribute code you shou
 create a fork and clone your fork. You can then add the main repository as a remote::
 
     git clone git@github.com:<your-username>/django-scribbler.git
+    cd django-scribbler
     git remote add upstream git://github.com/caktus/django-scribbler.git
     git fetch upstream
+
+django-scribbler requires a few static libraries which are not included in the repository. Before beginning
+development you should make sure you have these libraries with::
+    
+    make fetch-static-libs
 
 
 Running the Tests
@@ -89,13 +95,24 @@ Building the CSS
 The CSS used by django-scribbler is built using `LESS <http://lesscss.org/>`_. No changes
 should be made to the ``scribbler.css`` directly. Instead changes should be made to the ``scribbler.less``
 file. After changes are made to ``scribbler.less`` you can create the new compressed CSS with the
-Node based complier::
+Node based complier. In addition this uses the `RequireJS optimizer <https://github.com/jrburke/r.js>`_
+to inline the required ``codemirror.css``::
 
-    # Install less from the NPM package
-    npm install less -g
-    lessc scribbler/static/scribbler/less/scribbler.less --yui-compress > scribbler/static/scribbler/css/scribbler.css
+    # Install less and requirejs from the NPM package
+    npm install less requirejs -g
+	make build-css
 
 The example project uses the client-side LESS compiler to make local development easier.
+
+
+Building the JS
+------------------------------------
+
+While it is not often needed for local development, the final released JS is bundled and minified
+using the same RequireJS optimizer used for the CSS. To build ``scribbler-min.js`` you should
+have the optimizer installed and run::
+
+	make build-js
 
 
 Coding Standards
@@ -114,6 +131,10 @@ with Node based `CLI tool <https://github.com/jshint/jshint>`_::
     npm install jshint -g
     # Check the scribbler JS
     jshint scribbler/static/scribbler/js/scribbler.js
+
+This can also be done with the ``make`` command::
+
+    make lint-js
 
 
 Submitting a Pull Request

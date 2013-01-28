@@ -4,6 +4,31 @@ Release History
 Release and change history for django-scribbler
 
 
+v0.5.0 (Not Yet Released)
+------------------------------------
+
+
+Features
+_________________
+
+- Upgraded to CodeMirror 2.38
+- Additional build/development utilities and documentation
+- Started including a minified and optimized version of scribbler.js for production usage
+- CSS is now built to include the base CodeMirror CSS and does not need to be added to the template separately
+
+Bug Fixes
+_________________
+
+- Fixed a bug where you could not follow an internal link in the scribble content. See #66
+
+Backwards Incompatible Changes
+__________________________________
+
+The static dependencies (RequireJS, CodeMirror and jQuery) were originally included in the repository
+but have been removed. These are still included in the final distribution. However, if you installing
+django-scribbler directly from git these will no longer be available.
+
+
 v0.4.0 (Released 2013-01-01)
 ------------------------------------
 
