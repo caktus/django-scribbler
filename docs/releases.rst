@@ -25,7 +25,7 @@ Backwards Incompatible Changes
 __________________________________
 
 The static dependencies (RequireJS, CodeMirror and jQuery) were originally included in the repository
-but have been removed. These are still included in the final distribution. However if you installing
+but have been removed. These are still included in the final distribution. However, if you installing
 django-scribbler directly from git these will no longer be available.
 
 
