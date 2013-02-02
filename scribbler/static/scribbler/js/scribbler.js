@@ -22,7 +22,9 @@ require.config({
         simplehint: '../libs/codemirror/lib/util/simple-hint',
         scribblereditor: 'scribbler-editor',
         scribblermenu: 'scribbler-menu',
-        djangohint: 'djangohint'
+        djangohint: 'djangohint',
+        backbone: '../libs/backbone',
+        underscore: '../libs/underscore'
     },
     shim: {
         codemirror: {
@@ -47,6 +49,13 @@ require.config({
         htmlmode: {
             exports: 'CodeMirror',
             deps: ['xmlmode', 'jsmode', 'cssmode']
+        },
+        backbone: {
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
+        },
+        underscore: {
+            exports: '_'
         }
     }
 });
