@@ -8,7 +8,6 @@
  *
 */
 
-/*jslint browser: true, newcap: true */
 /*global require*/
 
 require.config({
@@ -66,11 +65,10 @@ require(['jquery', 'scribblereditor', 'scribblermenu'], function ($, ScribbleEdi
     $.noConflict(true);
 
     $(document).ready(function () {
-        var editor = new ScribbleEditor();
+        var editor = new ScribbleEditor(),
+            menu = new ScribbleMenu();
         editor.render();
-        var menu = new ScribbleMenu();
         editor.bind("open", menu.close, menu);
         menu.render();
-
     });
 });

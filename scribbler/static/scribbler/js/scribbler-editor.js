@@ -1,4 +1,3 @@
-/*jslint browser: true, newcap: true */
 /*global define*/
 
 var gettext = gettext || function (text) {
@@ -52,7 +51,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
             if (this.scribbles.length > 0) {
                 this.buildControls();
                 $('body').append(this.$el);
-                this.editor = CodeMirror(document.getElementById(this.id), this.editorOptions);
+                this.editor = new CodeMirror(document.getElementById(this.id), this.editorOptions);
                 this.editor.selector = this.id;
                 // Bind editor to the scribbles
                 this.scribbles.each(function (i, elem) {

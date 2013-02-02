@@ -1,4 +1,3 @@
-/*jslint browser: true, newcap: true */
 /*global define*/
 
 var gettext = gettext || function (text) {
