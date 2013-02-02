@@ -325,6 +325,10 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
                     self.controls.status.html("");
                 });
             }, 2000);
+        },
+        destroy: function () {
+            this.undelegateEvents();
+            this.remove();
         }
     });
 

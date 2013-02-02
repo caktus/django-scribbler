@@ -65,6 +65,10 @@ define(['jquery', 'underscore', 'backbone'], function ($, _, Backbone) {
         },
         highlight: function () {
             this.scribbles.addClass('highlight');
+        },
+        destroy: function () {
+            this.undelegateEvents();
+            this.remove();
         }
     });
 
