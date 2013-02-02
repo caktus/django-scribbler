@@ -98,15 +98,22 @@ scribbles on any page on your site these should be included in your base templat
 
 .. code-block:: html
 
-    <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/libs/codemirror.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/css/scribbler.css">
-    <script data-main="{{ STATIC_URL }}scribbler/js/scribbler" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
+    <script data-main="{{ STATIC_URL }}scribbler/js/scribbler-min" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
 
 This uses `RequireJS <http://requirejs.org/>`_ to load the additional JS resources. The front-end
-editor uses `CodeMirror <http://codemirror.net/>`_ (currently using v2.32) which is included in the distribution.
+editor uses `CodeMirror <http://codemirror.net/>`_ (currently using v2.38) which is included in the distribution.
 Both RequireJS and CodeMirror are available a MIT-style license compatible with
 this project's BSD license. You can find the license files included in
 ``scribbler/static/scribbler/libs/``.
+
+.. Note::
+
+	Prior to v0.5 you also needed to include the ``codemirror.css`` prior to ``scribbler.css``. As of
+	v0.5 you only need to include ``scribbler.css``.
+
+	Also prior to v0.5 it was recommended to use ``{{ STATIC_URL }}scribbler/js/scribbler``. As of v0.5
+	it is recommended that you use the minified version.
 
 
 Place Scribbles in Your Template
