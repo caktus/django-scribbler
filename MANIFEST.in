@@ -7,6 +7,7 @@ recursive-include scribbler/static/img *
 recursive-include scribbler/static/js *
 recursive-include scribbler/static/less *
 recursive-include scribbler/locale *
+recursive-include scribbler/tests/qunit *
 include scribbler/static/libs/*-LICENSE
 recursive-include scribbler/static/libs/codemirror/keymap *
 recursive-include scribbler/static/libs/codemirror/lib *
