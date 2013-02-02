@@ -6,7 +6,7 @@ var gettext = gettext || function (text) {
     return text;
 };
 
-define(['jquery', 'codemirror', 'simplehint', 'htmlmode'], function ($, CodeMirror) {
+define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirror) {
     'use strict';
 
     $.noConflict(true);

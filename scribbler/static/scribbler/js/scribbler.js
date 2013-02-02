@@ -30,10 +30,6 @@ require.config({
         },
         simplehint: {
             exports: 'CodeMirror',
-            deps: ['djangohint']
-        },
-        djangohint: {
-            exports: 'CodeMirror',
             deps: ['codemirror']
         },
         jsmode: {
