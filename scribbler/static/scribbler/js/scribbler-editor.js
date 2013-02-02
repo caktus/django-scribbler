@@ -71,17 +71,17 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
             var footerControls = $('<div></div>').addClass('controls clearfix');
             // Close button
             this.controls.close = $('<a>' + gettext('Close') + '</a>')
-                .attr({title: gettext('Close'), href: '#'})
+                .attr({title: gettext('Close')})
                 .addClass('close');
             // Save button
             this.controls.save = $('<a>' + gettext('Save') + '</a>')
-                .attr({title: gettext('Save'), href: "#"})
+                .attr({title: gettext('Save')})
                 .addClass('btn save inactive');
             this.controls.draft = $('<a>' + gettext('Save as Draft') + '</a>')
-                .attr({title: gettext('Save as Draft'), href: "#"})
+                .attr({title: gettext('Save as Draft')})
                 .addClass('btn draft inactive');
             this.controls.discard = $('<a>' + gettext('Discard Draft') + '</a>')
-                .attr({title: gettext('Discard Draft'), href: "#"})
+                .attr({title: gettext('Discard Draft')})
                 .addClass('btn discard inactive');
             // Error message
             this.controls.errors = $('<span></span>')

@@ -36,11 +36,11 @@ define(['jquery', 'underscore', 'backbone'], function ($, _, Backbone) {
             this.menuControls = $('<div></div>').addClass('control-panel');
             // Open/Close button
             this.controls.tab = $('<a><span class="hot-dog"></span><span class="hot-dog"></span><span class="hot-dog"></span></a>')
-                .attr({title: gettext('Toggle Menu'), href: '#'})
+                .attr({title: gettext('Toggle Menu')})
                 .addClass('tab');
             // Reveal button
             this.controls.reveal = $('<a>' + gettext('Show all scribbles') + '</a>')
-                .attr({title: gettext('Show all scribbles'), href: "#"})
+                .attr({title: gettext('Show all scribbles')})
                 .addClass('reveal');
             this.menuControls.append(this.controls.reveal);
             this.$el.append(this.menuControls);
