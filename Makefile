@@ -14,7 +14,7 @@ fetch-static-libs:
 	mv require.js ${LIBS_DIR}/require.js
 	wget http://codemirror.net/codemirror-${CODEMIRROR_VERSION}.zip
 	unzip codemirror-${CODEMIRROR_VERSION}.zip
-	rm -r ${LIBS_DIR}/codemirror
+	rm -rf ${LIBS_DIR}/codemirror
 	mkdir -p ${LIBS_DIR}/codemirror
 	mv -f codemirror-${CODEMIRROR_VERSION}/* ${LIBS_DIR}/codemirror
 	rm -r codemirror-${CODEMIRROR_VERSION}
@@ -23,6 +23,7 @@ fetch-static-libs:
 build-css:
 	# Build CSS from LESS
 	# Requires LESS and r.js optimizer
+	mkdir -p ${STATIC_DIR}/css
 	lessc --yui-compress ${STATIC_DIR}/less/scribbler.less ${STATIC_DIR}/css/scribbler.css
 	cd ${STATIC_DIR}/css && r.js -o cssIn=scribbler.css out=scribbler.css
 
