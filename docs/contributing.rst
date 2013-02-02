@@ -8,7 +8,7 @@ in making django-scribbler better then this guide will help you find a way to co
 Ways to Contribute
 ------------------------------------
 
-You can contribute to the project by submitting bug reports, feature requests 
+You can contribute to the project by submitting bug reports, feature requests
 or documentation updates through the Github `issues <https://github.com/caktus/django-scribbler/issues>`_.
 
 
@@ -16,8 +16,8 @@ Translate django-scribbler
 --------------------------------------
 
 We are working towards translating django-scribbler into different languages. There
-are only a few strings to translate so it is a great way to be involved with the project. 
-The translations are managed through `Transifex <https://www.transifex.com/projects/p/django-scribbler/>`_. 
+are only a few strings to translate so it is a great way to be involved with the project.
+The translations are managed through `Transifex <https://www.transifex.com/projects/p/django-scribbler/>`_.
 Please do not submit translate requests/updates to the Github repo.
 
 
@@ -38,7 +38,7 @@ create a fork and clone your fork. You can then add the main repository as a rem
 
 django-scribbler requires a few static libraries which are not included in the repository. Before beginning
 development you should make sure you have these libraries with::
-    
+
     make fetch-static-libs
 
 
@@ -86,7 +86,7 @@ or::
 
     make html
 
-from inside the ``docs/`` directory. 
+from inside the ``docs/`` directory.
 
 
 Building the CSS
@@ -100,7 +100,7 @@ to inline the required ``codemirror.css``::
 
     # Install less and requirejs from the NPM package
     npm install less requirejs -g
-	make build-css
+    make build-css
 
 The example project uses the client-side LESS compiler to make local development easier.
 
@@ -112,7 +112,7 @@ While it is not often needed for local development, the final released JS is bun
 using the same RequireJS optimizer used for the CSS. To build ``scribbler-min.js`` you should
 have the optimizer installed and run::
 
-	make build-js
+    make build-js
 
 
 Coding Standards
@@ -130,7 +130,7 @@ with Node based `CLI tool <https://github.com/jshint/jshint>`_::
     # Install jshint from the NPM package
     npm install jshint -g
     # Check the scribbler JS
-    jshint scribbler/static/scribbler/js/scribbler.js
+    jshint scribbler/static/scribbler/js/
 
 This can also be done with the ``make`` command::
 
@@ -145,7 +145,7 @@ For information on submitting a pull request you can read the Github help page
 https://help.github.com/articles/using-pull-requests.
 
 Pull requests are a place for the code to be reviewed before it is merged. This review
-will go over the coding style as well as if it solves the problem indended and fits
+will go over the coding style as well as if it solves the problem intended and fits
 in the scope of the project. It may be a long discussion or it might just be a simple
 thank you.
 
@@ -154,8 +154,69 @@ if you change is not accepted. If you want to increase the chances of your chang
 being incorporated then here are some tips.
 
 - Address a known issue. Preference is given to a request that fixes a currently open issue.
-- Include documentation and tests when appropriate. New features should be tested and documented. Bugfixes should include tests which demostrate the problem.
+- Include documentation and tests when appropriate. New features should be tested and documented. Bugfixes should include tests which demonstrate the problem.
 - Keep it simple. It's difficult to review a large block of code so try to keep the scope of the change small.
 
 You should also feel free to ask for help writing tests or writing documentation
 if you aren't sure how to go about it.
+
+
+Installing an Unstable Release
+------------------------------------
+
+Since the built CSS, JS and other static dependencies are not included in the repository, it is not
+possible to install django-scribbler directly from Github. If you want to install and unstable version
+of django-scribbler you have a few options.
+
+.. warning::
+
+    While we try to keep the ``master`` branch stable, there may be bugs or unfinished work there. It
+    is recommended that you use a stable release of django-scribbler when possible.
+
+
+Install Local Build
+_____________________________________
+
+The step overview for installing from a local build is:
+
+* Check out the repository
+* Install static libraries
+* Build CSS and JS
+* Install from local repository
+
+From the command line this would be::
+
+    git clone git://github.com/caktus/django-scribbler.git
+    cd django-scribbler
+    make fetch-static-libs build-css build-js
+    pip install .
+
+
+Create an Unstable Package
+_____________________________________
+
+Installing from a local build is probably a reasonable solution for a single person wanting
+to test out the current master or a feature branch in a large project. However, it isn't a good
+solution if you want to deploy this to a larger testing environment or multiple computers. The
+basic steps are more or less the same:
+
+* Check out the repository
+* Install static libraries
+* Build CSS and JS
+* Create a source distribution
+* Distribute .tar file
+* Install for packaged .tar
+
+
+From the command line this would be::
+
+    git clone git://github.com/caktus/django-scribbler.git
+    cd django-scribbler
+    make fetch-static-libs build-css build-js
+    python setup.py sdist
+
+This will create a ``django-scribbler-X.X.X.tar.gz`` inside a ``dist/`` directory where
+``X.X.X`` is the current ``scribbler.__version__``. This tar file would then be distributed
+using your favorite file hosting service (S3, Dropbox, etc). You can then install by using ``pip``::
+
+    pip install http://path-to-hostedfile/django-scribbler-X.X.X.tar.gz
