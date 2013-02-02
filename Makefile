@@ -43,6 +43,11 @@ build-js:
 	# Requires r.js optimizer
 	cd ${STATIC_DIR}/js && r.js -o name=scribbler out=scribbler-min.js baseUrl=. mainConfigFile=scribbler.js
 
+test-js:
+	# Run the QUnit tests
+	# Requires PhantomJS
+	phantomjs scribbler/tests/qunit/runner.js scribbler/tests/qunit/index.html
+
 compile-messages:
 	# Create compiled .mo files for source distribution
 	cd scribbler && django-admin.py compilemessages
