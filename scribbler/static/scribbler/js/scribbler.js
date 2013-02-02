@@ -11,8 +11,6 @@
 /*jslint browser: true, newcap: true */
 /*global require*/
 
-var gettext = gettext || function (text) { 'use strict'; return text; };
-
 require.config({
     paths: {
         jquery: '../libs/jquery',

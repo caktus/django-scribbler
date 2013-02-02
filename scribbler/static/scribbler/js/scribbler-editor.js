@@ -1,7 +1,10 @@
 /*jslint browser: true, newcap: true */
 /*global define*/
 
-var gettext = gettext || function (text) { 'use strict'; return text; };
+var gettext = gettext || function (text) {
+    'use strict';
+    return text;
+};
 
 define(['jquery', 'codemirror', 'simplehint', 'htmlmode'], function ($, CodeMirror) {
     'use strict';
@@ -328,5 +331,5 @@ define(['jquery', 'codemirror', 'simplehint', 'htmlmode'], function ($, CodeMirr
         }
     };
 
-    return ScribbleEditor; 
+    return ScribbleEditor;
 });
