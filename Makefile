@@ -14,7 +14,7 @@ fetch-static-libs:
 	curl -o ${LIBS_DIR}/jquery.js http://code.jquery.com/jquery-${JQUERY_VERSION}.js
 	curl -o ${LIBS_DIR}/require.js http://requirejs.org/docs/release/${REQUIRE_VERSION}/comments/require.js
 	curl -o ${LIBS_DIR}/backbone.js https://raw.github.com/documentcloud/backbone/${BACKBONE_VERSION}/backbone.js
-	curl -o ${LIBS_DIR}/underscore.js http://raw.github.com/documentcloud/underscore/${UNDERSCORE_VERSION}/underscore.js
+	curl -o ${LIBS_DIR}/underscore.js https://raw.github.com/documentcloud/underscore/${UNDERSCORE_VERSION}/underscore.js
 	curl -o codemirror-${CODEMIRROR_VERSION}.zip http://codemirror.net/codemirror-${CODEMIRROR_VERSION}.zip
 	unzip codemirror-${CODEMIRROR_VERSION}.zip
 	rm -rf ${LIBS_DIR}/codemirror
