@@ -64,7 +64,8 @@ require(['jquery', 'scribblereditor', 'scribblermenu'], function ($, ScribbleEdi
     'use strict';
 
     $(document).ready(function () {
-        ScribbleEditor.init();
+        var editor = new ScribbleEditor();
+        editor.render();
         var menu = new ScribbleMenu();
         menu.render();
     });
