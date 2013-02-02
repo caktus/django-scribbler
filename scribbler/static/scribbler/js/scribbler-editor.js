@@ -110,6 +110,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
             this.current.can_save = this.current.form.data('save');
             this.current.can_delete = this.current.form.data('delete');
             this.$el.show();
+            this.trigger('open');
             if (this.current.can_save) {
                 this.controls.save.show();
                 this.editor.setOption('readOnly', false);
@@ -122,7 +123,6 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
             }
             this.$el.animate({height: '300px'}, 500, function () {self.editor.focus(); });
             this.visible = true;
-            //ScribbleMenu.close();
             // Start background draft saving
             var checkDraft = function () {
                 if (self.needsDraft) {
@@ -141,6 +141,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
             if (this.backgroundDraft) {
                 clearInterval(this.backgroundDraft);
             }
+            this.trigger('close');
         },
         submitPreview: function (force) {
             var self = this;

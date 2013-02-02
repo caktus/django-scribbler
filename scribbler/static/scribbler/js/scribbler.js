@@ -63,10 +63,14 @@ require.config({
 require(['jquery', 'scribblereditor', 'scribblermenu'], function ($, ScribbleEditor, ScribbleMenu) {
     'use strict';
 
+    $.noConflict(true);
+
     $(document).ready(function () {
         var editor = new ScribbleEditor();
         editor.render();
         var menu = new ScribbleMenu();
+        editor.bind("open", menu.close, menu);
         menu.render();
+
     });
 });
