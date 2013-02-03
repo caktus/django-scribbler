@@ -1,4 +1,3 @@
-/*jslint browser: true, newcap: true */
 /*global define*/
 
 var gettext = gettext || function (text) {
@@ -6,58 +5,61 @@ var gettext = gettext || function (text) {
     return text;
 };
 
-define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirror) {
+define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmode'], function ($, _, Backbone, CodeMirror) {
     'use strict';
 
     $.noConflict(true);
 
-    var ScribbleEditor = {
-        visible: false,
-        rendering: false,
-        errorLine: null,
-        valid: true,
-        element: null,
-        controls: {},
-        current: {},
-        editor: null,
-        scribbles: null,
-        needsSave: false,
-        needsDraft: false,
-        init: function () {
+    var ScribbleEditor = Backbone.View.extend({
+        id: 'scribbleEditorContainer',
+        tagName: 'div',
+        initialize: function () {
+            var self = this;
+            this.visible = false;
+            this.rendering = false;
+            this.errorLine = null;
+            this.controls = {};
+            this.current = {};
+            this.needsSave = false;
+            this.needsDraft = false;
             this.scribbles = $('.scribble-wrapper.with-controls');
+            this.editorOptions = {
+                mode: "text/html",
+                tabMode: "indent",
+                lineNumbers: true,
+                onChange: function (editor) {
+                    self.needsSave = true;
+                    self.controls.save.removeClass('inactive');
+                    self.needsDraft = true;
+                    self.controls.draft.removeClass('inactive');
+                    self.submitPreview();
+                },
+                extraKeys: {'Tab': 'autocomplete'}
+            };
+            CodeMirror.commands.autocomplete = function (editor) {
+                CodeMirror.simpleHint(editor, CodeMirror.djangoHint);
+            };
+        },
+        events: {
+            'click .controls .close': 'close',
+            'click .controls .save': 'submitSave',
+            'click .controls .draft': 'createDraft',
+            'click .controls .discard': 'deleteDraft'
+        },
+        render: function () {
+            var self = this;
             if (this.scribbles.length > 0) {
-                this.element = $('<div id="scribbleEditorContainer"></div>');
                 this.buildControls();
-                $('body').append(this.element);
-                // Initialize CodeMirror editor
-                var options = {
-                    mode: "text/html",
-                    tabMode: "indent",
-                    lineNumbers: true,
-                    onChange: function (editor) {
-                        ScribbleEditor.needsSave = true;
-                        ScribbleEditor.controls.save.removeClass('inactive');
-                        ScribbleEditor.needsDraft = true;
-                        ScribbleEditor.controls.draft.removeClass('inactive');
-                        ScribbleEditor.submitPreview();
-                    },
-                    extraKeys: {'Tab': 'autocomplete'}
-                };
-                CodeMirror.commands.autocomplete = function (editor) {
-                    CodeMirror.simpleHint(editor, CodeMirror.djangoHint);
-                };
-                this.editor = CodeMirror(
-                    document.getElementById("scribbleEditorContainer"),
-                    options
-                );
-                this.editor.selector = "scribbleEditorContainer";
+                $('body').append(this.$el);
+                this.editor = new CodeMirror(document.getElementById(this.id), this.editorOptions);
+                this.editor.selector = this.id;
                 // Bind editor to the scribbles
                 this.scribbles.each(function (i, elem) {
                     // Bind event handlers for each scribble
                     $(elem).click(function (e) {
                         // Allow click to follow links inside of scribble content
                         if (e.target.nodeName !== 'A') {
-                            ScribbleEditor.open($(this));
+                            self.open($(this));
                         }
                     });
                 });
@@ -68,32 +70,18 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
             var footerControls = $('<div></div>').addClass('controls clearfix');
             // Close button
             this.controls.close = $('<a>' + gettext('Close') + '</a>')
-                .attr({title: gettext('Close'), href: '#'})
-                .addClass('close')
-                .click(function (e) {
-                    e.preventDefault();
-                    ScribbleEditor.close();
-                });
+                .attr({title: gettext('Close')})
+                .addClass('close');
             // Save button
             this.controls.save = $('<a>' + gettext('Save') + '</a>')
-                .attr({title: gettext('Save'), href: "#"})
-                .addClass('btn save inactive').click(function (e) {
-                    e.preventDefault();
-                    ScribbleEditor.submitSave();
-                });
+                .attr({title: gettext('Save')})
+                .addClass('btn save inactive');
             this.controls.draft = $('<a>' + gettext('Save as Draft') + '</a>')
-                .attr({title: gettext('Save as Draft'), href: "#"})
-                .addClass('btn draft inactive').click(function (e) {
-                    e.preventDefault();
-                    ScribbleEditor.createDraft();
-                });
+                .attr({title: gettext('Save as Draft')})
+                .addClass('btn draft inactive');
             this.controls.discard = $('<a>' + gettext('Discard Draft') + '</a>')
-                .attr({title: gettext('Discard Draft'), href: "#"})
-                .addClass('btn discard inactive').click(function (e) {
-                    e.preventDefault();
-                    ScribbleEditor.editor.setValue($('[name$=content]', ScribbleEditor.current.form).val());
-                    ScribbleEditor.deleteDraft();
-                });
+                .attr({title: gettext('Discard Draft')})
+                .addClass('btn discard inactive');
             // Error message
             this.controls.errors = $('<span></span>')
                 .addClass('error-msg');
@@ -108,9 +96,10 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
                 this.controls.draft,
                 this.controls.save
             );
-            this.element.append(footerControls);
+            this.$el.append(footerControls);
         },
         open: function (scribble) {
+            var self = this;
             if (this.visible) {
                 this.close();
             }
@@ -119,7 +108,8 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
             this.current.form = $('.scribble-form', scribble);
             this.current.can_save = this.current.form.data('save');
             this.current.can_delete = this.current.form.data('delete');
-            this.element.show();
+            this.$el.show();
+            this.trigger('open');
             if (this.current.can_save) {
                 this.controls.save.show();
                 this.editor.setOption('readOnly', false);
@@ -130,13 +120,12 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
                 this.editor.setOption('readOnly', true);
                 this.editor.setValue(gettext('You do not have permission to edit this content.'));
             }
-            this.element.animate({height: '300px'}, 500, function () {ScribbleEditor.editor.focus(); });
+            this.$el.animate({height: '300px'}, 500, function () {self.editor.focus(); });
             this.visible = true;
-            //ScribbleMenu.close();
             // Start background draft saving
             var checkDraft = function () {
-                if (ScribbleEditor.needsDraft) {
-                    ScribbleEditor.createDraft();
+                if (self.needsDraft) {
+                    self.createDraft();
                 }
             };
             this.backgroundDraft = setInterval(checkDraft, 3000);
@@ -146,13 +135,15 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
             this.current.content.show();
             this.current = {};
             this.editor.setValue('');
-            this.element.animate({height: 0}, 500);
+            this.$el.animate({height: 0}, 500);
             this.visible = false;
             if (this.backgroundDraft) {
                 clearInterval(this.backgroundDraft);
             }
+            this.trigger('close');
         },
         submitPreview: function (force) {
+            var self = this;
             if (this.current.form && (force || (!this.rendering && !this.editor.getOption('readOnly')))) {
                 this.rendering = true;
                 // Submit the form and display the preview
@@ -163,18 +154,19 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
                         if (response.valid) {
                             CodeMirror.update_variables(response.variables);
                         }
-                        ScribbleEditor.renderPreview(response);
+                        self.renderPreview(response);
                     },
                     'json'
                 ).error(function (jqXHR, textStatus, errorThrown) {
                     var msg = 'Server response was "' + errorThrown + '"';
-                    ScribbleEditor.setError(msg);
+                    self.setError(msg);
                 }).complete(function () {
-                    ScribbleEditor.rendering = false;
+                    self.rendering = false;
                 });
             }
         },
         renderPreview: function (response) {
+            var self = this;
             if (this.errorLine !== null) {
                 this.editor.setLineClass(this.errorLine, null, null);
             }
@@ -200,14 +192,15 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
         },
         getFormData: function () {
             var result = {},
-                prefix = '';
+                prefix = '',
+                self = this;
             if (this.current.form) {
                 prefix = this.current.form.data('prefix');
                 $(':input', this.current.form).each(function (i, input) {
                     var inputName = $(input).attr('name').replace(prefix + '-', ''),
                         inputValue = $(input).val();
                     if (inputName === 'content') {
-                        result[inputName] = ScribbleEditor.editor.getValue();
+                        result[inputName] = self.editor.getValue();
                     } else {
                         result[inputName] = inputValue;
                     }
@@ -216,18 +209,19 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
             return result;
         },
         submitSave: function () {
+            var self = this;
             if (this.current.form && this.valid) {
                 // Submit the form and change current content
                 $.post(
                     this.current.form.data('save'),
                     this.getFormData(),
                     function (response) {
-                        ScribbleEditor.renderSave(response);
+                        self.renderSave(response);
                     },
                     'json'
                 ).error(function (jqXHR, textStatus, errorThrown) {
                     var msg = gettext('Server response was') + '"' + errorThrown + '"';
-                    ScribbleEditor.setError(msg);
+                    self.setError(msg);
                 });
             }
         },
@@ -240,7 +234,7 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
                 this.current.content.html(this.current.preview.html());
                 $('[name$=content]', this.current.form).val(this.editor.getValue());
                 this.close();
-            } else {
+            } else if (response.error) {
                 this.setError(response.error.message);
             }
         },
@@ -302,6 +296,7 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
             var path = window.location.pathname,
                 slug = '',
                 yesterday = new Date();
+            this.editor.setValue($('[name$=content]', this.current.form).val());
             yesterday.setDate(yesterday.getDate() - 1);
             if (this.current.form) {
                 // Check for localstorage and fallback to cookie
@@ -319,17 +314,22 @@ define(['jquery', 'codemirror', 'djangohint', 'htmlmode'], function ($, CodeMirr
             }
         },
         setStatus: function (msg) {
+            var self = this;
             // Append status message
             this.controls.status.fadeIn(500);
             this.controls.status.html(msg);
             // Callback to fade out the message
             setTimeout(function () {
-                ScribbleEditor.controls.status.fadeOut(500, function () {
-                    ScribbleEditor.controls.status.html("");
+                self.controls.status.fadeOut(500, function () {
+                    self.controls.status.html("");
                 });
             }, 2000);
+        },
+        destroy: function () {
+            this.undelegateEvents();
+            this.remove();
         }
-    };
+    });
 
     return ScribbleEditor;
 });

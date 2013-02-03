@@ -172,6 +172,8 @@ LOGGING = {
     }
 }
 
+INTERNAL_IPS = ('127.0.0.1', )
+
 
 ENV_FILE = '/home/dotcloud/environment.json'
 if os.path.exists(ENV_FILE):

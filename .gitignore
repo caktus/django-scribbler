@@ -17,3 +17,5 @@ scribbler/static/scribbler/js/scribbler-min.js
 scribbler/static/scribbler/libs/codemirror/*
 scribbler/static/scribbler/libs/jquery.js
 scribbler/static/scribbler/libs/require.js
+scribbler/static/scribbler/libs/backbone.js
+scribbler/static/scribbler/libs/underscore.js

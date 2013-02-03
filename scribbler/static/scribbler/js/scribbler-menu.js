@@ -1,4 +1,3 @@
-/*jslint browser: true, newcap: true */
 /*global define*/
 
 var gettext = gettext || function (text) {
@@ -6,22 +5,28 @@ var gettext = gettext || function (text) {
     return text;
 };
 
-define(['jquery'], function ($) {
+define(['jquery', 'underscore', 'backbone'], function ($, _, Backbone) {
     'use strict';
 
     $.noConflict(true);
 
-    var ScribbleMenu = {
-        visible: false,
-        controls: {},
-        scribbles: null,
-        init: function () {
+    var ScribbleMenu = Backbone.View.extend({
+        id: 'scribbleMenuContainer',
+        tagName: 'div',
+        initialize: function () {
+            this.visible = false;
+            this.controls = {};
             this.scribbles = $('.scribble-wrapper.with-controls');
+        },
+        events: {
+            'click .tab': 'toggle',
+            'click .control-panel .reveal': 'highlight'
+        },
+        render: function () {
             if (this.scribbles.length > 0) {
-                this.element = $('<div id="scribbleMenuContainer"></div>');
                 this.buildControls();
-                this.element.css('top', -1000);
-                $('body').append(this.element);
+                this.$el.css('top', -1000);
+                $('body').append(this.$el);
                 this.close();
             }
         },
@@ -30,38 +35,41 @@ define(['jquery'], function ($) {
             this.menuControls = $('<div></div>').addClass('control-panel');
             // Open/Close button
             this.controls.tab = $('<a><span class="hot-dog"></span><span class="hot-dog"></span><span class="hot-dog"></span></a>')
-                .attr({title: gettext('Toggle Menu'), href: '#'})
-                .addClass('tab')
-                .click(function (e) {
-                    e.preventDefault();
-                    if (ScribbleMenu.visible) {
-                        ScribbleMenu.close();
-                    } else {
-                        ScribbleMenu.open();
-                    }
-                });
+                .attr({title: gettext('Toggle Menu')})
+                .addClass('tab');
             // Reveal button
             this.controls.reveal = $('<a>' + gettext('Show all scribbles') + '</a>')
-                .attr({title: gettext('Show all scribbles'), href: "#"})
-                .addClass('reveal').click(function (e) {
-                    e.preventDefault();
-                    ScribbleMenu.scribbles.addClass('highlight');
-                });
+                .attr({title: gettext('Show all scribbles')})
+                .addClass('reveal');
             this.menuControls.append(this.controls.reveal);
-            this.element.append(this.menuControls);
-            this.element.append(this.controls.tab);
+            this.$el.append(this.menuControls);
+            this.$el.append(this.controls.tab);
         },
         open: function (scribble) {
-            this.element.animate({top: 0}, 150);
+            this.$el.animate({top: 0}, 150);
             this.visible = true;
         },
         close: function () {
             var height = this.menuControls.height();
-            this.element.animate({top: -1 * (5 + height)}, 200);
+            this.$el.animate({top: -1 * (5 + height)}, 200);
             this.visible = false;
             this.scribbles.removeClass('highlight');
+        },
+        toggle: function () {
+            if (this.visible) {
+                this.close();
+            } else {
+                this.open();
+            }
+        },
+        highlight: function () {
+            this.scribbles.addClass('highlight');
+        },
+        destroy: function () {
+            this.undelegateEvents();
+            this.remove();
         }
-    };
+    });
 
     return ScribbleMenu;
 });

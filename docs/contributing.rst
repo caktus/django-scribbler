@@ -68,6 +68,20 @@ Python 2.6.::
 Building all environments will also build the documentation. More on that in the next
 section.
 
+The JS plugins are tested using the `QUnit <http://qunitjs.com/>` testing framework. You can
+run the tests by opening ``scribbler\tests\qunit\index.html`` in your browser. You can also
+run the tests using the `PhantomJS <http://phantomjs.org/>` headless runner. First install
+PhantomJS from NPM (requires at least 1.6)::
+
+    # Install phantomjs from the NPM package
+    npm install phantomjs -g
+    # Run QUnit tests
+    phantomjs scribbler/tests/qunit/runner.js scribbler/tests/qunit/index.html
+
+We've added a make command which you can use as well::
+
+    make test-js
+
 
 Building the Documentation
 ------------------------------------
