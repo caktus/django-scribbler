@@ -102,4 +102,53 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(preview.html(), original, "Preview div should be unchanged.");
         equal(this.editor.controls.errors.text(), "Error: Bar", "Error message should be set.");
     });
+
+    test("Editor Save", function () {
+        expect(2);
+        this.editor.open(this.scribble);
+        this.editor.valid = true;
+        this.requests.length = 0;
+        this.editor.submitSave();
+        equal(this.requests.length, 1, "Request submitted for save.");
+        equal(this.requests[0].url, '/scribble/edit/1/');
+    });
+
+    test("Editor Invalid Save", function () {
+        expect(1);
+        this.editor.open(this.scribble);
+        this.editor.valid = false;
+        this.requests.length = 0;
+        this.editor.submitSave();
+        equal(this.requests.length, 0, "No save should be submitted.");
+    });
+
+    test("Editor Save Success", function () {
+        var current = $('.original', this.scribble);
+        $('.preview', this.scribble).html("Foo");
+        expect(2);
+        this.editor.open(this.scribble);
+        this.editor.valid = true;
+        this.requests.length = 0;
+        this.editor.submitSave();
+        this.requests[0].respond(200, {"Content-Type": "application/json"},
+             '{"valid": true, "url": "/scribble/edit/1/"}'
+        );
+        equal(current.html(), 'Foo', "Current div will be copied from preview.");
+        ok(!this.editor.visible, "Editor should be closed.");
+    });
+
+    test("Editor Save Error", function () {
+        var current = $('.original', this.scribble);
+        var original = current.html();
+        expect(2);
+        this.editor.open(this.scribble);
+        this.editor.valid = true;
+        this.requests.length = 0;
+        this.editor.submitSave();
+        this.requests[0].respond(200, {"Content-Type": "application/json"},
+             '{"valid": false, "url": "/scribble/edit/1/"}'
+        );
+        equal(current.html(), original, "Current div should be unchanged.");
+        ok(this.editor.visible, "Editor should still be open.");
+    });
 });

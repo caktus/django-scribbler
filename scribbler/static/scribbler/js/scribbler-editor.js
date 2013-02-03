@@ -234,7 +234,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
                 this.current.content.html(this.current.preview.html());
                 $('[name$=content]', this.current.form).val(this.editor.getValue());
                 this.close();
-            } else {
+            } else if (response.error) {
                 this.setError(response.error.message);
             }
         },
