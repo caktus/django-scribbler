@@ -50,7 +50,7 @@ require.config({
     }
 });
 
-require(['menu-test.js'], function () {
+require(['menu-test.js', 'editor-test.js'], function () {
     //Tests loaded, run Tests
     QUnit.load();
     QUnit.start();
