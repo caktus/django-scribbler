@@ -55,6 +55,6 @@
         {% endblock %}
     </div>
     <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
-    <script data-main="{{ STATIC_URL }}scribbler/js/scribbler{% if not debug %}-min{% endif %}" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
+    <script data-scribbler-plugins="themes" data-main="{{ STATIC_URL }}scribbler/js/scribbler{% if not debug %}-min{% endif %}" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
 </body>
 </html>
