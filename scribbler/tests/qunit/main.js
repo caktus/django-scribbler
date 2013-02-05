@@ -1,16 +1,7 @@
-/*
- * django-scribbler
- * Source: https://github.com/caktus/django-scribbler
- * Docs: http://django-scribbler.readthedocs.org/
- *
- * Copyright 2012-2013, Caktus Consulting Group, LLC
- * BSD License
- *
-*/
-
-/*global require*/
+/*global require, QUnit*/
 
 require.config({
+    baseUrl: "../../static/scribbler/js/",
     paths: {
         jquery: '../libs/jquery',
         codemirror: '../libs/codemirror/lib/codemirror',
@@ -59,16 +50,8 @@ require.config({
     }
 });
 
-require(['jquery', 'scribblereditor', 'scribblermenu'], function ($, ScribbleEditor, ScribbleMenu) {
-    'use strict';
-
-    $.noConflict(true);
-
-    $(document).ready(function () {
-        var editor = new ScribbleEditor(),
-            menu = new ScribbleMenu();
-        editor.render();
-        editor.bind("open", menu.close, menu);
-        menu.render();
-    });
+require(['menu-test.js', 'editor-test.js'], function () {
+    //Tests loaded, run Tests
+    QUnit.load();
+    QUnit.start();
 });
