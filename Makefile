@@ -37,6 +37,7 @@ lint-js:
 	jshint ${STATIC_DIR}/js/scribbler.js
 	jshint ${STATIC_DIR}/js/scribbler-editor.js
 	jshint ${STATIC_DIR}/js/scribbler-menu.js
+	jshint ${STATIC_DIR}/js/plugins/
 
 build-js:
 	# Build optimized JS
