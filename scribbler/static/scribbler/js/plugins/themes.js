@@ -4,7 +4,7 @@ define(["require", "jquery", "underscore"], function (require, $, _) {
     var themes = [
         'default', 'ambiance', 'blackboard', 'cobalt', 'eclipse', 'elegant',
         'erlang-dark', 'lesser-dark', 'monokai', 'neat', 'night', 'rubyblue',
-        'vibrant-ink', 'xq-dark'
+        'solarized light', 'solarized dark', 'twilight', 'vibrant-ink', 'xq-dark'
     ];
     // Theme switcher plugin
     function plugin(editor, menu) {
@@ -15,8 +15,9 @@ define(["require", "jquery", "underscore"], function (require, $, _) {
             .css("margin", "10px")
             .on("change", function (e) {
                 var selected = $(this).val(),
-                    cssUrl = require.toUrl("./../../libs/codemirror/theme/" + selected + ".css"),
-                    id = "#code-mirror-theme-" + selected,
+                    cssName = selected.split(" ")[0],
+                    cssUrl = require.toUrl("./../../libs/codemirror/theme/" + cssName + ".css"),
+                    id = "#code-mirror-theme-" + cssName,
                     stylesheet = $("link" + id);
                 if (stylesheet.length === 0 && selected !== "default") {
                     // Inject the theme CSS
