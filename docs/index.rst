@@ -13,5 +13,6 @@ Contents
 
     quick-start
     editor
+    plugins
     contributing
     releases
