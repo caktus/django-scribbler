@@ -7,11 +7,13 @@ Release and change history for django-scribbler
 v0.5.0 (Not Yet Released)
 ------------------------------------
 
+This release includes a major refactor of the JS code and adds support for writing
+client-side plugins for customizing the editor.
 
 Features
 _________________
 
-- Upgraded to CodeMirror 2.38
+- Upgraded to CodeMirror 3.02
 - Additional build/development utilities and documentation
 - Started including a minified and optimized version of scribbler.js for production usage
 - CSS is now built to include the base CodeMirror CSS and does not need to be added to the template separately
