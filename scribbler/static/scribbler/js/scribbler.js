@@ -18,7 +18,7 @@ require.config({
         cssmode: '../libs/codemirror/mode/css/css',
         xmlmode: '../libs/codemirror/mode/xml/xml',
         htmlmode: '../libs/codemirror/mode/htmlmixed/htmlmixed',
-        simplehint: '../libs/codemirror/lib/util/simple-hint',
+        simplehint: '../libs/codemirror/addon/hint/simple-hint',
         scribblereditor: 'scribbler-editor',
         scribblermenu: 'scribbler-menu',
         djangohint: 'djangohint',
