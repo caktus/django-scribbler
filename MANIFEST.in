@@ -2,19 +2,19 @@ include AUTHORS
 include LICENSE
 include README.rst
 recursive-include scribbler/templates *
-recursive-include scribbler/static/css *
-recursive-include scribbler/static/img *
-recursive-include scribbler/static/js *
-recursive-include scribbler/static/less *
+recursive-include scribbler/static/scribbler/css *
+recursive-include scribbler/static/scribbler/img *
+recursive-include scribbler/static/scribbler/js *
+recursive-include scribbler/static/scribbler/less *
 recursive-include scribbler/locale *
 recursive-include scribbler/tests/qunit *
-include scribbler/static/libs/*-LICENSE
-recursive-include scribbler/static/libs/codemirror/addon *
-recursive-include scribbler/static/libs/codemirror/keymap *
-recursive-include scribbler/static/libs/codemirror/lib *
-recursive-include scribbler/static/libs/codemirror/mode *
-recursive-include scribbler/static/libs/codemirror/theme *
-include scribbler/static/libs/jquery.js
-include scribbler/static/libs/require.js
-include scribbler/static/libs/backbone.js
-include scribbler/static/libs/underscore.js
+include scribbler/static/scribbler/libs/*-LICENSE
+recursive-include scribbler/static/scribbler/libs/codemirror/addon *
+recursive-include scribbler/static/scribbler/libs/codemirror/keymap *
+recursive-include scribbler/static/scribbler/libs/codemirror/lib *
+recursive-include scribbler/static/scribbler/libs/codemirror/mode *
+recursive-include scribbler/static/scribbler/libs/codemirror/theme *
+include scribbler/static/scribbler/libs/jquery.js
+include scribbler/static/scribbler/libs/require.js
+include scribbler/static/scribbler/libs/backbone.js
+include scribbler/static/scribbler/libs/underscore.js
