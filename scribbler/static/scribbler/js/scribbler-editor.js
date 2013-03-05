@@ -27,13 +27,6 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
                 mode: "text/html",
                 tabMode: "indent",
                 lineNumbers: true,
-                onChange: function (editor) {
-                    self.needsSave = true;
-                    self.controls.save.removeClass('inactive');
-                    self.needsDraft = true;
-                    self.controls.draft.removeClass('inactive');
-                    self.submitPreview();
-                },
                 extraKeys: {'Tab': 'autocomplete'}
             };
             CodeMirror.commands.autocomplete = function (editor) {
@@ -52,6 +45,13 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
                 this.buildControls();
                 $('body').append(this.$el);
                 this.editor = new CodeMirror(document.getElementById(this.id), this.editorOptions);
+                this.editor.on("change", function (editor, change) {
+                    self.needsSave = true;
+                    self.controls.save.removeClass('inactive');
+                    self.needsDraft = true;
+                    self.controls.draft.removeClass('inactive');
+                    self.submitPreview();
+                });
                 this.editor.selector = this.id;
                 // Bind editor to the scribbles
                 this.scribbles.each(function (i, elem) {
@@ -168,7 +168,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
         renderPreview: function (response) {
             var self = this;
             if (this.errorLine !== null) {
-                this.editor.setLineClass(this.errorLine, null, null);
+                this.editor.removeLineClass(this.errorLine, "background", "activeline");
             }
             this.controls.errors.html('');
             this.valid = response.valid;
@@ -184,7 +184,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
         setError: function (msg, line) {
             if (typeof line !== 'undefined' && line !== null) {
                 this.errorLine = line;
-                this.editor.setLineClass(this.errorLine, null, "activeline");
+                this.editor.addLineClass(this.errorLine, "background", "activeline");
             }
             this.controls.errors.html('<strong>' + gettext('Error:') + '</strong> ' + msg);
             this.valid = false;
