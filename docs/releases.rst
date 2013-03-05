@@ -4,7 +4,7 @@ Release History
 Release and change history for django-scribbler
 
 
-v0.5.0 (Not Yet Released)
+v0.5.0 (Released 2013-03-03)
 ------------------------------------
 
 This release includes a major refactor of the JS code and adds support for writing
