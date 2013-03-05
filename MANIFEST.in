@@ -18,3 +18,5 @@ include scribbler/static/scribbler/libs/jquery.js
 include scribbler/static/scribbler/libs/require.js
 include scribbler/static/scribbler/libs/backbone.js
 include scribbler/static/scribbler/libs/underscore.js
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
