@@ -167,18 +167,20 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
         },
         renderPreview: function (response) {
             var self = this;
-            if (this.errorLine !== null) {
-                this.editor.removeLineClass(this.errorLine, "background", "activeline");
-            }
-            this.controls.errors.html('');
-            this.valid = response.valid;
-            if (response.valid) {
-                this.current.preview.html(response.html);
-                this.current.preview.show();
-                this.current.content.hide();
-                this.controls.save.removeClass('inactive');
-            } else {
-                this.setError(response.error.message, response.error.line - 1);
+            if (this.visible) {
+                if (this.errorLine !== null) {
+                    this.editor.removeLineClass(this.errorLine, "background", "activeline");
+                }
+                this.controls.errors.html('');
+                this.valid = response.valid;
+                if (response.valid) {
+                    this.current.preview.html(response.html);
+                    this.current.preview.show();
+                    this.current.content.hide();
+                    this.controls.save.removeClass('inactive');
+                } else {
+                    this.setError(response.error.message, response.error.line - 1);
+                }
             }
         },
         setError: function (msg, line) {
@@ -227,12 +229,12 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
         },
         renderSave: function (response) {
             if (response.valid) {
-                this.deleteDraft();
                 this.needsSave = false;
                 this.controls.save.addClass('inactive');
                 this.current.form.data('save', response.url);
                 this.current.content.html(this.current.preview.html());
                 $('[name$=content]', this.current.form).val(this.editor.getValue());
+                this.deleteDraft();
                 this.close();
             } else if (response.error) {
                 this.setError(response.error.message);
