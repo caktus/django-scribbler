@@ -4,6 +4,12 @@ Release History
 Release and change history for django-scribbler
 
 
+v0.5.1 (Released 2013-03-03)
+------------------------------------
+
+- Bug fix release for broken packaging
+
+
 v0.5.0 (Released 2013-03-03)
 ------------------------------------
 
