@@ -78,7 +78,7 @@ Available Libraries
 ------------------------------------
 
 As noted above you can use the ``define`` call to load additional dependencies/libraries
-for your plugin from the set of libraries used by django-scribbler. The avaible libraries
+for your plugin from the set of libraries used by django-scribbler. The available libraries
 are:
 
 - require: `RequireJS 2.1.4 <http://requirejs.org/>`_
@@ -167,7 +167,7 @@ functions and properties for controlling the menu.
 .. js:attribute:: menu.scribbles
 
     This is a jQuery object containing all of the scribble divs available on the page
-    for editting.
+    for editing.
 
 .. js:attribute:: menu.menuControls
 

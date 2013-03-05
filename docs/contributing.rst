@@ -221,7 +221,6 @@ basic steps are more or less the same:
 * Distribute .tar file
 * Install for packaged .tar
 
-
 From the command line this would be::
 
     git clone git://github.com/caktus/django-scribbler.git
