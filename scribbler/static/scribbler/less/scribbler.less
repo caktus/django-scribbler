@@ -10,7 +10,6 @@
 
 /* Table of Contents
 ======================== 
-
 Imports
 Variables
 Mixins - Twitter Bootstrap
@@ -21,9 +20,7 @@ Codemirror customization styles
 
 */
 
-
 @import url("../libs/codemirror/lib/codemirror.css");
-
 
 /* Variables
 ======================== */
@@ -54,7 +51,6 @@ Codemirror customization styles
 
 /* Mixins - Twitter Bootstrap
 ================================ */
-
 .border-radius(@radius: 5px) {
     -webkit-border-radius: @radius;
     -moz-border-radius: @radius;
@@ -81,51 +77,6 @@ Codemirror customization styles
   filter: ~"alpha(opacity=@{opacity})";
 }
 
-.clearfix {
-    *zoom: 1;
-    
-    &:before, &:after {
-        display: table;
-        content: "";
-    }
-    
-    &:after {
-        clear: both;
-    }
-}
-
-.pull-right {
-    float: right;
-}
-
-// IE7 inline-block
-// ----------------
-.ie7-inline-block() {
-  *display: inline; /* IE7 inline-block hack */
-  *zoom: 1;
-}
-
-.ie7-restore-left-whitespace() {
-  *margin-left: .3em;
-
-  &:first-child {
-    *margin-left: 0;
-  }
-}
-
-.ie7-restore-right-whitespace() {
-  *margin-right: .3em;
-}
-
-
-#hide {
-    display: none;
-}
-
-#show {
-    display: block;
-}
-
 #gradient {
   .vertical(@startColor: #555, @endColor: #333) {
     background-color: mix(@startColor, @endColor, 60%);
@@ -140,7 +91,7 @@ Codemirror customization styles
   }
 }
 
-.buttonBackground(@startColor, @endColor, @textColor: #fff, @textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
+.buttonBackground(@startColor, @endColor, @textColor: @white, @textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
   .gradientBar(@startColor, @endColor, @textColor, @textShadow);
   *background-color: @endColor; 
 
@@ -156,7 +107,7 @@ Codemirror customization styles
   }
 }
 
-.gradientBar(@primaryColor, @secondaryColor, @textColor: #fff, @textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
+.gradientBar(@primaryColor, @secondaryColor, @textColor: @white, @textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
   color: @textColor;
   text-shadow: @textShadow;
   #gradient > .vertical(@primaryColor, @secondaryColor);
@@ -164,52 +115,20 @@ Codemirror customization styles
   border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
 }
 
-.btn {
-    display: inline-block;
-    .ie7-inline-block();
-    padding: 4px 14px;
-    font-size: 13px;
-    line-height: 20px;
-    *line-height: 20px;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    .buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
-    border: 1px solid @btnBorder;
-    *border: 0; // Remove the border to prevent IE7's black border on input:focus
-    border-bottom-color: darken(@btnBorder, 10%);
-    .border-radius(4px);
-    .ie7-restore-left-whitespace(); // Give IE7 some love
-    .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
-    &:hover {
-        color: @grayDark;
-        text-decoration: none;
-        background-color: darken(@white, 10%);
-        *background-color: darken(@white, 15%); /* Buttons in IE7 don't get borders, so darken on hover */
-        background-position: 0 -15px;
-        // transition is only when going to hover, otherwise the background
-        // behind the gradient (there for IE<=9 fallback) gets mismatched
-        .transition(background-position .1s linear);
-    }
-     // Active state
-     &.active,
-     &:active {
-        background-color: darken(@white, 10%);
-        background-color: darken(@white, 15%) e("\9");
-        background-image: none;
-        outline: 0;
-        .box-shadow(~"inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05)");
-     }
-
-    // Disabled state
-    &.inactive,
-    &[inactive] {
-        cursor: default;
-        background-color: darken(@white, 10%);
-        background-image: none;
-        .opacity(65);
-        .box-shadow(none);
-    }
+// IE7 inline-block
+// ----------------
+.ie7-inline-block() {
+  *display: inline; /* IE7 inline-block hack */
+  *zoom: 1;
+}
+.ie7-restore-left-whitespace() {
+  *margin-left: .3em;
+  &:first-child {
+    *margin-left: 0;
+  }
+}
+.ie7-restore-right-whitespace() {
+  *margin-right: .3em;
 }
 
 /* Scribbler wrapper styles
@@ -229,11 +148,21 @@ Codemirror customization styles
 
     .preview {
         background: @yellow;
-        .clearfix;
+        *zoom: 1;
+        &:before, &:after {
+            display: table;
+            content: "";
+        }
+        &:after { clear: both; }
     }
 
     .scribble-content {
-        .clearfix;
+        *zoom: 1;
+        &:before, &:after {
+            display: table;
+            content: "";
+        }
+        &:after { clear: both; }
     }
 
     &.active {
@@ -253,34 +182,74 @@ Codemirror customization styles
 
     // Styles below hide editor and preview on page load
     .scribble-controls {
-        #hide;
+        display: none;
         background: #eee;
         border-bottom: 1px solid black;
         padding: 5px;
         .preview, .delete, .save, .cancel {
-            #hide;
+            display: none;
         }
     }
 
-    .scribble-form {
-        #hide;
-    }
-
-    .scribble-default {
-        #hide;
-    }
+    .scribble-form, .scribble-default { display: none; }
 
 }
 
 /* Scribbler editor container styles
 ==================================== */
-
 #scribbleEditorContainer {
     position: fixed;
     bottom: 0;
     width: 100%;
     height: 0;
     z-index: 10000;
+    .btn {
+        display: inline-block;
+        .ie7-inline-block();
+        padding: 4px 14px;
+        font-size: 13px;
+        line-height: 20px;
+        *line-height: 20px;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        .buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
+        border: 1px solid @btnBorder;
+        *border: 0; // Remove the border to prevent IE7's black border on input:focus
+        border-bottom-color: darken(@btnBorder, 10%);
+        .border-radius(4px);
+        .ie7-restore-left-whitespace(); // Give IE7 some love
+        .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
+        &:hover {
+            color: @grayDark;
+            text-decoration: none;
+            background-color: darken(@white, 10%);
+            *background-color: darken(@white, 15%); /* Buttons in IE7 don't get borders, so darken on hover */
+            background-position: 0 -15px;
+            // transition is only when going to hover, otherwise the background
+            // behind the gradient (there for IE<=9 fallback) gets mismatched
+            .transition(background-position .1s linear);
+        }
+         // Active state
+         &.active,
+         &:active {
+            background-color: darken(@white, 10%);
+            background-color: darken(@white, 15%) e("\9");
+            background-image: none;
+            outline: 0;
+            .box-shadow(~"inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05)");
+         }
+
+        // Disabled state
+        &.inactive,
+        &[inactive] {
+            cursor: default;
+            background-color: darken(@white, 10%);
+            background-image: none;
+            .opacity(65);
+            .box-shadow(none);
+        }
+    }
 
     .controls {
         font-family: @primaryFont;
@@ -288,7 +257,12 @@ Codemirror customization styles
         padding: 7px 20px;
         #gradient .vertical;
         border: none;
-        .clearfix;
+        *zoom: 1;
+        &:before, &:after {
+            display: table;
+            content: "";
+        }
+        &:after { clear: both; }
         span {
             strong {
                 color: @redDarker;
@@ -299,7 +273,7 @@ Codemirror customization styles
         }
 
         .btn {
-            .pull-right;
+            float: right;
             margin: 0 8px;
             // Hover state
             &.save {
@@ -329,12 +303,58 @@ Codemirror customization styles
 
 /* Scribbler menu styles
 ==================================== */
-
 #scribbleMenuContainer {
     position: absolute;
     top: 0;
     z-index: 10000;
     width: 100%;
+    .btn {
+        display: inline-block;
+        .ie7-inline-block();
+        padding: 4px 14px;
+        font-size: 13px;
+        line-height: 20px;
+        *line-height: 20px;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        .buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
+        border: 1px solid @btnBorder;
+        *border: 0; // Remove the border to prevent IE7's black border on input:focus
+        border-bottom-color: darken(@btnBorder, 10%);
+        .border-radius(4px);
+        .ie7-restore-left-whitespace(); // Give IE7 some love
+        .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
+        &:hover {
+            color: @grayDark;
+            text-decoration: none;
+            background-color: darken(@white, 10%);
+            *background-color: darken(@white, 15%); /* Buttons in IE7 don't get borders, so darken on hover */
+            background-position: 0 -15px;
+            // transition is only when going to hover, otherwise the background
+            // behind the gradient (there for IE<=9 fallback) gets mismatched
+            .transition(background-position .1s linear);
+        }
+         // Active state
+         &.active,
+         &:active {
+            background-color: darken(@white, 10%);
+            background-color: darken(@white, 15%) e("\9");
+            background-image: none;
+            outline: 0;
+            .box-shadow(~"inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05)");
+         }
+
+        // Disabled state
+        &.inactive,
+        &[inactive] {
+            cursor: default;
+            background-color: darken(@white, 10%);
+            background-image: none;
+            .opacity(65);
+            .box-shadow(none);
+        }
+    }
     a.tab {
         position: absolute; 
         left: 45%;
@@ -355,7 +375,12 @@ Codemirror customization styles
         }
     }
     .control-panel {
-        .clearfix;
+        *zoom: 1;
+        &:before, &:after {
+            display: table;
+            content: "";
+        }
+        &:after { clear: both; }
         background-color: @grayDark;
         height: 50px;
         a {
@@ -374,7 +399,7 @@ Codemirror customization styles
 /* Codemirror customization styles
 ==================================== */
 .CodeMirror {
-    background-color: #FFFFFF;
+    background-color: @white;
     
     .activeline {
         background: @red !important;
