@@ -4,6 +4,12 @@ Release History
 Release and change history for django-scribbler
 
 
+v0.5.2 (Released 2013-05-02)
+------------------------------------
+
+- Fixed issue with scribbler styles overlapping/overriding site styles. See #73
+
+
 v0.5.1 (Released 2013-03-03)
 ------------------------------------
 
