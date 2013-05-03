@@ -34,7 +34,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
             };
         },
         events: {
-            'click .controls .close': 'close',
+            'click .controls .closed': 'close',
             'click .controls .save': 'submitSave',
             'click .controls .draft': 'createDraft',
             'click .controls .discard': 'deleteDraft'
@@ -67,21 +67,21 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
         },
         buildControls: function () {
             // Build control bar
-            var footerControls = $('<div></div>').addClass('controls clearfix');
+            var footerControls = $('<div></div>').addClass('controls');
             // Close button
             this.controls.close = $('<a>' + gettext('Close') + '</a>')
                 .attr({title: gettext('Close')})
-                .addClass('close');
+                .addClass('closed');
             // Save button
             this.controls.save = $('<a>' + gettext('Save') + '</a>')
                 .attr({title: gettext('Save')})
-                .addClass('btn save inactive');
-            this.controls.draft = $('<a>' + gettext('Save as Draft') + '</a>')
+                .addClass('save inactive');
+            this.controls.draft = $('<a>' + gettext('Save Draft') + '</a>')
                 .attr({title: gettext('Save as Draft')})
-                .addClass('btn draft inactive');
-            this.controls.discard = $('<a>' + gettext('Discard Draft') + '</a>')
+                .addClass('draft inactive');
+            this.controls.discard = $('<a>' + gettext('Discard') + '</a>')
                 .attr({title: gettext('Discard Draft')})
-                .addClass('btn discard inactive');
+                .addClass('discard inactive');
             // Error message
             this.controls.errors = $('<span></span>')
                 .addClass('error-msg');
