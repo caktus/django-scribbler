@@ -23,8 +23,6 @@ Features
 - The full power of the Django template language in the snippet blocks
 - Experimental Python 3 support
 
-A very simple demo site is available at http://scribbler-mlavin.dotcloud.com/ (username: demo password: demo) 
-
 
 Installation
 --------------------------------------
@@ -34,21 +32,21 @@ there will be experimental Python 3 support (3.2+). Using Python 3 requires usin
 the in-development version of Django (1.5dev).
 
 To install from PyPi::
-    
+
     pip install django-scribbler
 
 
 Documentation
 -----------------------------------
 
-Documentation on using django-scribbler is available on 
+Documentation on using django-scribbler is available on
 `Read The Docs <http://readthedocs.org/docs/django-scribbler/>`_.
 
 
 License
 --------------------------------------
 
-django-scribbler is released under the BSD License. See the 
+django-scribbler is released under the BSD License. See the
 `LICENSE <https://github.com/caktus/django-scribbler/blob/master/LICENSE>`_ file for more details.
 
 
