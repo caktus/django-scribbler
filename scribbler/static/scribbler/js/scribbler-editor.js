@@ -120,6 +120,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
                 this.editor.setOption('readOnly', true);
                 this.editor.setValue(gettext('You do not have permission to edit this content.'));
             }
+            this.$el.addClass('hidden-sm');
             this.$el.animate({height: '300px'}, 500, function () {self.editor.focus(); });
             this.visible = true;
             // Start background draft saving
