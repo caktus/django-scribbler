@@ -75,13 +75,13 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
             // Save button
             this.controls.save = $('<a>' + gettext('Save') + '</a>')
                 .attr({title: gettext('Save')})
-                .addClass('save inactive');
+                .addClass('save inactive hidden-sm');
             this.controls.draft = $('<a>' + gettext('Save Draft') + '</a>')
                 .attr({title: gettext('Save as Draft')})
-                .addClass('draft inactive');
+                .addClass('draft inactive hidden-sm');
             this.controls.discard = $('<a>' + gettext('Discard') + '</a>')
                 .attr({title: gettext('Discard Draft')})
-                .addClass('discard inactive');
+                .addClass('discard inactive hidden-sm');
             // Error message
             this.controls.errors = $('<span></span>')
                 .addClass('error-msg');
