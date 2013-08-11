@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-scribbler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-04 21:42-0500\n"
+"POT-Creation-Date: 2013-08-11 12:54+0200\n"
 "PO-Revision-Date: 2013-01-02 02:49+0000\n"
 "Last-Translator: mlavin <markdlavin@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,65 +19,53 @@ msgstr ""
 
 #: static/scribbler/js/scribbler-editor.js:72
 #: static/scribbler/js/scribbler-editor.js:73
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Close"
 msgstr "Fermer"
 
 #: static/scribbler/js/scribbler-editor.js:76
 #: static/scribbler/js/scribbler-editor.js:77
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Save"
 msgstr "Enregistrer"
 
 #: static/scribbler/js/scribbler-editor.js:79
 #: static/scribbler/js/scribbler-editor.js:80
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Save as Draft"
 msgstr "Enregistrer comme brouillon"
 
 #: static/scribbler/js/scribbler-editor.js:82
 #: static/scribbler/js/scribbler-editor.js:83
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Discard Draft"
 msgstr "Effacer le brouillon"
 
 #: static/scribbler/js/scribbler-editor.js:121
-#: static/scribbler/js/scribbler-min.js:42
 msgid "You do not have permission to edit this content."
 msgstr "Vous n'avez pas la permission d'éditer ce contenu."
 
 #: static/scribbler/js/scribbler-editor.js:191
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Error:"
 msgstr "Erreur:"
 
 #: static/scribbler/js/scribbler-editor.js:225
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Server response was"
 msgstr "La réponse du serveur était"
 
 #: static/scribbler/js/scribbler-editor.js:259
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Draft saved..."
 msgstr "Brouillon sauvegardé..."
 
 #: static/scribbler/js/scribbler-editor.js:293
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Restored content from a draft..."
 msgstr "Contenu restauré depuis un brouillon..."
 
 #: static/scribbler/js/scribbler-editor.js:315
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Restored original content..."
 msgstr "Contenu original restauré..."
 
 #: static/scribbler/js/scribbler-menu.js:38
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Toggle Menu"
 msgstr "Afficher/Masquer le menu"
 
 #: static/scribbler/js/scribbler-menu.js:41
 #: static/scribbler/js/scribbler-menu.js:42
-#: static/scribbler/js/scribbler-min.js:42
 msgid "Show all scribbles"
 msgstr "Montrer tous les scribbles"

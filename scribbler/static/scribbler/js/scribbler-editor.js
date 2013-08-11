@@ -76,10 +76,10 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
             this.controls.save = $('<a>' + gettext('Save') + '</a>')
                 .attr({title: gettext('Save')})
                 .addClass('save inactive');
-            this.controls.draft = $('<a>' + gettext('Save Draft') + '</a>')
+            this.controls.draft = $('<a>' + gettext('Save as Draft') + '</a>')
                 .attr({title: gettext('Save as Draft')})
                 .addClass('draft inactive');
-            this.controls.discard = $('<a>' + gettext('Discard') + '</a>')
+            this.controls.discard = $('<a>' + gettext('Discard Draft') + '</a>')
                 .attr({title: gettext('Discard Draft')})
                 .addClass('discard inactive');
             // Error message
