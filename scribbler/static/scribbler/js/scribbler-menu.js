@@ -36,7 +36,7 @@ define(['jquery', 'underscore', 'backbone'], function ($, _, Backbone) {
             // Open/Close button
             this.controls.tab = $('<a><span class="hot-dog"></span><span class="hot-dog"></span><span class="hot-dog"></span></a>')
                 .attr({title: gettext('Toggle Menu')})
-                .addClass('tab');
+                .addClass('tab hidden-sm');
             // Reveal button
             this.controls.reveal = $('<a>' + gettext('Show all scribbles') + '</a>')
                 .attr({title: gettext('Show all scribbles')})

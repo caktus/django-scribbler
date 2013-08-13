@@ -75,13 +75,13 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
             // Save button
             this.controls.save = $('<a>' + gettext('Save') + '</a>')
                 .attr({title: gettext('Save')})
-                .addClass('save inactive');
+                .addClass('save inactive hidden-sm');
             this.controls.draft = $('<a>' + gettext('Save Draft') + '</a>')
                 .attr({title: gettext('Save as Draft')})
-                .addClass('draft inactive');
+                .addClass('draft inactive hidden-sm');
             this.controls.discard = $('<a>' + gettext('Discard') + '</a>')
                 .attr({title: gettext('Discard Draft')})
-                .addClass('discard inactive');
+                .addClass('discard inactive hidden-sm');
             // Error message
             this.controls.errors = $('<span></span>')
                 .addClass('error-msg');
@@ -120,6 +120,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
                 this.editor.setOption('readOnly', true);
                 this.editor.setValue(gettext('You do not have permission to edit this content.'));
             }
+            this.$el.addClass('hidden-sm');
             this.$el.animate({height: '300px'}, 500, function () {self.editor.focus(); });
             this.visible = true;
             // Start background draft saving
