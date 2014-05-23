@@ -34,6 +34,7 @@ class ScribbleForm(forms.ModelForm, ScribbleFormMixin):
 
     class Meta(object):
         model = Scribble
+        exclude = []
         widgets = {
             'name': forms.HiddenInput,
             'slug': forms.HiddenInput,
