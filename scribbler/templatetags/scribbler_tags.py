@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django import template
 from django.conf import settings
 from django.core.cache import cache
-from django.contrib.contenttypes.generic import ContentType
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ImproperlyConfigured
 
 from scribbler.conf import CACHE_TIMEOUT, CACHE_KEY_FUNCTION
