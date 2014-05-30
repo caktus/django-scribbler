@@ -136,7 +136,7 @@ def scribble(parser, token):
     tokens = parser.tokens[:]
     nodelist = parser.parse(('endscribble', ))
     # Remaining tokens are inside the block
-    tokens = filter(lambda t: t not in parser.tokens, tokens)
+    tokens = list(filter(lambda t: t not in parser.tokens, tokens))
     parser.delete_first_token()
     raw = rebuild_template_string(tokens)
     return ScribbleNode(slug=slug, nodelist=nodelist, raw=raw, url=url)
