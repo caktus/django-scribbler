@@ -34,6 +34,7 @@ class ScribbleForm(forms.ModelForm, ScribbleFormMixin):
 
     class Meta(object):
         model = Scribble
+        exclude = []
         widgets = {
             'name': forms.HiddenInput,
             'slug': forms.HiddenInput,
@@ -74,6 +75,7 @@ class FieldScribbleForm(forms.Form, ScribbleFormMixin):
         except FieldDoesNotExist:
             # Error will be caught on form validation
             pass
+        self.fields[field_name] = forms.CharField(required=False)
 
     def clean(self):
         if not self.errors:

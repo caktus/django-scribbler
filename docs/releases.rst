@@ -4,6 +4,14 @@ Release History
 Release and change history for django-scribbler
 
 
+v0.5.3 (Released 2014-06-13)
+------------------------------------
+
+- Fixed issues with Python 3 compatibility
+- Fixed issues with Django 1.7+ compatibility
+- Fixed issues with IE 8 compatibility
+
+
 v0.5.2 (Released 2013-05-02)
 ------------------------------------
 

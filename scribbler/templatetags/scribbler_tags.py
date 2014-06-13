@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django import template
 from django.conf import settings
 from django.core.cache import cache
-from django.contrib.contenttypes.generic import ContentType
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ImproperlyConfigured
 
 from scribbler.conf import CACHE_TIMEOUT, CACHE_KEY_FUNCTION
@@ -136,7 +136,7 @@ def scribble(parser, token):
     tokens = parser.tokens[:]
     nodelist = parser.parse(('endscribble', ))
     # Remaining tokens are inside the block
-    tokens = filter(lambda t: t not in parser.tokens, tokens)
+    tokens = list(filter(lambda t: t not in parser.tokens, tokens))
     parser.delete_first_token()
     raw = rebuild_template_string(tokens)
     return ScribbleNode(slug=slug, nodelist=nodelist, raw=raw, url=url)

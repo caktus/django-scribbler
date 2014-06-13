@@ -21,15 +21,14 @@ Features
 - Front-end editing of snippets with the powerful `CodeMirror <http://codemirror.net/>`_ editor
 - Live in-place preview of content while editing
 - The full power of the Django template language in the snippet blocks
-- Experimental Python 3 support
+- Python 3 support
 
 
 Installation
 --------------------------------------
 
 django-scribbler requires Django >= 1.3 and Python >= 2.6. Starting with version v0.2
-there will be experimental Python 3 support (3.2+). Using Python 3 requires using
-the in-development version of Django (1.5dev).
+there will be experimental Python 3 support (3.2+). Using Python 3 requires using Django >= 1.5.
 
 To install from PyPi::
 

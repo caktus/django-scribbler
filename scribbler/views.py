@@ -100,9 +100,8 @@ def edit_scribble_field(request, ct_pk, instance_pk, field_name):
         results['valid'] = True
         form.save()
     else:
-        key = 'content' if 'content' in form.errors else '__all__'
         results['error'] = {
-            'message': ','.join(e for e in form.errors[key]),
+            'message': ','.join('%s' % e for e in form.errors.values()),
             'line': '',
         }
     results['url'] = form.get_save_url()

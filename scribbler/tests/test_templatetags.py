@@ -149,6 +149,7 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
         result = self.render_template_tag(slug='"sidebar"')
         self.assertTrue('<form' in result)
         self.assertTrue('with-controls' in result)
+        self.assertTrue('{% endscribble %}' not in result)
 
     def test_scribble_creator(self):
         "Authenticated users with permission to create will see the scribble controls."

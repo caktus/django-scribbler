@@ -1,12 +1,12 @@
 "Tests for preview/save views."
 from __future__ import unicode_literals
 
+import json
 from datetime import date
 
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
-from django.utils import simplejson as json
 
 from . import DaysLog
 from .base import ScribblerDataTestCase, Scribble
