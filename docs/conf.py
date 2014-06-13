@@ -43,7 +43,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'django-scribbler'
-copyright = u'2012-2013, Caktus Consulting Group'
+copyright = u'2012-2014, Caktus Consulting Group'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
