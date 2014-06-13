@@ -59,7 +59,7 @@ require.config({
     }
 });
 
-require(['jquery', 'scribblereditor', 'scribblermenu'], function ($, ScribbleEditor, ScribbleMenu) {
+require(['jquery', 'underscore', 'scribblereditor', 'scribblermenu'], function ($, _, ScribbleEditor, ScribbleMenu) {
     'use strict';
 
     var pluginlist = [],
@@ -88,7 +88,7 @@ require(['jquery', 'scribblereditor', 'scribblermenu'], function ($, ScribbleEdi
         function executePlugin(name) {
             pluginLoader(name, editor, menu);
         }
-        pluginlist.map(executePlugin);
+        _.map(pluginlist, executePlugin);
         editor.render();
         menu.render();
     });
