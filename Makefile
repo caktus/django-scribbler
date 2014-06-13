@@ -27,7 +27,7 @@ build-css:
 	# Build CSS from LESS
 	# Requires LESS and r.js optimizer
 	mkdir -p ${STATIC_DIR}/css
-	lessc --yui-compress ${STATIC_DIR}/less/scribbler.less ${STATIC_DIR}/css/scribbler.css
+	lessc -x ${STATIC_DIR}/less/scribbler.less ${STATIC_DIR}/css/scribbler.css
 	cd ${STATIC_DIR}/css && r.js -o cssIn=scribbler.css out=scribbler.css
 
 lint-js:
