@@ -1,5 +1,0 @@
-www:
-  approot: example
-  type: python
-db:
-  type: postgresql
