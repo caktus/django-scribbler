@@ -19,6 +19,13 @@ if not settings.configured:
             'django.contrib.sessions',
             'scribbler',
         ),
+        MIDDLEWARE_CLASSES=(
+            'django.middleware.common.CommonMiddleware',
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.middleware.csrf.CsrfViewMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+            'django.contrib.messages.middleware.MessageMiddleware',
+        ),
         SITE_ID=1,
         SECRET_KEY='super-secret',
         TEMPLATE_CONTEXT_PROCESSORS=(
