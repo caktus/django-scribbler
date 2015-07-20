@@ -2,6 +2,8 @@
 import json
 import os
 
+import django
+
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
 DEBUG = True
@@ -105,6 +107,20 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
 )
 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': TEMPLATE_CONTEXT_PROCESSORS,
+            'loaders': TEMPLATE_LOADERS,
+            'debug': False,
+        },
+    },
+]
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -138,10 +154,16 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'south',
     'scribbler',
     'dayslog',
 )
+
+if django.VERSION < (1, 8, 0):
+    INSTALLED_APPS = INSTALLED_APPS + ('south', )
+    SOUTH_MIGRATION_MODULES = {
+        'scribbler': 'scribbler.south_migrations',
+        'dayslog': 'dayslog.south_migrations',
+    }
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
