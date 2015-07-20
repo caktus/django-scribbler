@@ -51,6 +51,12 @@ if not settings.configured:
                 },
             },
         ],
+        MIGRATION_MODULES={
+            # these 'tests.migrations' modules don't actually exist, but this lets
+            # us skip creating migrations for the test models.
+            'scribbler': 'scribbler.tests.migrations',
+            'dayslog': 'dayslog.tests.migrations',
+        }
     )
 
 
