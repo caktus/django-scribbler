@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django import template
+from django.template import base as template_base
 from django.conf import settings
 from django.core.cache import cache
 from django.contrib.contenttypes.models import ContentType
@@ -84,23 +85,23 @@ def rebuild_template_string(tokens):
     result = ''
     for token in tokens:
         value = token.contents
-        if token.token_type == template.TOKEN_VAR:
+        if token.token_type == template_base.TOKEN_VAR:
             value = '{0} {1} {2}'.format(
-                template.VARIABLE_TAG_START,
+                template_base.VARIABLE_TAG_START,
                 value,
-                template.VARIABLE_TAG_END,
+                template_base.VARIABLE_TAG_END,
             )
-        elif token.token_type == template.TOKEN_BLOCK:
+        elif token.token_type == template_base.TOKEN_BLOCK:
             value = '{0} {1} {2}'.format(
-                template.BLOCK_TAG_START,
+                template_base.BLOCK_TAG_START,
                 value,
-                template.BLOCK_TAG_END,
+                template_base.BLOCK_TAG_END,
             )
-        elif token.token_type == template.TOKEN_COMMENT:
+        elif token.token_type == template_base.TOKEN_COMMENT:
             value = '{0} {1} {2}'.format(
-                template.COMMENT_TAG_START,
+                template_base.COMMENT_TAG_START,
                 value,
-                template.COMMENT_TAG_END,
+                template_base.COMMENT_TAG_END,
             )
         result = '{0}{1}'.format(result, value)
     return result
