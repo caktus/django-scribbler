@@ -34,11 +34,11 @@ context processors are included in this list. For a list of default
 ``TEMPLATE_CONTEXT_PROCESSORS`` please see
 `the official Django docs <https://docs.djangoproject.com/en/1.4/ref/settings/#template-context-processors>`_.
 
-If you are using Django 1.8 then instead of ``TEMPLATE_CONTEXT_PROCESSORS`` you should configure ``TEMPLATES``:
+If you are using Django 1.8 then instead of ``TEMPLATE_CONTEXT_PROCESSORS`` you should configure ``TEMPLATES['OPTIONS']['context_processors']``:
 
 .. code-block:: python
 
-    TEMPLATES=[
+    TEMPLATES = [ # example config untill 'context_processors' your config maydiffer
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
             'DIRS': [
@@ -46,6 +46,7 @@ If you are using Django 1.8 then instead of ``TEMPLATE_CONTEXT_PROCESSORS`` you 
             'APP_DIRS': True,
             'OPTIONS': {
                 'context_processors': [
+                	# add required context processors here:
                     'django.core.context_processors.request',
                     'django.contrib.auth.context_processors.auth',
                     # Other context processors would go here
@@ -57,7 +58,7 @@ If you are using Django 1.8 then instead of ``TEMPLATE_CONTEXT_PROCESSORS`` you 
 
 Note that unlike ``TEMPLATE_CONTEXT_PROCESSORS`` from Django 1.7 ``TEMPLATES`` is already included
 in the default settings created by ``startproject``. Django 1.8 also supports custom template engines
-but this is not supported at the moment by django-scribbler
+but this is not supported at the moment by django-scribbler.
 
 For the context processor to have any effect you need to make sure that the template
 is rendered using a RequestContext. This is done for you with the
