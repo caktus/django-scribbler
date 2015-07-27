@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 from collections import Iterable
 
+import django
+
 try:
     from django.utils.six import PY3, string_types
 except ImportError:
@@ -26,9 +28,12 @@ def get_variables(context):
     Given a template context, return a sorted list of variable names in that
     context
     """
-    variables = set(_flatten(
-        (dicts.keys() for dicts in context.dicts)
-    ))
+    if django.VERSION >= (1, 8, 0):
+        variables = set(context.flatten().keys())
+    else:
+        variables = set(_flatten(
+            (dicts.keys() for dicts in context.dicts)
+        ))
     # Don't show the rendering tree 'block' as a variable in the context
     try:
         variables.remove('block')

@@ -1,13 +1,27 @@
 "Tests for utility functions."
 from __future__ import unicode_literals
+from contextlib import contextmanager
 
+import django
 from django.test import TestCase
-from django.template import RequestContext
+from django.template import RequestContext, Template
 from django.test.client import RequestFactory
 
 from .test_views import BaseViewTestCase
 
 from scribbler.utils import _flatten, get_variables
+
+
+if django.VERSION >= (1, 8, 0):
+    @contextmanager
+    def context_context_manager(context):
+        template = Template('')
+        with context.bind_template(template):
+            yield
+else:
+    @contextmanager
+    def context_context_manager(context):
+        yield
 
 
 class FlattenTestCase(TestCase):
@@ -66,20 +80,29 @@ class GetVariablesTestCase(BaseViewTestCase):
         Assure get_variables contains known global context processors such as
         request and user
         """
-        variables = set(get_variables(self._get_context()))
-        self.assertTrue(variables.issuperset(set(self.known_globals)))
+        context = self._get_context()
+        with context_context_manager(context):
+            variables = set(get_variables(context))
+            self.assertTrue(variables.issuperset(set(self.known_globals)))
 
     def test_returned_variable(self):
-        """
-        Assure get_variables returns variables unique to the context
-        """
-        variables = get_variables(self._get_context({}))
-        self.assertTrue('a' not in variables)
-        variables = get_variables(self._get_context({'a': 3}))
-        self.assertTrue('a' in variables)
+        """Assure get_variables returns variables unique to the context."""
+        context = self._get_context({})
+        with context_context_manager(context):
+            variables = get_variables(context)
+            self.assertTrue('a' not in variables)
+
+        context = self._get_context({'a': 3})
+        with context_context_manager(context):
+            variables = get_variables(context)
+            self.assertTrue('a' in variables)
 
     def test_custom_processors(self):
-        variables = get_variables(self._get_context({}, processors=[]))
-        self.assertTrue('custom_processor_var' not in variables)
-        variables = get_variables(self._get_context({}, processors=[test_processor]))
-        self.assertTrue('custom_processor_var' in variables)
+        context = self._get_context({}, processors=[])
+        with context_context_manager(context):
+            variables = get_variables(context)
+            self.assertTrue('custom_processor_var' not in variables)
+        context = self._get_context({}, processors=[test_processor])
+        with context_context_manager(context):
+            variables = get_variables(context)
+            self.assertTrue('custom_processor_var' in variables)

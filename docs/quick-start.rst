@@ -34,6 +34,32 @@ context processors are included in this list. For a list of default
 ``TEMPLATE_CONTEXT_PROCESSORS`` please see
 `the official Django docs <https://docs.djangoproject.com/en/1.4/ref/settings/#template-context-processors>`_.
 
+If you are using Django 1.8 then instead of ``TEMPLATE_CONTEXT_PROCESSORS`` you should configure ``TEMPLATES['OPTIONS']['context_processors']``:
+
+.. code-block:: python
+
+    TEMPLATES = [ # example config untill 'context_processors' your config maydiffer
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [
+            ],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                	# add required context processors here:
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    # Other context processors would go here
+                ],
+                'debug': False,
+            },
+        },
+    ],
+
+Note that unlike ``TEMPLATE_CONTEXT_PROCESSORS`` from Django 1.7 ``TEMPLATES`` is already included
+in the default settings created by ``startproject``. Django 1.8 also supports custom template engines
+but this is not supported at the moment by django-scribbler.
+
 For the context processor to have any effect you need to make sure that the template
 is rendered using a RequestContext. This is done for you with the
 `render <https://docs.djangoproject.com/en/1.4/topics/http/shortcuts/#render>`_ shortcut.
@@ -66,14 +92,26 @@ This is done with the ``syncdb`` management command built into Django::
     python manage.py syncdb
 
 django-scribbler uses `South <http://south.aeracode.org/>`_ to handle database migrations.
-If you are also using South then you should run ``migrate`` instead::
+If you are also using South then you should specify ``SOUTH_MIGRATION_MODULES`` in settings:
+
+.. code-block:: python
+
+	SOUTH_MIGRATION_MODULES = {
+	    'scribbler': 'scribbler.south_migrations',
+	}
+
+
+To run south migrations call::
 
     python manage.py migrate scribbler
 
 .. note::
 
     The latest release of South does not support Python 3. If you want to try
-    django-scribbler with Python 3 you will have go without South for the time being.
+    django-scribbler with Python 3 you will have go without South for the time being
+    or you should use Django 1.7-1.8 migrations
+
+
 
 
 User Permissions

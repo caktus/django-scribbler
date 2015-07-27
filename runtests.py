@@ -36,6 +36,27 @@ if not settings.configured:
         PASSWORD_HASHERS=(
             'django.contrib.auth.hashers.MD5PasswordHasher',
         ),
+        TEMPLATES=[
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [
+                ],
+                'APP_DIRS': True,
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.contrib.auth.context_processors.auth',
+                        'django.core.context_processors.request',
+                    ],
+                    'debug': False,
+                },
+            },
+        ],
+        MIGRATION_MODULES={
+            # these 'tests.migrations' modules don't actually exist, but this lets
+            # us skip creating migrations for the test models.
+            'scribbler': 'scribbler.tests.migrations',
+            'dayslog': 'dayslog.tests.migrations',
+        }
     )
 
 

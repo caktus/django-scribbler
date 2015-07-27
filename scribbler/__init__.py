@@ -2,3 +2,6 @@
 
 
 __version__ = '0.6.0dev'
+
+
+default_app_config = 'scribbler.apps.ScribblerAppConfig'
