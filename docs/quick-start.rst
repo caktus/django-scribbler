@@ -47,7 +47,7 @@ If you are using Django 1.8 then instead of ``TEMPLATE_CONTEXT_PROCESSORS`` you 
             'OPTIONS': {
                 'context_processors': [
                 	# add required context processors here:
-                    'django.core.context_processors.request',
+                    'django.template.context_processors.request',
                     'django.contrib.auth.context_processors.auth',
                     # Other context processors would go here
                 ],
