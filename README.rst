@@ -7,10 +7,9 @@ project attempts to take some of the best concepts from those previous projects 
 well as focus on giving the users instant feedback inspired by Bret Victor's
 `Inventing on Principle <http://vimeo.com/36579366>`_ talk.
 
-.. image::
-    https://secure.travis-ci.org/caktus/django-scribbler.png?branch=master
+.. image:: https://travis-ci.org/caktus/django-scribbler.svg?branch=master
     :alt: Build Status
-        :target: https://secure.travis-ci.org/caktus/django-scribbler
+    :target: https://travis-ci.org/caktus/django-scribbler
 
 
 Features
