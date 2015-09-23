@@ -1,8 +1,6 @@
 from __future__ import unicode_literals
 from collections import Iterable
 
-import django
-
 try:
     from django.utils.six import PY3, string_types
 except ImportError:
@@ -28,7 +26,8 @@ def get_variables(context):
     Given a template context, return a sorted list of variable names in that
     context
     """
-    if django.VERSION >= (1, 8, 0):
+    if hasattr(context, 'flatten'):
+        # context.flatten added in Django 1.8
         variables = set(context.flatten().keys())
     else:
         variables = set(_flatten(
