@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 from contextlib import contextmanager
 
-import django
 from django.test import TestCase
 from django.template import RequestContext, Template
 from django.test.client import RequestFactory
@@ -12,15 +11,14 @@ from .test_views import BaseViewTestCase
 from scribbler.utils import _flatten, get_variables
 
 
-if django.VERSION >= (1, 8, 0):
-    @contextmanager
-    def context_context_manager(context):
+@contextmanager
+def context_context_manager(context):
+    # bind_template added in Django 1.8
+    if hasattr(context, 'bind_template'):
         template = Template('')
         with context.bind_template(template):
             yield
-else:
-    @contextmanager
-    def context_context_manager(context):
+    else:
         yield
 
 
