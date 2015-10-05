@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import json
 
+from django import template
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
@@ -39,9 +40,12 @@ def preview_scribble(request):
     form = PreviewForm(request.POST)
     if form.is_valid():
         results['valid'] = True
-        template = Template(form.cleaned_data.get('content', ''))
+        if hasattr(template, 'engines'):
+            scribbler_template = template.engines['django'].from_string(form.cleaned_data.get('content', ''))
+        else:
+            scribbler_template = template.Template(form.cleaned_data.get('content', ''))
         context = build_scribble_context(form.instance, request)
-        results['html'] = template.render(context)
+        results['html'] = scribbler_template.render(context)
         results['variables'] = get_variables(context)
     else:
         if hasattr(form, 'exc_info'):
