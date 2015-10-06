@@ -12,9 +12,12 @@ env:
   - TOXENV=py27-1.6.X,py32-1.6.X,py33-1.6.X,py34-1.6.X
   - TOXENV=py27-1.7.X,py32-1.7.X,py33-1.7.X,py34-1.7.X
   - TOXENV=py27-1.8.X,py32-1.8.X,py33-1.8.X,py34-1.8.X
+  - TOXENV=coverage
+  - TOXENV=docs
 
 install:
   - pip install tox
+  - pip install coveralls
 
 script:
     - tox
@@ -22,3 +25,6 @@ script:
 branches:
   only:
     - master
+
+after_success:
+  - coveralls
