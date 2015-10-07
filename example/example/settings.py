@@ -1,13 +1,9 @@
 # Django settings for example project.
-import json
 import os
-
-import django
 
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -17,8 +13,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_PATH, 'blip.db'),                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_PATH, 'blip.db'),
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -79,44 +75,26 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH, 'static'),
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'zl8n#*c2)rso==w@9ygsnpy&amp;0xpy5mkv15rxb5r+&amp;!e&amp;k&amp;-@fg'
-
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.media',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.static',
-    'django.core.context_processors.request',
-)
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            os.path.join(PROJECT_PATH, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': TEMPLATE_CONTEXT_PROCESSORS,
-            'loaders': TEMPLATE_LOADERS,
-            'debug': False,
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.debug',
+                'django.core.context_processors.media',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.static',
+                'django.core.context_processors.request',
+            ],
         },
     },
 ]
@@ -136,13 +114,6 @@ ROOT_URLCONF = 'example.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'example.wsgi.application'
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_PATH, 'templates'),
-)
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -157,13 +128,6 @@ INSTALLED_APPS = (
     'scribbler',
     'dayslog',
 )
-
-if django.VERSION < (1, 8, 0):
-    INSTALLED_APPS = INSTALLED_APPS + ('south', )
-    SOUTH_MIGRATION_MODULES = {
-        'scribbler': 'scribbler.south_migrations',
-        'dayslog': 'dayslog.south_migrations',
-    }
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -195,28 +159,3 @@ LOGGING = {
 }
 
 INTERNAL_IPS = ('127.0.0.1', )
-
-
-ENV_FILE = '/home/dotcloud/environment.json'
-if os.path.exists(ENV_FILE):
-    # We are on Dotcloud
-    with open('/home/dotcloud/environment.json') as f:
-        env = json.load(f)
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'scribbler-demo',
-            'USER': env['DOTCLOUD_DB_SQL_LOGIN'],
-            'PASSWORD': env['DOTCLOUD_DB_SQL_PASSWORD'],
-            'HOST': env['DOTCLOUD_DB_SQL_HOST'],
-            'PORT': int(env['DOTCLOUD_DB_SQL_PORT']),
-        }
-    }
-
-    MEDIA_ROOT = '/home/dotcloud/data/media/'
-
-    STATIC_ROOT = '/home/dotcloud/volatile/static/'
-
-    DEBUG = False
-    TEMPLATE_DEBUG = DEBUG
