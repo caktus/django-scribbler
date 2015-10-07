@@ -19,5 +19,4 @@ class ScribblerAppConfig(AppConfig):
                     django_templates_used = True
                     break
         if not django_templates_used:
-            raise ImproperlyConfigured("Djagno-scribbler requires 'django.template.backends.django.DjangoTemplates' to be used as templates engine")
-
+            raise ImproperlyConfigured("Django-scribbler requires 'django.template.backends.django.DjangoTemplates' to be used as templates engine")

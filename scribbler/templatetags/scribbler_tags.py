@@ -51,10 +51,16 @@ class ScribbleNode(template.Node):
             if CACHE_TIMEOUT:
                 cache.set(key, scribble, CACHE_TIMEOUT)
         if scribble.pk:
-            scribble_template = template.Template(scribble.content)
+            if hasattr(template, 'engines'):
+                scribble_template = template.engines['django'].from_string(scribble.content)
+            else:
+                scribble_template = template.Template(scribble.content)
         else:
             scribble.content = self.raw
-            scribble_template = template.Template(self.raw)
+            if hasattr(template, 'engines'):
+                scribble_template = template.engines['django'].from_string(self.raw)
+            else:
+                scribble_template = template.Template(self.raw)
         scribble_context = build_scribble_context(scribble, request)
         content = scribble_template.render(scribble_context)
         wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
@@ -163,7 +169,10 @@ def scribble_field(context, model_instance, field_name):
 
     model_content_type = ContentType.objects.get_for_model(model_instance)
     field_value = getattr(model_instance, field_name)
-    scribble_template = template.Template(field_value)
+    if hasattr(template, 'engines'):
+        scribble_template = template.engines['django'].from_string(field_value)
+    else:
+        scribble_template = template.Template(field_value)
     scribble_context = build_scribble_context(None, request)
     rendered_content = scribble_template.render(scribble_context)
     context['rendered_scribble'] = rendered_content

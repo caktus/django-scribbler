@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import os
 
 import django
 from django.conf import settings
@@ -38,6 +39,12 @@ if not settings.configured:
         ),
         TEMPLATES=[
             {
+                'BACKEND': 'django.template.backends.jinja2.Jinja2',
+                'DIRS': [os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates/jinja2')],
+                'APP_DIRS': True,
+                'OPTIONS': {'environment': 'scribbler.tests.jinja2.Environment',},
+            },
+            {
                 'BACKEND': 'django.template.backends.django.DjangoTemplates',
                 'DIRS': [
                 ],
@@ -74,4 +81,3 @@ def runtests():
 
 if __name__ == '__main__':
     runtests()
-
