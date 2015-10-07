@@ -4,6 +4,24 @@ Release History
 Release and change history for django-scribbler
 
 
+v0.6.0 (Released 2015-10-7)
+------------------------------------
+This release fixes some lingering issues with Django 1.8 support and integrates
+Wheel support and features from the latest versions of Tox.
+
+Features
+_________________
+- Added Wheel support (#96)
+- Updated Tox and Travis to work with Tox 2.0+ (#90)
+- Changed button color on editor
+- Confirmed Python 3.4 support
+
+Bug Fixes
+_________________
+
+- Fixed issues with Django 1.8 compatibility (#84)
+
+
 v0.5.3 (Released 2014-06-13)
 ------------------------------------
 
