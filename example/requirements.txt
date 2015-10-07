@@ -1,3 +1,2 @@
-Django==1.4.5
-South==0.7.6
-django-scribbler==0.5.1
+Django==1.8.5
+django-scribbler
