@@ -10,6 +10,7 @@
 .tox
 *.egg-info/*
 docs/_build/*
+build
 dist/*
 *.mo
 scribbler/static/scribbler/css/scribbler.css
