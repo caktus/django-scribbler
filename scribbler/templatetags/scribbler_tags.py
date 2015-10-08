@@ -61,7 +61,7 @@ class ScribbleNode(template.Node):
                 scribble_template = template.engines['django'].from_string(self.raw)
             else:
                 scribble_template = template.Template(self.raw)
-        scribble_context = build_scribble_context(scribble, request)
+        scribble_context = build_scribble_context(scribble)
         content = scribble_template.render(scribble_context)
         wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
         context['scribble'] = scribble
@@ -83,7 +83,9 @@ class ScribbleNode(template.Node):
         context['can_edit_scribble'] = can_edit
         context['can_delete_scribble'] = can_delete
         context['raw_content'] = self.raw
-        return wrapper_template.render(context)
+        # render() takes a dict, so we have to extract the context dict from the object
+        context_data = context.dicts[-1]
+        return wrapper_template.render(context_data)
 
 
 def rebuild_template_string(tokens):
@@ -173,7 +175,7 @@ def scribble_field(context, model_instance, field_name):
         scribble_template = template.engines['django'].from_string(field_value)
     else:
         scribble_template = template.Template(field_value)
-    scribble_context = build_scribble_context(None, request)
+    scribble_context = build_scribble_context(None)
     rendered_content = scribble_template.render(scribble_context)
     context['rendered_scribble'] = rendered_content
 
@@ -193,5 +195,7 @@ def scribble_field(context, model_instance, field_name):
     context['can_edit_scribble'] = can_edit
     context['can_delete_scribble'] = False
     context['raw_content'] = field_value
+    # render() takes a dict, so we have to extract the context dict from the object
+    context_data = context.dicts[-1]
     wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
-    return wrapper_template.render(context)
+    return wrapper_template.render(context_data)
