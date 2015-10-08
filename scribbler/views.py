@@ -10,18 +10,23 @@ from django.template import RequestContext, Template
 from django.views.debug import ExceptionReporter
 from django.views.decorators.http import require_POST
 from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import render
 
 from .forms import ScribbleForm, PreviewForm, FieldScribbleForm
 from .models import Scribble
 from .utils import get_variables
 
 
-def build_scribble_context(scribble):
+def build_scribble_context(scribble, request):
     "Create context for rendering a scribble or scribble preview."
     context = {
         'scribble': scribble,
     }
-    return context
+    # check if render() takes parameter 'dictionary' (which is removed in Django1.10)
+    if 'dictionary' in render.func_code.co_varnames:
+        return RequestContext(request, context)
+    else:
+        return context
 
 
 @require_POST
@@ -44,7 +49,7 @@ def preview_scribble(request):
             scribbler_template = template.engines['django'].from_string(form.cleaned_data.get('content', ''))
         else:
             scribbler_template = template.Template(form.cleaned_data.get('content', ''))
-        context = build_scribble_context(form.instance)
+        context = build_scribble_context(form.instance, request)
         results['html'] = scribbler_template.render(context)
         results['variables'] = get_variables(RequestContext(context, request))
     else:
