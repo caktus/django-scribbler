@@ -1,4 +1,3 @@
-{% load url from future %}
 <form class="scribble-form" data-prefix="{{ form.get_data_prefix }}"
 {% if can_edit_scribble or can_add_scribble %}data-save="{{ form.get_save_url }}"{% endif %}
 {% if can_delete_scribble %}data-delete="{{ form.get_delete_url }}"{% endif %}
