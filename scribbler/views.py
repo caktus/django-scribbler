@@ -17,16 +17,13 @@ from .models import Scribble
 from .utils import get_variables
 
 
-def build_scribble_context(scribble, request):
+def build_scribble_context(scribble):
     "Create context for rendering a scribble or scribble preview."
     context = {
         'scribble': scribble,
     }
-    # check if render() takes parameter 'dictionary' (which is removed in Django1.10)
-    if 'dictionary' in render.func_code.co_varnames:
-        return RequestContext(request, context)
-    else:
-        return context
+
+    return context
 
 
 @require_POST
@@ -49,7 +46,7 @@ def preview_scribble(request):
             scribbler_template = template.engines['django'].from_string(form.cleaned_data.get('content', ''))
         else:
             scribbler_template = template.Template(form.cleaned_data.get('content', ''))
-        context = build_scribble_context(form.instance, request)
+        context = build_scribble_context(form.instance)
         results['html'] = scribbler_template.render(context)
         results['variables'] = get_variables(RequestContext(context, request))
     else:
