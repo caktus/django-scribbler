@@ -4,6 +4,10 @@ Release History
 Release and change history for django-scribbler
 
 
+Next Release (Released )
+------------------------------------
+- Dropped support for Django<=1.7, Python2.6, and Python3.2 (#101)
+
 v0.6.0 (Released 2015-10-7)
 ------------------------------------
 This release fixes some lingering issues with Django 1.8 support and integrates
