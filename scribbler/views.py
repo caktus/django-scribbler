@@ -47,7 +47,7 @@ def preview_scribble(request):
         else:
             scribbler_template = template.Template(form.cleaned_data.get('content', ''))
         context = build_scribble_context(form.instance)
-        results['html'] = scribbler_template.render(context)
+        results['html'] = scribbler_template.render(context, request)
         results['variables'] = get_variables(RequestContext(context, request))
     else:
         if hasattr(form, 'exc_info'):
