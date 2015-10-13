@@ -11,6 +11,11 @@
 /*global require*/
 
 require.config({
+  packages: [{
+    name: 'codemirror',
+    location: '../libs/codemirror',
+    main: '/lib/codemirror'
+  }],
     paths: {
         jquery: '../libs/jquery',
         scribblereditor: 'scribbler-editor',
@@ -19,11 +24,15 @@ require.config({
         backbone: '../libs/backbone',
         underscore: '../libs/underscore'
     },
-    packages: [{
-      name: 'codemirror',
-      location: '../libs/codemirror',
-      main: '/lib/codemirror'
-    }]
+    shim: {
+            backbone: {
+                deps: ['underscore', 'jquery'],
+                exports: 'Backbone'
+            },
+            underscore: {
+                exports: '_'
+            }
+        }
 });
 
 require(['jquery', 'underscore', 'scribblereditor', 'scribblermenu'], function ($, _, ScribbleEditor, ScribbleMenu) {

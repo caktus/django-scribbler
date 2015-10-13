@@ -5,7 +5,7 @@ var gettext = gettext || function (text) {
     return text;
 };
 
-define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmode'], function ($, _, Backbone, CodeMirror) {
+define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'codemirror/mode/htmlmixed/htmlmixed'], function ($, _, Backbone, CodeMirror) {
     'use strict';
 
     $.noConflict(true);
@@ -30,7 +30,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'htmlmod
                 extraKeys: {'Tab': 'autocomplete'}
             };
             CodeMirror.commands.autocomplete = function (editor) {
-                CodeMirror.simpleHint(editor, CodeMirror.djangoHint);
+                CodeMirror.showHint(editor, CodeMirror.djangoHint);
             };
         },
         events: {
