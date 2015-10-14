@@ -5,7 +5,10 @@ var gettext = gettext || function (text) {
     return text;
 };
 
-define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'codemirror/mode/htmlmixed/htmlmixed'], function ($, _, Backbone, CodeMirror) {
+define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint',
+      'codemirror/mode/htmlmixed/htmlmixed',
+      'codemirror/addon/display/fullscreen'
+    ], function($, _, Backbone, CodeMirror) {
     'use strict';
 
     $.noConflict(true);
@@ -27,8 +30,16 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'codemir
                 mode: "text/html",
                 tabMode: "indent",
                 lineNumbers: true,
-                extraKeys: {'Tab': 'autocomplete'}
-            };
+                extraKeys: {
+                  "F11": function(cm) {
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                  },
+                  "Esc": function(cm) {
+                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                  },
+                  'Tab': 'autocomplete'
+                }
+                };
             CodeMirror.commands.autocomplete = function (editor) {
                 CodeMirror.showHint(editor, CodeMirror.djangoHint);
             };
@@ -88,6 +99,11 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'codemir
             // Status message
             this.controls.status = $('<span></span>')
                 .addClass('status-msg');
+            // Fullscreen instructions
+            this.controls.fullscreen = $('<div>' + gettext('Press') +
+            '<strong>' + gettext('F11') + '</strong>' +
+            gettext('to enter/exit Fullscreen edit') + '</div>')
+            .addClass('fullscreen')
             footerControls.append(
                 this.controls.status,
                 this.controls.errors,
@@ -95,6 +111,7 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'codemir
                 this.controls.discard,
                 this.controls.draft,
                 this.controls.save
+                this.controls.fullscreen
             );
             this.$el.append(footerControls);
         },
