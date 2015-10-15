@@ -26,7 +26,7 @@ class BaseViewTestCase(ScribblerDataTestCase):
             content_type__model='scribble',
         )
         self.add_perm = Permission.objects.get(
-            codename='add_scribble', 
+            codename='add_scribble',
             content_type__app_label='scribbler',
             content_type__model='scribble',
         )
@@ -392,3 +392,41 @@ class DeleteTestCase(BaseViewTestCase):
         data = self.get_valid_data()
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 403)
+
+
+
+from  django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import override_settings
+from selenium import webdriver
+
+
+@override_settings(ROOT_URLCONF='scribbler.tests.urls')
+class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
+
+    # @classmethod
+    # def setUpClass(cls):
+    #     super(MySeleniumTests, cls).setUpClass()
+    #     cls.selenium = WebDriver()
+    #
+    # @classmethod
+    # def tearDownClass(cls):
+    #     cls.selenium.quit()
+    #     super(MySeleniumTests, cls).tearDownClass()
+
+    def setUp(self):
+        super(FunctionalTestCase, self).setUp()
+        self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(3)
+
+    def tearDown(self):
+        self.browser.quit()
+
+    def test_login(self):
+        self.browser.get('%s%s' % (self.live_server_url, '/test/'))
+        username_input = self.browser.find_element_by_name("username")
+        username_input.send_keys('test')
+        password_input = self.browser.find_element_by_name("password")
+        password_input.send_keys('test')
+        self.browser.find_element_by_name('submit').click()
+        scribble = self.browser.find_element_by_class_name("scribble-wrapper")
+        self.assertTrue(scribble)
