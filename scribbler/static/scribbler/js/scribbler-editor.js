@@ -6,8 +6,7 @@ var gettext = gettext || function (text) {
 };
 
 define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint',
-      'codemirror/mode/htmlmixed/htmlmixed',
-      'codemirror/addon/display/fullscreen'
+      'codemirror/mode/htmlmixed/htmlmixed'
     ], function($, _, Backbone, CodeMirror) {
     'use strict';
 
@@ -31,12 +30,6 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint',
                 tabMode: "indent",
                 lineNumbers: true,
                 extraKeys: {
-                  "F11": function(cm) {
-                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                  },
-                  "Esc": function(cm) {
-                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                  },
                   'Tab': 'autocomplete'
                 }
                 };
@@ -99,11 +92,6 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint',
             // Status message
             this.controls.status = $('<span></span>')
                 .addClass('status-msg');
-            // Fullscreen instructions
-            this.controls.fullscreen = $('<div>' + gettext('Press') +
-            '<strong>' + gettext('F11') + '</strong>' +
-            gettext('to enter/exit Fullscreen edit') + '</div>')
-            .addClass('fullscreen')
             footerControls.append(
                 this.controls.status,
                 this.controls.errors,
@@ -111,7 +99,6 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint',
                 this.controls.discard,
                 this.controls.draft,
                 this.controls.save
-                this.controls.fullscreen
             );
             this.$el.append(footerControls);
         },
