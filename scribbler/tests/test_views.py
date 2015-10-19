@@ -398,20 +398,11 @@ class DeleteTestCase(BaseViewTestCase):
 from  django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import override_settings
 from selenium import webdriver
+import time
 
 
 @override_settings(ROOT_URLCONF='scribbler.tests.urls')
 class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
-
-    # @classmethod
-    # def setUpClass(cls):
-    #     super(MySeleniumTests, cls).setUpClass()
-    #     cls.selenium = WebDriver()
-    #
-    # @classmethod
-    # def tearDownClass(cls):
-    #     cls.selenium.quit()
-    #     super(MySeleniumTests, cls).tearDownClass()
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
@@ -421,12 +412,17 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def test_login(self):
+    def test_editor(self):
         self.browser.get('%s%s' % (self.live_server_url, '/test/'))
         username_input = self.browser.find_element_by_name("username")
         username_input.send_keys('test')
         password_input = self.browser.find_element_by_name("password")
         password_input.send_keys('test')
         self.browser.find_element_by_name('submit').click()
+        time.sleep(3)
         scribble = self.browser.find_element_by_class_name("scribble-wrapper")
         self.assertTrue(scribble)
+        editor = self.browser.find_element_by_id("scribbleEditorContainer")
+        scribble.click()
+        time.sleep(3)
+        self.assertIn("height: 300px", editor.get_attribute('style'))
