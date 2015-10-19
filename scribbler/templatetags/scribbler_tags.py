@@ -83,9 +83,10 @@ class ScribbleNode(template.Node):
         context['can_edit_scribble'] = can_edit
         context['can_delete_scribble'] = can_delete
         context['raw_content'] = self.raw
-        # render() takes a dict, so we have to extract the context dict from the object
+        # render() takes a dict, so we have to extract the context and request dicts from the object
         context_data = context.dicts[-1]
-        return wrapper_template.render(context_data)
+        context_request = context.dicts[-2]
+        return wrapper_template.render(context_data, context_request)
 
 
 def rebuild_template_string(tokens):
@@ -195,7 +196,8 @@ def scribble_field(context, model_instance, field_name):
     context['can_edit_scribble'] = can_edit
     context['can_delete_scribble'] = False
     context['raw_content'] = field_value
-    # render() takes a dict, so we have to extract the context dict from the object
+    # render() takes a dict, so we have to extract the context and request dicts from the object
     context_data = context.dicts[-1]
+    context_request = context.dicts[-2]
     wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
-    return wrapper_template.render(context_data)
+    return wrapper_template.render(context_data, context_request)
