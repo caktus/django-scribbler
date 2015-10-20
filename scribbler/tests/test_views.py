@@ -11,6 +11,12 @@ from django.core.urlresolvers import reverse
 from . import DaysLog
 from .base import ScribblerDataTestCase, Scribble
 
+import time
+from  django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import override_settings
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
 
 class BaseViewTestCase(ScribblerDataTestCase):
     "Common functionality for testing views."
@@ -394,13 +400,6 @@ class DeleteTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 403)
 
 
-
-from  django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import override_settings
-from selenium import webdriver
-import time
-
-
 @override_settings(ROOT_URLCONF='scribbler.tests.urls')
 class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
 
@@ -422,6 +421,19 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
         scribble = self.browser.find_element_by_class_name("scribble-wrapper")
         self.assertTrue(scribble)
         editor = self.browser.find_element_by_id("scribbleEditorContainer")
+        self.assertTrue(editor)
         scribble.click()
-        time.sleep(2)
+        # The textarea in the editor is inside a div with height=0 which selenium views as not visible
+        # and therefore won't send keys to, so we have to give that div a non-zero height.
+        self.browser.execute_script("return document.getElementsByClassName('CodeMirror cm-s-default')[0].firstChild.style.height='1px';")
+        time.sleep(1)
         self.assertIn("height: 300px", editor.get_attribute('style'))
+        self.browser.find_element_by_class_name("CodeMirror-cursor").click()
+        text_area = self.browser.find_element_by_css_selector("div.CodeMirror.cm-s-default div textarea")
+        text_area.send_keys(Keys.ARROW_DOWN)
+        text_area.send_keys(Keys.ARROW_DOWN)
+        text_area.send_keys("<p>This is a Test</p>")
+        self.browser.find_element_by_class_name("save").click()
+        self.browser.implicitly_wait(10)
+        text = self.browser.find_element_by_css_selector("div.scribble-content p:nth-child(2)")
+        self.assertEqual("This is a Test", text.text)
