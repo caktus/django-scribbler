@@ -1,6 +1,6 @@
 /*global define*/
 
-define(['codemirror', 'simplehint'], function (CodeMirror) {
+define(['codemirror', 'codemirror/addon/hint/show-hint'], function (CodeMirror) {
     'use strict';
     function forEach(arr, f) {
         for (var i = 0, e = arr.length; i < e; ++i) {

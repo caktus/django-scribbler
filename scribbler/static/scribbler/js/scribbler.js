@@ -11,14 +11,13 @@
 /*global require*/
 
 require.config({
+  packages: [{
+    name: 'codemirror',
+    location: '../libs/codemirror',
+    main: '/lib/codemirror'
+  }],
     paths: {
         jquery: '../libs/jquery',
-        codemirror: '../libs/codemirror/lib/codemirror',
-        jsmode: '../libs/codemirror/mode/javascript/javascript',
-        cssmode: '../libs/codemirror/mode/css/css',
-        xmlmode: '../libs/codemirror/mode/xml/xml',
-        htmlmode: '../libs/codemirror/mode/htmlmixed/htmlmixed',
-        simplehint: '../libs/codemirror/addon/hint/simple-hint',
         scribblereditor: 'scribbler-editor',
         scribblermenu: 'scribbler-menu',
         djangohint: 'djangohint',
@@ -26,37 +25,14 @@ require.config({
         underscore: '../libs/underscore'
     },
     shim: {
-        codemirror: {
-            exports: 'CodeMirror'
-        },
-        simplehint: {
-            exports: 'CodeMirror',
-            deps: ['codemirror']
-        },
-        jsmode: {
-            exports: 'CodeMirror',
-            deps: ['codemirror']
-        },
-        cssmode: {
-            exports: 'CodeMirror',
-            deps: ['codemirror']
-        },
-        xmlmode: {
-            exports: 'CodeMirror',
-            deps: ['codemirror']
-        },
-        htmlmode: {
-            exports: 'CodeMirror',
-            deps: ['xmlmode', 'jsmode', 'cssmode']
-        },
-        backbone: {
-            deps: ['underscore', 'jquery'],
-            exports: 'Backbone'
-        },
-        underscore: {
-            exports: '_'
+            backbone: {
+                deps: ['underscore', 'jquery'],
+                exports: 'Backbone'
+            },
+            underscore: {
+                exports: '_'
+            }
         }
-    }
 });
 
 require(['jquery', 'underscore', 'scribblereditor', 'scribblermenu'], function ($, _, ScribbleEditor, ScribbleMenu) {
