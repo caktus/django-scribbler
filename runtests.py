@@ -18,6 +18,7 @@ if not settings.configured:
             'django.contrib.auth',
             'django.contrib.contenttypes',
             'django.contrib.sessions',
+            'django.contrib.staticfiles',
             'scribbler',
         ),
         MIDDLEWARE_CLASSES=(

@@ -1,4 +1,4 @@
-{% load scribbler_tags %}
+{% load staticfiles scribbler_tags %}
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
@@ -8,9 +8,9 @@
     <meta name="description" content="{% block meta-description %}{% endblock %}">
     <meta name="author" content="{% block meta-author %}{% endblock %}">
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}">
-    <link href="{{ STATIC_URL }}img/favicon.png" rel="shortcut icon">
+    <link href="{% static 'img/favicon.png' %}" rel="shortcut icon">
     {% block extra-meta %}{% endblock %}
-    <link rel="stylesheet" media="all" href="{{ STATIC_URL }}scribbler/css/scribbler.css">
+    <link rel="stylesheet" media="all" href="{% static 'scribbler/css/scribbler.css' %}">
 
 
 </head>
@@ -31,7 +31,7 @@
             <div id="login-content">
                 {{ form.non_field_errors }}
                 <div class="modal">
-                    <img src="{{ STATIC_URL }}img/scribbler-logo.png" alt="django scribbler logo" width="180">
+                    <img src="{% static 'img/scribbler-logo.png' %}" alt="django scribbler logo" width="180">
                     <h1>scribbler.</h1>
                     <form method="post" action=".">
                         {% csrf_token %}
@@ -43,11 +43,11 @@
                     </form>
                 </div>
             </div>
-            <small><span>USERNAME:</span> demo <span>PASSWORD:</span> demo</small>
+            <small><span>USERNAME:</span> test <span>PASSWORD:</span> test</small>
         {% endif %}
         {% endblock %}
     </div>
     <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
-    <script data-scribbler-plugins="themes" data-main="{{ STATIC_URL }}scribbler/js/scribbler-min" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
+    <script data-scribbler-plugins="themes" data-main="{% static 'scribbler/js/scribbler-min' %}" src="{% static 'scribbler/libs/require.js' %}"></script>
 </body>
 </html>
