@@ -16,6 +16,7 @@ from  django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import override_settings
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class BaseViewTestCase(ScribblerDataTestCase):
@@ -425,17 +426,14 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
         editor = self.browser.find_element_by_id("scribbleEditorContainer")
         self.assertTrue(editor)
         scribble.click()
-        # The textarea in the editor is inside a div with height=0 which selenium views as not visible
-        # and therefore won't send keys to, so we have to give that div a non-zero height.
-        self.browser.execute_script("return document.getElementsByClassName('CodeMirror cm-s-default')[0].firstChild.style.height='1px';")
         time.sleep(1)
         self.assertIn("height: 300px", editor.get_attribute('style'))
-        self.browser.find_element_by_class_name("CodeMirror-cursor").click()
         self.browser.implicitly_wait(10)
-        text_area = self.browser.find_element_by_css_selector("div.CodeMirror.cm-s-default div textarea")
-        text_area.send_keys(Keys.ARROW_DOWN)
-        text_area.send_keys(Keys.ARROW_DOWN)
-        text_area.send_keys("<p>This is a Test</p>")
+        action = ActionChains(self.browser)
+        action.send_keys(Keys.ARROW_DOWN)
+        action.send_keys(Keys.ARROW_DOWN)
+        action.send_keys("<p>This is a Test</p>")
+        action.perform()
         self.browser.find_element_by_class_name("save").click()
         self.browser.implicitly_wait(10)
         text = self.browser.find_element_by_css_selector("div.scribble-content p:nth-child(2)")
