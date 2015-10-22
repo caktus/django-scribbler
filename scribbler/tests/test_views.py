@@ -404,7 +404,7 @@ class DeleteTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 403)
 
 
-@unittest.skipIf("TRAVIS" in os.environ and os.environ["TRAVIS"] == true, "Skipping this test on Travis CI.")
+@unittest.skipIf("TRAVIS" in os.environ and os.environ["TRAVIS"] == True, "Skipping this test on Travis CI.")
 @override_settings(ROOT_URLCONF='scribbler.tests.urls')
 class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
 
