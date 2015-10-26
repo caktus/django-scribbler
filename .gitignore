@@ -11,6 +11,8 @@
 *.egg-info/*
 docs/_build/*
 build
+build-js
+build-css
 dist/*
 *.mo
 scribbler/static/scribbler/css/scribbler.css
