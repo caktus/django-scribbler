@@ -22,3 +22,4 @@ scribbler/static/scribbler/libs/backbone.js
 scribbler/static/scribbler/libs/underscore.js
 scribbler/static/scribbler/node_modules/*
 bundle.js
+bundle-min.js

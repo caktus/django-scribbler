@@ -34,8 +34,10 @@ lint-js:
 
 build-js:
 	# Build optimized JS
-	# Requires r.js optimizer
-	cd ${STATIC_DIR}/js && r.js -o name=scribbler out=scribbler-min.js baseUrl=. mainConfigFile=scribbler.js
+	# Requires browserify
+	# Requires uglifyjs
+	cd ${STATIC_DIR}/js && browserify scribbler.js -o bundle.js
+	cd ${STATIC_DIR}/js && browserify scribbler.js | uglifyjs -o bundle-min.js
 
 test-js:
 	# Run the QUnit tests
