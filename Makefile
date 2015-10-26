@@ -1,5 +1,4 @@
 STATIC_DIR = ./scribbler/static/scribbler
-LIBS_DIR = ${STATIC_DIR}/libs
 # Library versions
 JQUERY_VERSION = 1.8.3
 REQUIRE_VERSION = 2.1.4
@@ -10,18 +9,12 @@ UNDERSCORE_VERSION = 1.4.4
 
 fetch-static-libs:
 	# Fetch JS library dependencies
-	# Requires curl
-	curl -Lo ${LIBS_DIR}/jquery.js http://code.jquery.com/jquery-${JQUERY_VERSION}.js
-	curl -Lo ${LIBS_DIR}/require.js http://requirejs.org/docs/release/${REQUIRE_VERSION}/comments/require.js
-	curl -Lo ${LIBS_DIR}/backbone.js https://raw.github.com/jashkenas/backbone/${BACKBONE_VERSION}/backbone.js
-	curl -Lo ${LIBS_DIR}/underscore.js https://raw.github.com/jashkenas/underscore/${UNDERSCORE_VERSION}/underscore.js
-	curl -Lo codemirror-${CODEMIRROR_VERSION}.zip http://codemirror.net/codemirror-${CODEMIRROR_VERSION}.zip
-	unzip codemirror-${CODEMIRROR_VERSION}.zip
-	rm -rf ${LIBS_DIR}/codemirror
-	mkdir -p ${LIBS_DIR}/codemirror
-	mv -f codemirror-${CODEMIRROR_VERSION}/* ${LIBS_DIR}/codemirror
-	rm -r codemirror-${CODEMIRROR_VERSION}
-	rm codemirror-${CODEMIRROR_VERSION}.zip
+	# Requires npm
+	mkdir -p ${STATIC_DIR}/node_modules
+	cd ${STATIC_DIR} && npm install jquery
+	cd ${STATIC_DIR} && npm install underscore
+	cd ${STATIC_DIR} && npm install backbone
+	cd ${STATIC_DIR} && npm install codemirror
 
 build-css:
 	# Build CSS from LESS
