@@ -1,6 +1,9 @@
 /*global define*/
 
-define(['codemirror', 'codemirror/addon/hint/show-hint'], function (CodeMirror) {
+require('codemirror/addon/hint/show-hint');
+
+var CodeMirror = require('codemirror/lib/codemirror')
+
     'use strict';
     function forEach(arr, f) {
         for (var i = 0, e = arr.length; i < e; ++i) {
@@ -108,4 +111,3 @@ define(['codemirror', 'codemirror/addon/hint/show-hint'], function (CodeMirror) 
     };
 
     return CodeMirror;
-});

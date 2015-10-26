@@ -9,33 +9,12 @@
 */
 
 /*global require*/
+var $ = require('jquery');
+var _ = require('underscore');
+var ScribbleMenu = require('./scribbler-menu')
+var ScribbleEditor = require('./scribbler-editor')
 
-require.config({
-  packages: [{
-    name: 'codemirror',
-    location: '../libs/codemirror',
-    main: '/lib/codemirror'
-  }],
-    paths: {
-        jquery: '../libs/jquery',
-        scribblereditor: 'scribbler-editor',
-        scribblermenu: 'scribbler-menu',
-        djangohint: 'djangohint',
-        backbone: '../libs/backbone',
-        underscore: '../libs/underscore'
-    },
-    shim: {
-            backbone: {
-                deps: ['underscore', 'jquery'],
-                exports: 'Backbone'
-            },
-            underscore: {
-                exports: '_'
-            }
-        }
-});
 
-require(['jquery', 'underscore', 'scribblereditor', 'scribblermenu'], function ($, _, ScribbleEditor, ScribbleMenu) {
     'use strict';
 
     var pluginlist = [],
@@ -68,4 +47,3 @@ require(['jquery', 'underscore', 'scribblereditor', 'scribblermenu'], function (
         editor.render();
         menu.render();
     });
-});

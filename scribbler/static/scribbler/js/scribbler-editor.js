@@ -5,7 +5,18 @@ var gettext = gettext || function (text) {
     return text;
 };
 
-define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'codemirror/mode/htmlmixed/htmlmixed'], function ($, _, Backbone, CodeMirror) {
+require('codemirror/mode/xml/xml');
+require('codemirror/mode/javascript/javascript');
+require('codemirror/mode/css/css');
+require('codemirror/mode/htmlmixed/htmlmixed');
+require('./djangohint')
+
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+Backbone.$ = $;
+var CodeMirror = require('codemirror/lib/codemirror')
+
     'use strict';
 
     $.noConflict(true);
@@ -334,4 +345,5 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'codemir
     });
 
     return ScribbleEditor;
-});
+
+module.exports = ScribbleEditor

@@ -5,7 +5,11 @@ var gettext = gettext || function (text) {
     return text;
 };
 
-define(['jquery', 'underscore', 'backbone'], function ($, _, Backbone) {
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+Backbone.$ = $;
+
     'use strict';
 
     $.noConflict(true);
@@ -72,4 +76,5 @@ define(['jquery', 'underscore', 'backbone'], function ($, _, Backbone) {
     });
 
     return ScribbleMenu;
-});
+
+module.exports = ScribbleMenu
