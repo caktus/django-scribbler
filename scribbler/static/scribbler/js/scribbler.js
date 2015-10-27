@@ -11,8 +11,8 @@
 /*global require*/
 var $ = require('jquery');
 var _ = require('underscore');
-var ScribbleMenu = require('./scribbler-menu')
-var ScribbleEditor = require('./scribbler-editor')
+var ScribbleMenu = require('./scribbler-menu.js')
+var ScribbleEditor = require('./scribbler-editor.js')
 
 
     'use strict';

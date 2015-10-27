@@ -15,7 +15,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 Backbone.$ = $;
-var CodeMirror = require('codemirror/lib/codemirror')
+var CodeMirror = require('codemirror')
 
     'use strict';
 
