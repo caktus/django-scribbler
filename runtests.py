@@ -70,10 +70,11 @@ if not settings.configured:
             'scribbler': 'scribbler.tests.migrations',
             'dayslog': 'dayslog.tests.migrations',
         },
-        MEDIA_ROOT = '',
-        MEDIA_URL = '/media/',
-        STATIC_ROOT = '',
-        STATIC_URL = '/static/',
+        MEDIA_ROOT='',
+        MEDIA_URL='/media/',
+        STATIC_ROOT='',
+        STATIC_URL='/static/',
+        LOGIN_REDIRECT_URL='/test/'
     )
 
 

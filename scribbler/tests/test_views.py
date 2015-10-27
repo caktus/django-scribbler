@@ -3,23 +3,22 @@ from __future__ import unicode_literals
 
 import json
 from datetime import date
+import unittest
+import time
+import os
 
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
-
-from . import DaysLog
-from .base import ScribblerDataTestCase, Scribble
-
-import time
 from  django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import override_settings
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
-import unittest
-import os
+from . import DaysLog
+from .base import ScribblerDataTestCase, Scribble
 
 
 class BaseViewTestCase(ScribblerDataTestCase):

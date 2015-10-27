@@ -1,18 +1,12 @@
-from django.conf.urls import include, url
+from django.conf.urls import include, url, handler404, handler500
 from django.http import HttpResponseNotFound, HttpResponseServerError
+from django.contrib.auth import views as auth_views
 
 from scribbler.tests.views import testpage
 
-# try:
-#     # Django 1.4+
-#     from django.conf.urls import include, patterns, url, handler404, handler500
-# except ImportError: # pragma: no cover
-#     # Django 1.3
-#     from django.conf.urls.defaults import include, patterns, url, handler404, handler500
-#
-#
-# handler404 = 'scribbler.tests.urls.test_404'
-# handler500 = 'scribbler.tests.urls.test_500'
+
+handler404 = 'scribbler.tests.urls.test_404'
+handler500 = 'scribbler.tests.urls.test_500'
 
 
 def test_404(request):
@@ -29,5 +23,5 @@ js_info_dict = {
 urlpatterns = [
     url(r'^scribble/', include('scribbler.urls')),
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-    url(r'^test/', testpage, name='test'),
+    url(r'^test/', auth_views.login, {'template_name': 'test.html'}),
 ]
