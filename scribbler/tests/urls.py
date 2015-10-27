@@ -2,8 +2,6 @@ from django.conf.urls import include, url, handler404, handler500
 from django.http import HttpResponseNotFound, HttpResponseServerError
 from django.contrib.auth import views as auth_views
 
-from scribbler.tests.views import testpage
-
 
 handler404 = 'scribbler.tests.urls.test_404'
 handler500 = 'scribbler.tests.urls.test_500'
