@@ -344,6 +344,4 @@ var CodeMirror = require('codemirror')
         }
     });
 
-    return ScribbleEditor;
-
 module.exports = ScribbleEditor

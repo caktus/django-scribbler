@@ -75,6 +75,4 @@ Backbone.$ = $;
         }
     });
 
-    return ScribbleMenu;
-
 module.exports = ScribbleMenu
