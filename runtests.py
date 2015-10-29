@@ -59,6 +59,10 @@ if not settings.configured:
                         'django.core.context_processors.i18n',
                         'django.core.context_processors.static',
                         'django.core.context_processors.request',
+<<<<<<< HEAD
+=======
+r
+>>>>>>> 1a77eccd9782e482cbe932ca5c9d8c47ad439a12
                     ],
                     'debug': False,
                 },
