@@ -6,8 +6,6 @@ REQUIRE_VERSION = 2.1.4
 CODEMIRROR_VERSION = 5.7
 BACKBONE_VERSION = 0.9.10
 UNDERSCORE_VERSION = 1.4.4
-# CSS files
-CSS = ${STATIC_DIR}/css/scribbler.css
 # JS files
 SCRIBBLER = ${STATIC_DIR}/js/scribbler.js
 EDITOR = ${STATIC_DIR}/js/scribbler-editor.js
@@ -31,13 +29,14 @@ fetch-static-libs:
 	rm -r codemirror-${CODEMIRROR_VERSION}
 	rm codemirror-${CODEMIRROR_VERSION}.zip
 
-build-css: $(CSS)
+${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less
 	# Build CSS from LESS
 	# Requires LESS and r.js optimizer
 	mkdir -p ${STATIC_DIR}/css
-	lessc -x ${STATIC_DIR}/less/scribbler.less ${STATIC_DIR}/css/scribbler.css
-	cd ${STATIC_DIR}/css && r.js -o cssIn=scribbler.css out=scribbler.css
-	touch build-css
+	lessc -x $^ $@
+	r.js -o cssIn=$@ out=$@
+
+build-css: ${STATIC_DIR}/css/scribbler.css
 
 lint-js:
 	# Check JS for any problems
@@ -81,3 +80,5 @@ prep-release: lint-js build-css build-js pull-messages compile-messages
 	# Prepare for upcoming release
     # Check JS, create CSS, compile translations, run the test suite
 	tox
+
+.PHONY: build-css build-js lint-js test-js compile-messages make-messages push-messages pull-messages prep-release
