@@ -59,6 +59,7 @@ if not settings.configured:
                         'django.core.context_processors.i18n',
                         'django.core.context_processors.static',
                         'django.core.context_processors.request',
+r
                     ],
                     'debug': False,
                 },
