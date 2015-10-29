@@ -5,7 +5,9 @@ var gettext = gettext || function (text) {
     return text;
 };
 
-define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'codemirror/mode/htmlmixed/htmlmixed'], function ($, _, Backbone, CodeMirror) {
+define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint',
+      'codemirror/mode/htmlmixed/htmlmixed'
+    ], function($, _, Backbone, CodeMirror) {
     'use strict';
 
     $.noConflict(true);
@@ -27,8 +29,10 @@ define(['jquery', 'underscore', 'backbone', 'codemirror', 'djangohint', 'codemir
                 mode: "text/html",
                 tabMode: "indent",
                 lineNumbers: true,
-                extraKeys: {'Tab': 'autocomplete'}
-            };
+                extraKeys: {
+                  'Tab': 'autocomplete'
+                }
+                };
             CodeMirror.commands.autocomplete = function (editor) {
                 CodeMirror.showHint(editor, CodeMirror.djangoHint);
             };

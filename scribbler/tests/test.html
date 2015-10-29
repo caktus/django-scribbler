@@ -1,0 +1,53 @@
+{% load staticfiles scribbler_tags %}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>scribbler. || Test Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta-description %}{% endblock %}">
+    <meta name="author" content="{% block meta-author %}{% endblock %}">
+    <meta name="keywords" content="{% block meta-keywords %}{% endblock %}">
+    <link href="{% static 'img/favicon.png' %}" rel="shortcut icon">
+    {% block extra-meta %}{% endblock %}
+    <link rel="stylesheet" media="all" href="{% static 'scribbler/css/scribbler.css' %}">
+
+
+</head>
+<body {% if not user.is_authenticated %}class="login-home"{% endif %}>
+    <div class="content">
+        {% block content %}
+        {% if user.is_authenticated %}
+        <div id="page">
+            <h2>scribbler. <span>demo</span></h2>
+            <p class="lead">Hover over the text below and click to start editing the scribbles.</p>
+            <div class="scribbler-test">
+                {% scribble 'header' %}
+                    <p>Blip {% now 'Y' %} {{ STATIC_URL|upper }}</p>
+                {% endscribble %}
+            </div>
+        </div>
+        {% else %}
+            <div id="login-content">
+                {{ form.non_field_errors }}
+                <div class="modal">
+                    <img src="{% static 'img/scribbler-logo.png' %}" alt="django scribbler logo" width="180">
+                    <h1>scribbler.</h1>
+                    <form method="post" action=".">
+                        {% csrf_token %}
+                        <div class="control-group{% if form.errors %} error{% endif %}">
+                            <input type="text" class="input-large" maxlength="30" name="username" id="id_username{% if form.errors %} inputError{% endif %}" placeholder="Username">
+                            <input type="password" class="input-large" id="id_password{% if form.errors %} inputError{% endif %}" name="password" placeholder="Password">
+                        </div>
+                        <input class="btn" type="submit" value="submit" name="submit">
+                    </form>
+                </div>
+            </div>
+            <small><span>USERNAME:</span> test <span>PASSWORD:</span> test</small>
+        {% endif %}
+        {% endblock %}
+    </div>
+    <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
+    <script data-scribbler-plugins="themes" data-main="{% static 'scribbler/js/scribbler-min' %}" src="{% static 'scribbler/libs/require.js' %}"></script>
+</body>
+</html>
