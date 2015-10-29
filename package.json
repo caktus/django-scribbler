@@ -1,0 +1,33 @@
+{
+  "name": "django-scribbler",
+  "version": "0.6.0",
+  "description": " An application for managing snippets of text for a Django website.",
+  "main": "scribbler/static/scribbler/js/scribbler.js",
+  "directories": {
+    "doc": "docs",
+    "example": "example"
+  },
+  "scripts": {
+    "test": "python runtests.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caktus/django-scribbler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caktus/django-scribbler/issues"
+  },
+  "dependencies": {
+    "underscore": ">=1.4.4",
+    "backbone": ">=0.9.10",
+    "jquery": ">=1.8.3",
+    "codemirror": ">=5.7.0",
+  },
+  "devDependencies": {
+    "browserify": "^11.2.0",
+    "lessc": "^2.5.3",
+    "uglify-js": "^2.5.0"
+  },
+}
