@@ -1,14 +1,16 @@
 /*global define*/
 
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+Backbone.$ = $;
+
+
 var gettext = gettext || function (text) {
     'use strict';
     return text;
 };
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var _ = require('underscore');
-Backbone.$ = $;
 
 'use strict';
 

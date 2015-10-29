@@ -1,10 +1,5 @@
 /*global define*/
 
-var gettext = gettext || function (text) {
-    'use strict';
-    return text;
-};
-
 require('codemirror/mode/xml/xml');
 require('codemirror/mode/javascript/javascript');
 require('codemirror/mode/css/css');
@@ -16,6 +11,13 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 Backbone.$ = $;
 var CodeMirror = require('codemirror')
+
+
+var gettext = gettext || function (text) {
+    'use strict';
+    return text;
+};
+
 
 'use strict';
 
