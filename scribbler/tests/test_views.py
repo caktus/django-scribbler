@@ -20,11 +20,10 @@ from selenium.webdriver.common.action_chains import ActionChains
 from . import DaysLog
 from .base import ScribblerDataTestCase, Scribble
 
-
+@override_settings(ROOT_URLCONF='scribbler.tests.urls')
 class BaseViewTestCase(ScribblerDataTestCase):
     "Common functionality for testing views."
 
-    urls = "scribbler.tests.urls"
 
     def setUp(self):
         self.user = self.create_user(username='test', password='test')

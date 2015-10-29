@@ -10,18 +10,20 @@ from django.template import RequestContext, Template
 from django.views.debug import ExceptionReporter
 from django.views.decorators.http import require_POST
 from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import render
 
 from .forms import ScribbleForm, PreviewForm, FieldScribbleForm
 from .models import Scribble
 from .utils import get_variables
 
 
-def build_scribble_context(scribble, request):
+def build_scribble_context(scribble):
     "Create context for rendering a scribble or scribble preview."
     context = {
         'scribble': scribble,
     }
-    return RequestContext(request, context)
+
+    return context
 
 
 @require_POST
@@ -44,9 +46,9 @@ def preview_scribble(request):
             scribbler_template = template.engines['django'].from_string(form.cleaned_data.get('content', ''))
         else:
             scribbler_template = template.Template(form.cleaned_data.get('content', ''))
-        context = build_scribble_context(form.instance, request)
-        results['html'] = scribbler_template.render(context)
-        results['variables'] = get_variables(context)
+        context = build_scribble_context(form.instance)
+        results['html'] = scribbler_template.render(context, request)
+        results['variables'] = get_variables(RequestContext(request, context))
     else:
         if hasattr(form, 'exc_info'):
             exc_type, exc_value, tb = form.exc_info
