@@ -7,15 +7,15 @@ from datetime import date
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.test import override_settings
 
 from . import DaysLog
 from .base import ScribblerDataTestCase, Scribble
 
-
+@override_settings(ROOT_URLCONF='scribbler.tests.urls')
 class BaseViewTestCase(ScribblerDataTestCase):
     "Common functionality for testing views."
 
-    urls = "scribbler.tests.urls"
 
     def setUp(self):
         self.user = self.create_user(username='test', password='test')
@@ -26,7 +26,7 @@ class BaseViewTestCase(ScribblerDataTestCase):
             content_type__model='scribble',
         )
         self.add_perm = Permission.objects.get(
-            codename='add_scribble', 
+            codename='add_scribble',
             content_type__app_label='scribbler',
             content_type__model='scribble',
         )

@@ -21,6 +21,6 @@ def test_500(request):
     return HttpResponseServerError()
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^scribble/', include('scribbler.urls')),
-)
+]
