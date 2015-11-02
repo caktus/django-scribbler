@@ -1,27 +1,18 @@
 STATIC_DIR = ./scribbler/static/scribbler
-# Library versions
-JQUERY_VERSION = 1.8.3
-REQUIRE_VERSION = 2.1.4
-CODEMIRROR_VERSION = 5.7
-BACKBONE_VERSION = 0.9.10
-UNDERSCORE_VERSION = 1.4.4
-
 
 fetch-static-libs:
 	# Fetch JS library dependencies
 	# Requires npm
-	mkdir -p ${STATIC_DIR}/node_modules
-	cd ${STATIC_DIR} && npm install jquery
-	cd ${STATIC_DIR} && npm install underscore
-	cd ${STATIC_DIR} && npm install backbone
-	cd ${STATIC_DIR} && npm install codemirror
+	npm install
 
-build-css:
+${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less
 	# Build CSS from LESS
 	# Requires LESS and r.js optimizer
 	mkdir -p ${STATIC_DIR}/css
-	lessc -x ${STATIC_DIR}/less/scribbler.less ${STATIC_DIR}/css/scribbler.css
-	cd ${STATIC_DIR}/css && r.js -o cssIn=scribbler.css out=scribbler.css
+	lessc -x $^ $@
+	r.js -o cssIn=$@ out=$@
+
+build-css: ${STATIC_DIR}/css/scribbler.css
 
 lint-js:
 	# Check JS for any problems
@@ -66,3 +57,5 @@ prep-release: lint-js build-css build-js pull-messages compile-messages
 	# Prepare for upcoming release
     # Check JS, create CSS, compile translations, run the test suite
 	tox
+
+.PHONY: build-css build-js lint-js test-js compile-messages make-messages push-messages pull-messages prep-release
