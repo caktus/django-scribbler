@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.template import Template, TemplateSyntaxError
 from django.template.context import RequestContext
 from django.test.client import RequestFactory
-from django.utils.unittest import skipIf
+from unittest import skipIf
 
 from . import DaysLog
 from .base import ScribblerDataTestCase

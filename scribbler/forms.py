@@ -71,7 +71,7 @@ class FieldScribbleForm(forms.Form, ScribbleFormMixin):
         self.field_name = field_name
         self.fields['content'].initial = field_value
         try:
-            self.fields['content'].required = not content_type.model_class()._meta.get_field_by_name(field_name)[0].blank
+            self.fields['content'].required = not content_type.model_class()._meta.get_field(field_name).blank
         except FieldDoesNotExist:
             # Error will be caught on form validation
             pass

@@ -3,19 +3,27 @@ from __future__ import unicode_literals
 
 import json
 from datetime import date
+import unittest
+import time
+import os
 
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from  django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import override_settings
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
 from . import DaysLog
 from .base import ScribblerDataTestCase, Scribble
 
-
+@override_settings(ROOT_URLCONF='scribbler.tests.urls')
 class BaseViewTestCase(ScribblerDataTestCase):
     "Common functionality for testing views."
 
-    urls = "scribbler.tests.urls"
 
     def setUp(self):
         self.user = self.create_user(username='test', password='test')
@@ -26,7 +34,7 @@ class BaseViewTestCase(ScribblerDataTestCase):
             content_type__model='scribble',
         )
         self.add_perm = Permission.objects.get(
-            codename='add_scribble', 
+            codename='add_scribble',
             content_type__app_label='scribbler',
             content_type__model='scribble',
         )
@@ -392,3 +400,50 @@ class DeleteTestCase(BaseViewTestCase):
         data = self.get_valid_data()
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 403)
+
+
+@unittest.skipIf("TRAVIS" in os.environ and os.environ["TRAVIS"] == 'true', "Skipping this test on Travis CI.")
+@override_settings(ROOT_URLCONF='scribbler.tests.urls')
+class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
+
+    def setUp(self):
+        super(FunctionalTestCase, self).setUp()
+        self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(3)
+
+    def tearDown(self):
+        self.browser.quit()
+
+    def test_editor(self):
+        self.browser.get('%s%s' % (self.live_server_url, '/test/'))
+        username_input = self.browser.find_element_by_name("username")
+        username_input.send_keys('test')
+        password_input = self.browser.find_element_by_name("password")
+        password_input.send_keys('test')
+        self.browser.find_element_by_name('submit').click()
+        self.browser.implicitly_wait(10)
+        scribble = self.browser.find_element_by_class_name("scribble-wrapper")
+        self.assertTrue(scribble)
+        self.browser.implicitly_wait(10)
+        editor = self.browser.find_element_by_id("scribbleEditorContainer")
+        self.assertTrue(editor)
+        scribble.click()
+        time.sleep(1)
+        self.assertIn("height: 300px", editor.get_attribute('style'))
+        self.browser.implicitly_wait(10)
+        action = ActionChains(self.browser)
+        action.send_keys(Keys.ARROW_DOWN)
+        action.send_keys(Keys.ARROW_DOWN)
+        action.send_keys("<")
+        action.send_keys("p")
+        action.send_keys(">")
+        action.send_keys("This is a Test")
+        action.send_keys("<")
+        action.send_keys("/")
+        action.send_keys("p")
+        action.send_keys(">")
+        action.perform()
+        self.browser.find_element_by_class_name("save").click()
+        self.browser.implicitly_wait(10)
+        text = self.browser.find_element_by_css_selector("div.scribble-content p:nth-child(2)")
+        self.assertEqual("This is a Test", text.text)

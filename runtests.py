@@ -18,6 +18,7 @@ if not settings.configured:
             'django.contrib.auth',
             'django.contrib.contenttypes',
             'django.contrib.sessions',
+            'django.contrib.staticfiles',
             'scribbler',
         ),
         MIDDLEWARE_CLASSES=(
@@ -46,12 +47,17 @@ if not settings.configured:
             },
             {
                 'BACKEND': 'django.template.backends.django.DjangoTemplates',
-                'DIRS': [
+                'DIRS': [os.path.join(os.path.dirname(os.path.dirname(__file__)), 'scribbler/tests')
                 ],
                 'APP_DIRS': True,
                 'OPTIONS': {
                     'context_processors': [
                         'django.contrib.auth.context_processors.auth',
+                        'django.contrib.messages.context_processors.messages',
+                        'django.core.context_processors.debug',
+                        'django.core.context_processors.media',
+                        'django.core.context_processors.i18n',
+                        'django.core.context_processors.static',
                         'django.core.context_processors.request',
                     ],
                     'debug': False,
@@ -63,7 +69,12 @@ if not settings.configured:
             # us skip creating migrations for the test models.
             'scribbler': 'scribbler.tests.migrations',
             'dayslog': 'dayslog.tests.migrations',
-        }
+        },
+        MEDIA_ROOT='',
+        MEDIA_URL='/media/',
+        STATIC_ROOT='',
+        STATIC_URL='/static/',
+        LOGIN_REDIRECT_URL='/test/'
     )
 
 
