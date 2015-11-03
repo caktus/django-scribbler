@@ -29,6 +29,7 @@ build-js:
 	# Requires uglifyjs
 	cd ${STATIC_DIR}/js && browserify scribbler.js -o bundle.js
 	cd ${STATIC_DIR}/js && browserify scribbler.js | uglifyjs -o bundle-min.js
+	cd ./scribbler/tests/qunit && browserify -t browserify-compile-templates --extension=.html main.js -o bundle.js
 
 test-js:
 	# Run the QUnit tests

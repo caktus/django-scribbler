@@ -2,8 +2,7 @@
   "name": "django-scribbler",
   "version": "0.6.0",
   "description": " An application for managing snippets of text for a Django website.",
-  "keywords": [
-  ],
+  "keywords": [],
   "main": "scribbler/static/scribbler/js/scribbler.js",
   "directories": {
     "doc": "docs",
@@ -28,6 +27,7 @@
   },
   "devDependencies": {
     "browserify": "^11.2.0",
+    "browserify-compile-templates": "^0.2.0",
     "less": "^2.5.3",
     "uglify-js": "^2.5.0"
   },
