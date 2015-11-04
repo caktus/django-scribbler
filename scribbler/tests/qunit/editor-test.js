@@ -9,7 +9,7 @@ module.exports = function() {
     var scribbleTemplate = template.scribble_template({});
 
     QUnit.module("Editor Tests", {
-        setup: function () {
+        beforeEach: function () {
             // Patch AJAX requests
             this.xhr = sinon.useFakeXMLHttpRequest();
             var requests = this.requests = [];
@@ -23,7 +23,7 @@ module.exports = function() {
             this.editor = new ScribbleEditor();
             this.editor.render();
         },
-        teardown: function () {
+        afterEach: function () {
             this.editor.destroy();
             this.xhr.restore();
         }

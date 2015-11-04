@@ -9,13 +9,13 @@ module.exports = function() {
         scribbleTemplate = template.scribble_template({});
 
     QUnit.module("Menu Tests", {
-        setup: function () {
+        beforeEach: function () {
             // Add a scribble to the fixture area
             $('#qunit-fixture').append(scribbleTemplate);
             menu = new ScribbleMenu();
             menu.render();
         },
-        teardown: function () {
+        afterEach: function () {
             menu.destroy();
         }
     });
