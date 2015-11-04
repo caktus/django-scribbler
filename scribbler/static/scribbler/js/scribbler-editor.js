@@ -44,9 +44,16 @@ var ScribbleEditor = Backbone.View.extend({
                 extraKeys: {
                   "F11": function(cm) {
                     cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    if ($('.CodeMirror-fullscreen').length) {
+                      $('#scribbleEditorContainer').addClass("scribbleEditor-fullscreen");
+                    }
+                    else {
+                      $('#scribbleEditorContainer').removeClass("scribbleEditor-fullscreen");
+                    }
                   },
                   "Esc": function(cm) {
                     if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                    $('.scribbleEditor-fullscreen').removeClass("scribbleEditor-fullscreen");
                   },
                   'Tab': 'autocomplete'
                 }
@@ -110,11 +117,11 @@ var ScribbleEditor = Backbone.View.extend({
         // Status message
         this.controls.status = $('<span></span>')
             .addClass('status-msg');
-            // Fullscreen instructions
-               this.controls.fullscreen = $('<div>' + gettext('Press ') +
-               '<strong>' + gettext('F11') + '</strong>' +
-               gettext(' to enter/exit Fullscreen edit') + '</div>')
-               .addClass('fullscreen')
+        // Fullscreen instructions
+        this.controls.fullscreen = $('<div>' + gettext('Press ') +
+            '<strong>' + gettext('F11') + '</strong>' +
+            gettext(' to enter/exit Fullscreen edit') + '</div>')
+            .addClass('fullscreen')
                footerControls.append(
                    this.controls.status,
                    this.controls.errors,
@@ -169,6 +176,8 @@ var ScribbleEditor = Backbone.View.extend({
         if (this.backgroundDraft) {
             clearInterval(this.backgroundDraft);
         }
+        $('#scribbleEditorContainer').removeClass("scribbleEditor-fullscreen");
+        $('.CodeMirror.cm-s-default').removeClass("CodeMirror-fullscreen").css("height", "");
         this.trigger('close');
     },
     submitPreview: function (force) {
@@ -255,6 +264,8 @@ var ScribbleEditor = Backbone.View.extend({
                 self.setError(msg);
             });
         }
+        $('#scribbleEditorContainer').removeClass("scribbleEditor-fullscreen");
+        $('.CodeMirror.cm-s-default').removeClass("CodeMirror-fullscreen").css("height", "");
     },
     renderSave: function (response) {
         if (response.valid) {
