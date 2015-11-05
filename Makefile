@@ -1,4 +1,7 @@
 STATIC_DIR = ./scribbler/static/scribbler
+PROJECT_FILES = ${STATIC_DIR}/js/scribbler.js ${STATIC_DIR}/js/scribbler-editor.js ${STATIC_DIR}/js/scribbler-menu.js ${STATIC_DIR}/js/djangohint.js
+TESTS_DIR = ./scribbler/tests/qunit
+TEST_FILES = ${TESTS_DIR}/menu-test.js ${TESTS_DIR}/editor-test.js
 
 fetch-static-libs:
 	# Fetch JS library dependencies
@@ -23,18 +26,21 @@ lint-js:
 	jshint ${STATIC_DIR}/js/scribbler-menu.js
 	jshint ${STATIC_DIR}/js/plugins/
 
-build-js:
-	# Build optimized JS
-	# Requires browserify
-	# Requires uglifyjs
-	cd ${STATIC_DIR}/js && browserify scribbler.js -o bundle.js
-	cd ${STATIC_DIR}/js && browserify scribbler.js | uglifyjs -o bundle-min.js
-	cd ./scribbler/tests/qunit && browserify -t browserify-compile-templates --extension=.html main.js -o bundle.js
+${STATIC_DIR}/js/bundle.js: ${PROJECT_FILES}
+	node_modules/.bin/browserify $< -o $@
 
-test-js:
+${STATIC_DIR}/js/bundle-min.js: ${STATIC_DIR}/js/bundle.js
+	node_modules/.bin/uglifyjs $^ -o $@
+
+build-js: ${STATIC_DIR}/js/bundle-min.js
+
+${TESTS_DIR}/bundle.js: ${TESTS_DIR}/main.js ${PROJECT_FILES} ${TEST_FILES}
+	node_modules/.bin/browserify -t browserify-compile-templates --extension=.html $^ -o $@
+
+test-js: ${TESTS_DIR}/bundle.js
 	# Run the QUnit tests
 	# Requires PhantomJS
-	phantomjs scribbler/tests/qunit/runner.js scribbler/tests/qunit/index.html
+	phantomjs ${TESTS_DIR}/runner.js ${TESTS_DIR}/index.html
 
 compile-messages:
 	# Create compiled .mo files for source distribution
