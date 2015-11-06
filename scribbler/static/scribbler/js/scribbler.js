@@ -8,19 +8,14 @@
  *
 */
 
-/*global require*/
+/*global require */
 var $ = require('jquery');
 var _ = require('underscore');
-var ScribbleMenu = require('./scribbler-menu.js')
-var ScribbleEditor = require('./scribbler-editor.js')
-
-
-'use strict';
+var ScribbleMenu = require('./scribbler-menu.js');
+var ScribbleEditor = require('./scribbler-editor.js');
 
 var pluginlist = [],
     script;
-
-$.noConflict(true);
 
 // Dynamically loads additional plugins for django-scribbler
 function pluginLoader(name, editor, menu) {
