@@ -35,7 +35,7 @@ ${STATIC_DIR}/js/bundle-min.js: ${STATIC_DIR}/js/bundle.js
 build-js: ${STATIC_DIR}/js/bundle-min.js
 
 ${TESTS_DIR}/bundle.js: ${TESTS_DIR}/main.js ${PROJECT_FILES} ${TEST_FILES}
-	node_modules/.bin/browserify -t browserify-compile-templates --extension=.html $^ -o $@
+	node_modules/.bin/browserify -t browserify-compile-templates --extension=.html $< -o $@
 
 test-js: ${TESTS_DIR}/bundle.js
 	# Run the QUnit tests
