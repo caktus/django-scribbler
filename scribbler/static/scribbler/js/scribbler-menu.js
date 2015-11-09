@@ -1,4 +1,4 @@
-/*global define*/
+/*global require, module */
 
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -10,11 +10,6 @@ var gettext = gettext || function (text) {
     'use strict';
     return text;
 };
-
-
-'use strict';
-
-$.noConflict(true);
 
 var ScribbleMenu = Backbone.View.extend({
     id: 'scribbleMenuContainer',
@@ -77,4 +72,4 @@ var ScribbleMenu = Backbone.View.extend({
     }
 });
 
-module.exports = ScribbleMenu
+module.exports = ScribbleMenu;

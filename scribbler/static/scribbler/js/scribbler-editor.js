@@ -1,27 +1,21 @@
-/*global define*/
+/*global require, module */
 
 require('codemirror/mode/xml/xml');
 require('codemirror/mode/javascript/javascript');
 require('codemirror/mode/css/css');
 require('codemirror/mode/htmlmixed/htmlmixed');
-require('./djangohint')
+require('./djangohint');
 
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 Backbone.$ = $;
-var CodeMirror = require('codemirror')
-
+var CodeMirror = require('codemirror');
 
 var gettext = gettext || function (text) {
     'use strict';
     return text;
 };
-
-
-'use strict';
-
-$.noConflict(true);
 
 var ScribbleEditor = Backbone.View.extend({
     id: 'scribbleEditorContainer',
@@ -346,4 +340,4 @@ var ScribbleEditor = Backbone.View.extend({
     }
 });
 
-module.exports = ScribbleEditor
+module.exports = ScribbleEditor;

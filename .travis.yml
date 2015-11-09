@@ -9,6 +9,7 @@ env:
   - TOXENV=py27-1.8.X,py33-1.8.X,py34-1.8.X
   - TOXENV=coverage
   - TOXENV=docs
+  - TOXENV=qunit
 
 before_install:
     - "export DISPLAY=:99.0"
@@ -16,11 +17,10 @@ before_install:
     - sleep 3
 
 install:
-  - pip install tox
-  - pip install coveralls
+  - pip install tox coveralls
 
 script:
-    - tox
+  - tox
 
 branches:
   only:

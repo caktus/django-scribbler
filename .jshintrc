@@ -12,6 +12,6 @@
     "browser": true,
     "undef": true,
     "trailing": true,
-    "jquery": true,
+    "jquery": false,
     "indent": 4
 }
