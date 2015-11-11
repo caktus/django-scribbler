@@ -1,3 +1,10 @@
+PLUGINS CURRENTLY BROKEN
+====================================
+It is possible that plugins may be added back in the future, but as of right now there is
+no working plugin feature.  All following documentation only pertains to versions 0.6.0 
+and earlier.
+
+
 Writing Editor Plugins
 ====================================
 
