@@ -10,10 +10,10 @@ fetch-static-libs:
 
 ${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less
 	# Build CSS from LESS
-	# Requires LESS and r.js optimizer
+	# Requires LESS
 	mkdir -p ${STATIC_DIR}/css
-	lessc -x $^ $@
-	r.js -o cssIn=$@ out=$@
+	echo | lessc -x node_modules/codemirror/lib/codemirror.css > $@
+	echo | lessc -x $^ >> $@
 
 build-css: ${STATIC_DIR}/css/scribbler.css
 
