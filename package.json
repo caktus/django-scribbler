@@ -15,7 +15,7 @@
     "type": "git",
     "url": "https://github.com/caktus/django-scribbler.git"
   },
-  "license": "ISC",
+  "license": "BSD",
   "bugs": {
     "url": "https://github.com/caktus/django-scribbler/issues"
   },
