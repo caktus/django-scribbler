@@ -1,10 +1,9 @@
-/*global define*/
+/*global require */
 
 require('codemirror/addon/hint/show-hint');
 
-var CodeMirror = require('codemirror')
+var CodeMirror = require('codemirror');
 
-'use strict';
 function forEach(arr, f) {
     for (var i = 0, e = arr.length; i < e; ++i) {
         f(arr[i]);
