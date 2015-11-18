@@ -9,7 +9,7 @@
 */
 
 /* Table of Contents
-======================== 
+========================
 Imports
 Variables
 Mixins - Twitter Bootstrap
@@ -20,7 +20,7 @@ Codemirror customization styles
 
 */
 
-@import url("../libs/codemirror/lib/codemirror.css");
+@import url("../../../../node_modules/codemirror/lib/codemirror.css");
 
 /* Variables
 ======================== */
@@ -122,7 +122,7 @@ Codemirror customization styles
     height: 0;
     z-index: 10000;
     background-color: @grayDark;
-    
+
     .controls {
         font-family: @primaryFont;
         color: @white;
@@ -137,7 +137,7 @@ Codemirror customization styles
           line-height: 0;
         }
         &:after { clear: both; }
-        
+
         span {
             float: left;
             &.error-msg {
@@ -156,23 +156,23 @@ Codemirror customization styles
             &.save {
                 background-color: @green;
                 &:hover {
-                  background-color: lighten(@green, 10%);  
+                  background-color: lighten(@green, 10%);
                 }
             }
             &.draft {
                 background-color: @yellow;
                 &:hover {
-                  background-color: lighten(@yellow, 10%);  
+                  background-color: lighten(@yellow, 10%);
                 }
             }
             &.discard {
                 background-color: @red;
                 &:hover {
-                  background-color: lighten(@red, 10%);  
+                  background-color: lighten(@red, 10%);
                 }
             }
         }
-    }  
+    }
 }
 
 /* Scribbler menu styles
@@ -183,7 +183,7 @@ Codemirror customization styles
     z-index: 10000;
     width: 100%;
     a.tab {
-        position: absolute; 
+        position: absolute;
         left: 45%;
         .border-radius(0 0 10px 10px);
         padding: 5px 10px;
@@ -213,7 +213,7 @@ Codemirror customization styles
                 color: @white;
                 background-color: lighten(@grayDark, 10%);
                 &:hover {
-                   background-color: lighten(@grayDark, 20%); 
+                   background-color: lighten(@grayDark, 20%);
                 }
             }
         }
@@ -233,7 +233,7 @@ Codemirror customization styles
     }
 }
 
-.CodeMirror-completions {
+.CodeMirror-hints {
     position: absolute;
     z-index: 10010;
     overflow: hidden;
@@ -242,11 +242,27 @@ Codemirror customization styles
     box-shadow: 2px 3px 5px rgba(0,0,0,.2);
 }
 
-.CodeMirror-completions select {
+.CodeMirror-hints select {
     background: #fafafa;
     outline: none;
     border: none;
     padding: 0;
     margin: 0;
     font-family: monospace;
+}
+
+.CodeMirror-hint {
+  margin: 0;
+  padding: 0 4px;
+  border-radius: 2px;
+  max-width: 19em;
+  overflow: hidden;
+  white-space: pre;
+  color: black;
+  cursor: pointer;
+}
+
+li.CodeMirror-hint-active {
+  background: #08f;
+  color: white;
 }

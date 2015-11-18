@@ -1,41 +1,45 @@
 /*global define, module, test, expect, equal, ok*/
+var $ = require('jquery');
+var _ = require('underscore');
+var ScribbleMenu = require('../../static/scribbler/js/scribbler-menu.js');
+var template = require('./template.html');
 
-define(['jquery', 'underscore', 'scribblermenu'], function ($, _, ScribbleMenu) {
+module.exports = function() {
     var menu,
-        scribbleTemplate = _.template($("#scribble-template").html());
+        scribbleTemplate = template.scribble_template({});
 
-    module("Menu Tests", {
-        setup: function () {
+    QUnit.module("Menu Tests", {
+        beforeEach: function () {
             // Add a scribble to the fixture area
-            $('#qunit-fixture').append(scribbleTemplate({}));
+            $('#qunit-fixture').append(scribbleTemplate);
             menu = new ScribbleMenu();
             menu.render();
         },
-        teardown: function () {
+        afterEach: function () {
             menu.destroy();
         }
     });
 
-    test("Menu Render", function () {
+    QUnit.test("Menu Render", function () {
         expect(2);
         equal($("#scribbleMenuContainer").length, 1, "Menu was not added.");
         ok(!menu.visible, "Menu should not be visible.");
     });
 
-    test("Menu Open", function () {
+    QUnit.test("Menu Open", function () {
         expect(1);
         menu.open();
         ok(menu.visible, "Menu should be visible.");
     });
 
-    test("Menu Close", function () {
+    QUnit.test("Menu Close", function () {
         expect(1);
         menu.open();
         menu.close();
         ok(!menu.visible, "Menu should not be visible.");
     });
 
-    test("Menu Highlight", function () {
+    QUnit.test("Menu Highlight", function () {
         expect(2);
         var highlighted = $('.scribble-wrapper.highlight', '#qunit-fixture');
         equal(highlighted.length, 0, "Scribble should not be highlighted.");
@@ -43,4 +47,4 @@ define(['jquery', 'underscore', 'scribblermenu'], function ($, _, ScribbleMenu) 
         highlighted = $('.scribble-wrapper.highlight', '#qunit-fixture');
         equal(highlighted.length, 1, "Scribble should be highlighted.");
     });
-});
+}

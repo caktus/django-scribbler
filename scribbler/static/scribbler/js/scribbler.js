@@ -8,64 +8,37 @@
  *
 */
 
-/*global require*/
+/*global require */
+var $ = require('jquery');
+var _ = require('underscore');
+var ScribbleMenu = require('./scribbler-menu.js');
+var ScribbleEditor = require('./scribbler-editor.js');
 
-require.config({
-  packages: [{
-    name: 'codemirror',
-    location: '../libs/codemirror',
-    main: '/lib/codemirror'
-  }],
-    paths: {
-        jquery: '../libs/jquery',
-        scribblereditor: 'scribbler-editor',
-        scribblermenu: 'scribbler-menu',
-        djangohint: 'djangohint',
-        backbone: '../libs/backbone',
-        underscore: '../libs/underscore'
-    },
-    shim: {
-            backbone: {
-                deps: ['underscore', 'jquery'],
-                exports: 'Backbone'
-            },
-            underscore: {
-                exports: '_'
-            }
-        }
-});
+var pluginlist = [],
+    script;
 
-require(['jquery', 'underscore', 'scribblereditor', 'scribblermenu'], function ($, _, ScribbleEditor, ScribbleMenu) {
-    'use strict';
-
-    var pluginlist = [],
-        script;
-
-    $.noConflict(true);
-
-    // Dynamically loads additional plugins for django-scribbler
-    function pluginLoader(name, editor, menu) {
-        var path = "./plugins/" + name;
-        require([path], function (plugin) {
-            plugin.call(null, editor, menu);
-        });
-    }
-
-    script = $("script[data-scribbler-plugins]");
-
-    if (script.length) {
-        pluginlist = script.data("scribblerPlugins").split(",");
-    }
-
-    $(document).ready(function () {
-        var editor = new ScribbleEditor(),
-            menu = new ScribbleMenu();
-        editor.bind("open", menu.close, menu);
-        function executePlugin(name) {
-            pluginLoader(name, editor, menu);
-        }
-        _.map(pluginlist, executePlugin);
-        editor.render();
-        menu.render();
+// Dynamically loads additional plugins for django-scribbler
+function pluginLoader(name, editor, menu) {
+    var path = "./plugins/" + name;
+    require([path], function (plugin) {
+        plugin.call(null, editor, menu);
     });
+}
+
+script = $("script[data-scribbler-plugins]");
+
+if (script.length) {
+    pluginlist = script.data("scribblerPlugins").split(",");
+}
+
+$(document).ready(function () {
+    var editor = new ScribbleEditor(),
+        menu = new ScribbleMenu();
+    editor.bind("open", menu.close, menu);
+    function executePlugin(name) {
+        pluginLoader(name, editor, menu);
+    }
+    _.map(pluginlist, executePlugin);
+    editor.render();
+    menu.render();
 });

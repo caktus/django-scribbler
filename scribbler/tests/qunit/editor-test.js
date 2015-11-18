@@ -1,10 +1,15 @@
 /*global define, module, test, expect, equal, ok*/
 
-define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEditor) {
-    var scribbleTemplate = _.template($("#scribble-template").html());
+var $ = require('jquery');
+var _ = require('underscore');
+var ScribbleEditor = require('../../static/scribbler/js/scribbler-editor.js');
+var template = require('./template.html');
 
-    module("Editor Tests", {
-        setup: function () {
+module.exports = function() {
+    var scribbleTemplate = template.scribble_template({});
+
+    QUnit.module("Editor Tests", {
+        beforeEach: function () {
             // Patch AJAX requests
             this.xhr = sinon.useFakeXMLHttpRequest();
             var requests = this.requests = [];
@@ -13,24 +18,24 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
                 requests.push(xhr);
             };
             // Add a scribble to the fixture area
-            $('#qunit-fixture').append(scribbleTemplate({}));
+            $('#qunit-fixture').append(scribbleTemplate);
             this.scribble = $('.scribble-wrapper', '#qunit-fixture').eq(0);
             this.editor = new ScribbleEditor();
             this.editor.render();
         },
-        teardown: function () {
+        afterEach: function () {
             this.editor.destroy();
             this.xhr.restore();
         }
     });
 
-    test("Editor Render", function () {
+    QUnit.test("Editor Render", function () {
         expect(2);
         equal($("#scribbleEditorContainer").length, 1, "Editor was not added.");
         ok(!this.editor.visible, "Editor should not be visible.");
     });
 
-    test("Editor Open", function () {
+    QUnit.test("Editor Open", function () {
         var content = $('#id_header-content', this.scribble).val();
         expect(2);
         this.editor.open(this.scribble);
@@ -38,7 +43,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(this.editor.editor.getValue(), content, "Editor should have scribble content.");
     });
 
-    test("Editor Close", function () {
+    QUnit.test("Editor Close", function () {
         expect(2);
         this.editor.open(this.scribble);
         this.editor.close();
@@ -46,7 +51,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(this.editor.editor.getValue(), '', "Editor should be empty.");
     });
 
-    test("Editor Submit Preview", function () {
+    QUnit.test("Editor Submit Preview", function () {
         expect(2);
         this.editor.open(this.scribble);
         this.editor.rendering = false;
@@ -56,7 +61,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(this.requests[0].url, '/scribble/preview/');
     });
 
-    test("Editor Currently Rendering", function () {
+    QUnit.test("Editor Currently Rendering", function () {
         expect(1);
         this.editor.open(this.scribble);
         this.editor.rendering = true;
@@ -65,7 +70,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(this.requests.length, 0, "No preview should be submitted.");
     });
 
-    test("Editor Force Preview", function () {
+    QUnit.test("Editor Force Preview", function () {
         expect(2);
         this.editor.open(this.scribble);
         this.editor.rendering = true;
@@ -75,7 +80,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(this.requests[0].url, '/scribble/preview/');
     });
 
-    test("Editor Preview Success", function () {
+    QUnit.test("Editor Preview Success", function () {
         var preview = $('.preview', this.scribble);
         expect(1);
         this.editor.open(this.scribble);
@@ -88,7 +93,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(preview.html(), 'Foo', "Preview div should be updated.");
     });
 
-    test("Editor Preview Error", function () {
+    QUnit.test("Editor Preview Error", function () {
         var preview = $('.preview', this.scribble);
         var original = preview.html();
         expect(2);
@@ -103,7 +108,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(this.editor.controls.errors.text(), "Error: Bar", "Error message should be set.");
     });
 
-    test("Editor Save", function () {
+    QUnit.test("Editor Save", function () {
         expect(2);
         this.editor.open(this.scribble);
         this.editor.valid = true;
@@ -113,7 +118,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(this.requests[0].url, '/scribble/edit/1/');
     });
 
-    test("Editor Invalid Save", function () {
+    QUnit.test("Editor Invalid Save", function () {
         expect(1);
         this.editor.open(this.scribble);
         this.editor.valid = false;
@@ -122,7 +127,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(this.requests.length, 0, "No save should be submitted.");
     });
 
-    test("Editor Save Success", function () {
+    QUnit.test("Editor Save Success", function () {
         var current = $('.original', this.scribble);
         $('.preview', this.scribble).html("Foo");
         expect(2);
@@ -137,7 +142,7 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         ok(!this.editor.visible, "Editor should be closed.");
     });
 
-    test("Editor Save Error", function () {
+    QUnit.test("Editor Save Error", function () {
         var current = $('.original', this.scribble);
         var original = current.html();
         expect(2);
@@ -151,4 +156,4 @@ define(['jquery', 'underscore', 'scribblereditor'], function ($, _, ScribbleEdit
         equal(current.html(), original, "Current div should be unchanged.");
         ok(this.editor.visible, "Editor should still be open.");
     });
-});
+}

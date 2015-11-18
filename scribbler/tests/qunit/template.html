@@ -1,0 +1,19 @@
+<script type="text/template" id="scribble_template">
+    <div class="scribble-wrapper scribble-header with-controls">
+        <div class="scribble-content original">
+            <p>Blip 2013 /STATIC/</p> <a href="#1">Internal link</a> <a href="http://google.com">External link</a>.
+        </div>
+        <form class="scribble-form" data-prefix="header" data-save="/scribble/edit/1/" data-delete="/scribble/delete/1/" action="/scribble/preview/" method="post">
+        <div class="hidden">
+            <input type="hidden" name="header-name" id="id_header-name">
+            <input type="hidden" name="header-slug" value="header" id="id_header-slug">
+            <input type="hidden" name="header-url" value="/" id="id_header-url">
+        </div>
+        <textarea id="id_header-content" rows="10" cols="40" name="header-content">&lt;p&gt;Blip {% now 'Y' %} {{ STATIC_URL|upper }}&lt;/p&gt; &lt;a href="#1"&gt;Internal link&lt;/a&gt; &lt;a href="http://google.com"&gt;External link&lt;/a&gt;.
+        </textarea>
+        </form>
+        <pre class="scribble-default">&lt;p&gt;Blip {% now 'Y' %} {{ STATIC_URL|upper }}&lt;/p&gt;</pre>
+        <div class="scribble-content preview">
+        </div>
+    </div>
+</script>

@@ -1,34 +1,21 @@
 STATIC_DIR = ./scribbler/static/scribbler
-LIBS_DIR = ${STATIC_DIR}/libs
-# Library versions
-JQUERY_VERSION = 1.8.3
-REQUIRE_VERSION = 2.1.4
-CODEMIRROR_VERSION = 5.7
-BACKBONE_VERSION = 0.9.10
-UNDERSCORE_VERSION = 1.4.4
-
+PROJECT_FILES = ${STATIC_DIR}/js/scribbler.js ${STATIC_DIR}/js/scribbler-editor.js ${STATIC_DIR}/js/scribbler-menu.js ${STATIC_DIR}/js/djangohint.js
+TESTS_DIR = ./scribbler/tests/qunit
+TEST_FILES = ${TESTS_DIR}/menu-test.js ${TESTS_DIR}/editor-test.js
 
 fetch-static-libs:
 	# Fetch JS library dependencies
-	# Requires curl
-	curl -Lo ${LIBS_DIR}/jquery.js http://code.jquery.com/jquery-${JQUERY_VERSION}.js
-	curl -Lo ${LIBS_DIR}/require.js http://requirejs.org/docs/release/${REQUIRE_VERSION}/comments/require.js
-	curl -Lo ${LIBS_DIR}/backbone.js https://raw.github.com/jashkenas/backbone/${BACKBONE_VERSION}/backbone.js
-	curl -Lo ${LIBS_DIR}/underscore.js https://raw.github.com/jashkenas/underscore/${UNDERSCORE_VERSION}/underscore.js
-	curl -Lo codemirror-${CODEMIRROR_VERSION}.zip http://codemirror.net/codemirror-${CODEMIRROR_VERSION}.zip
-	unzip codemirror-${CODEMIRROR_VERSION}.zip
-	rm -rf ${LIBS_DIR}/codemirror
-	mkdir -p ${LIBS_DIR}/codemirror
-	mv -f codemirror-${CODEMIRROR_VERSION}/* ${LIBS_DIR}/codemirror
-	rm -r codemirror-${CODEMIRROR_VERSION}
-	rm codemirror-${CODEMIRROR_VERSION}.zip
+	# Requires npm
+	npm install
 
-build-css:
+${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less
 	# Build CSS from LESS
-	# Requires LESS and r.js optimizer
+	# Requires LESS
 	mkdir -p ${STATIC_DIR}/css
-	lessc -x ${STATIC_DIR}/less/scribbler.less ${STATIC_DIR}/css/scribbler.css
-	cd ${STATIC_DIR}/css && r.js -o cssIn=scribbler.css out=scribbler.css
+	echo | lessc -x node_modules/codemirror/lib/codemirror.css > $@
+	echo | lessc -x $^ >> $@
+
+build-css: ${STATIC_DIR}/css/scribbler.css
 
 lint-js:
 	# Check JS for any problems
@@ -39,15 +26,21 @@ lint-js:
 	jshint ${STATIC_DIR}/js/scribbler-menu.js
 	jshint ${STATIC_DIR}/js/plugins/
 
-build-js:
-	# Build optimized JS
-	# Requires r.js optimizer
-	cd ${STATIC_DIR}/js && r.js -o name=scribbler out=scribbler-min.js baseUrl=. mainConfigFile=scribbler.js
+${STATIC_DIR}/js/bundle.js: ${PROJECT_FILES}
+	node_modules/.bin/browserify $< -o $@
 
-test-js:
+${STATIC_DIR}/js/bundle-min.js: ${STATIC_DIR}/js/bundle.js
+	node_modules/.bin/uglifyjs $^ -o $@
+
+build-js: ${STATIC_DIR}/js/bundle-min.js
+
+${TESTS_DIR}/bundle.js: ${TESTS_DIR}/main.js ${PROJECT_FILES} ${TEST_FILES}
+	node_modules/.bin/browserify -t browserify-compile-templates --extension=.html $< -o $@
+
+test-js: ${TESTS_DIR}/bundle.js
 	# Run the QUnit tests
 	# Requires PhantomJS
-	phantomjs scribbler/tests/qunit/runner.js scribbler/tests/qunit/index.html
+	phantomjs ${TESTS_DIR}/runner.js ${TESTS_DIR}/index.html
 
 compile-messages:
 	# Create compiled .mo files for source distribution
@@ -71,3 +64,5 @@ prep-release: lint-js build-css build-js pull-messages compile-messages
 	# Prepare for upcoming release
     # Check JS, create CSS, compile translations, run the test suite
 	tox
+
+.PHONY: build-css build-js lint-js test-js compile-messages make-messages push-messages pull-messages prep-release
