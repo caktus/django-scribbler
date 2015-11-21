@@ -17,11 +17,11 @@ from .models import Scribble
 from .utils import get_variables
 
 
-def build_scribble_context(scribble):
+def build_scribble_context(scribble, context={}):
     "Create context for rendering a scribble or scribble preview."
-    context = {
+    context.update({
         'scribble': scribble,
-    }
+    })
 
     return context
 
