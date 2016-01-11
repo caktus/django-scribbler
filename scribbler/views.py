@@ -51,10 +51,17 @@ def preview_scribble(request):
         results['variables'] = get_variables(RequestContext(request, context))
     else:
         if hasattr(form, 'exc_info'):
-            exc_type, exc_value, tb = form.exc_info
-            reporter = ExceptionReporter(request, exc_type, exc_value, tb)
-            reporter.get_template_exception_info()
-            results['error'] = reporter.template_info
+            # Pre Django 1.9
+            try:
+                exc_type, exc_value, tb = form.exc_info
+                reporter = ExceptionReporter(request, exc_type, exc_value, tb)
+                reporter.get_template_exception_info()
+                results['error'] = reporter.template_info
+            # Django >= 1.9: get_template_info() is moved from ExceptionReporter
+            # onto Template. We pass the data it returns from scribbler/forms.py
+            # to here.
+            except ValueError:
+                results['error'] = form.exc_info
         else:
             # Not sure what to do here
             results['error'] = {

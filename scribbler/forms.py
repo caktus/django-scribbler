@@ -23,24 +23,24 @@ class ScribbleFormMixin(object):
             except ImportError:
                 # django.template.debug doesn't exist in Django >= 1.9, so use
                 # Template from django.template instead
-                use_Template = True
                 from django.template import Template
-            else:
-                lexer = DebugLexer(content, origin)
-                use_Template = False
-
-            try:
-                if use_Template == True:
+                try:
                     template = Template(template_string=origin)
                     template.compile_nodelist()
-                else:
+                except Exception as e:
+                    # The data we pass to the views is in e.template_debug
+                    self.exc_info = e.template_debug
+                    raise forms.ValidationError('Invalid Django Template')
+            else:
+                lexer = DebugLexer(content, origin)
+                try:
                     parser = DebugParser(lexer.tokenize())
                     parser.parse()
-            except Exception as e:
-                self.exc_info = sys.exc_info()
-                if not hasattr(self.exc_info[1], 'django_template_source'):
-                    self.exc_info[1].django_template_source = origin, (0, 0)
-                raise forms.ValidationError('Invalid Django Template')
+                except Exception as e:
+                    self.exc_info = sys.exc_info()
+                    if not hasattr(self.exc_info[1], 'django_template_source'):
+                        self.exc_info[1].django_template_source = origin, (0, 0)
+                    raise forms.ValidationError('Invalid Django Template')
         return content
 
 
