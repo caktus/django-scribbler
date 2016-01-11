@@ -60,7 +60,10 @@ def preview_scribble(request):
             # Django >= 1.9: get_template_info() is moved from ExceptionReporter
             # onto Template. We pass the data it returns from scribbler/forms.py
             # to here.
-            except ValueError:
+            except (ValueError, AttributeError):
+                # ValueError is raised when we pass in all 12 the arguments,
+                # in form.exc_info and AttributeError is raised when
+                # ExceptionReporter.get_template_exception_info() is called.
                 results['error'] = form.exc_info
         else:
             # Not sure what to do here
