@@ -77,10 +77,10 @@ You should include the scribbler urls in your root url patterns.
 
 .. code-block:: python
 
-    urlpatterns = patterns('',
+    urlpatterns = [
         # Other url patterns would go here
         url(r'^scribbler/', include('scribbler.urls')),
-    )
+    ]
 
 
 Create Database Tables
@@ -137,11 +137,11 @@ scribbles on any page on your site these should be included in your base templat
 .. code-block:: html
 
     <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/css/scribbler.css">
-    <script data-main="{{ STATIC_URL }}scribbler/js/scribbler-min" src="{{ STATIC_URL }}scribbler/libs/require.js"></script>
+    <script src="{{ STATIC_URL }}scribbler/js/bundle-min.js"></script>
 
-This uses `RequireJS <http://requirejs.org/>`_ to load the additional JS resources. The front-end
+This uses `Browserify <http://browserify.org/>`_ to load the additional JS resources. The front-end
 editor uses `CodeMirror <http://codemirror.net/>`_ (currently using v2.38) which is included in the distribution.
-Both RequireJS and CodeMirror are available a MIT-style license compatible with
+Both Browserify and CodeMirror are available a MIT-style license compatible with
 this project's BSD license. You can find the license files included in
 ``scribbler/static/scribbler/libs/``.
 
