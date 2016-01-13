@@ -91,27 +91,15 @@ This is done with the ``syncdb`` management command built into Django::
 
     python manage.py syncdb
 
-django-scribbler uses `South <http://south.aeracode.org/>`_ to handle database migrations.
-If you are also using South then you should specify ``SOUTH_MIGRATION_MODULES`` in settings:
 
-.. code-block:: python
-
-	SOUTH_MIGRATION_MODULES = {
-	    'scribbler': 'scribbler.south_migrations',
-	}
-
-
-To run south migrations call::
+To run migrations call::
 
     python manage.py migrate scribbler
 
 .. note::
 
-    The latest release of South does not support Python 3. If you want to try
-    django-scribbler with Python 3 you will have go without South for the time being
-    or you should use Django 1.7-1.8 migrations
-
-
+    Scribbler no longer uses `South` for migrations and uses Django migrations
+    <https://docs.djangoproject.com/en/dev/topics/migrations/> instead.
 
 
 User Permissions
