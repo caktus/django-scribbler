@@ -4,17 +4,34 @@ Release History
 Release and change history for django-scribbler
 
 
-Next Release (Released )
+v0.7.0 (Released TBD)
 ------------------------------------
+
+The release removed the use of RequireJS for bundling the required assets
+and instead uses Browserify to create single required JS file.
+
+
+Features
+_________________
+
+- Added support for full screen edits
+
+Backwards Incompatible Changes
+__________________________________
+
 - Dropped support for Django<=1.7, Python2.6, and Python3.2 (#101)
+- South migrations have been removed since Django 1.6 support was removed
+
 
 v0.6.0 (Released 2015-10-7)
 ------------------------------------
+
 This release fixes some lingering issues with Django 1.8 support and integrates
 Wheel support and features from the latest versions of Tox.
 
 Features
 _________________
+
 - Added Wheel support (#96)
 - Updated Tox and Travis to work with Tox 2.0+ (#90)
 - Changed button color on editor
