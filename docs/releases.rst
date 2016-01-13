@@ -10,10 +10,10 @@ v0.7.0 (Released TBD)
 The release removed the use of RequireJS for bundling the required assets
 and instead uses Browserify to create single required JS file.
 
-
 Features
 _________________
 
+- Added support for Django 1.9
 - Added support for full screen edits
 
 Backwards Incompatible Changes
