@@ -4,7 +4,8 @@ require('codemirror/mode/xml/xml');
 require('codemirror/mode/javascript/javascript');
 require('codemirror/mode/css/css');
 require('codemirror/mode/htmlmixed/htmlmixed');
-require('./djangohint');
+require('codemirror/addon/display/fullscreen')
+require('./djangohint')
 
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -30,12 +31,27 @@ var ScribbleEditor = Backbone.View.extend({
         this.needsSave = false;
         this.needsDraft = false;
         this.scribbles = $('.scribble-wrapper.with-controls');
-        this.editorOptions = {
-            mode: "text/html",
-            tabMode: "indent",
-            lineNumbers: true,
-            extraKeys: {'Tab': 'autocomplete'}
-        };
+        this.editorOptions =  {
+                mode: "text/html",
+                tabMode: "indent",
+                lineNumbers: true,
+                extraKeys: {
+                  "F11": function(cm) {
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    if ($('.CodeMirror-fullscreen').length) {
+                      $('#scribbleEditorContainer').addClass("scribbleEditor-fullscreen");
+                    }
+                    else {
+                      $('#scribbleEditorContainer').removeClass("scribbleEditor-fullscreen");
+                    }
+                  },
+                  "Esc": function(cm) {
+                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                    $('.scribbleEditor-fullscreen').removeClass("scribbleEditor-fullscreen");
+                  },
+                  'Tab': 'autocomplete'
+                }
+                };
         CodeMirror.commands.autocomplete = function (editor) {
             CodeMirror.showHint(editor, CodeMirror.djangoHint);
         };
@@ -95,13 +111,20 @@ var ScribbleEditor = Backbone.View.extend({
         // Status message
         this.controls.status = $('<span></span>')
             .addClass('status-msg');
-        footerControls.append(
-            this.controls.status,
-            this.controls.errors,
-            this.controls.close,
-            this.controls.discard,
-            this.controls.draft,
-            this.controls.save
+        // Fullscreen instructions
+        this.controls.fullscreen = $('<div>' + gettext('Press ') +
+            '<strong>' + gettext('F11') + '</strong>' +
+            gettext(' to enter/exit Fullscreen edit') + '</div>')
+            .addClass('fullscreen')
+               footerControls.append(
+                   this.controls.status,
+                   this.controls.errors,
+                   this.controls.close,
+                   this.controls.discard,
+                   this.controls.draft,
+                   this.controls.save,
+                   this.controls.fullscreen
+
         );
         this.$el.append(footerControls);
     },
@@ -147,6 +170,8 @@ var ScribbleEditor = Backbone.View.extend({
         if (this.backgroundDraft) {
             clearInterval(this.backgroundDraft);
         }
+        $('#scribbleEditorContainer').removeClass("scribbleEditor-fullscreen");
+        $('.CodeMirror.cm-s-default').removeClass("CodeMirror-fullscreen").css("height", "");
         this.trigger('close');
     },
     submitPreview: function (force) {
@@ -233,6 +258,8 @@ var ScribbleEditor = Backbone.View.extend({
                 self.setError(msg);
             });
         }
+        $('#scribbleEditorContainer').removeClass("scribbleEditor-fullscreen");
+        $('.CodeMirror.cm-s-default').removeClass("CodeMirror-fullscreen").css("height", "");
     },
     renderSave: function (response) {
         if (response.valid) {

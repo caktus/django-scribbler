@@ -42,3 +42,11 @@ or use these drafts in another browser, it does mean that you work will not be l
 if there is a failure on the server while saving changes or making edits. When the editor
 is opened it will restore any draft that is found. There is the option to discard a working draft.
 This will load the current scribble content into the editor.
+
+
+Full-Screen Mode
+------------------------------------
+
+Sometimes scribbles are rather long and it is useful to have more screen area to see the text.
+While the editor is in focus you may press `F11` to view the scribble in full-screen mode. To
+deactivate full-screen mode press either `F11` or `ESC`.
