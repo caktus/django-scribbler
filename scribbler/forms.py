@@ -6,11 +6,10 @@ import sys
 from django import forms
 from django.db.models import ObjectDoesNotExist, FieldDoesNotExist
 from django.template import StringOrigin
-from django.template.debug import DebugLexer, DebugParser
-from django.views.debug import ExceptionReporter
 from django.core.urlresolvers import reverse
 
 from .models import Scribble
+
 
 class ScribbleFormMixin(object):
 
@@ -18,15 +17,43 @@ class ScribbleFormMixin(object):
         content = self.cleaned_data.get('content', '')
         if content:
             origin = StringOrigin(content)
-            lexer = DebugLexer(content, origin)
+
             try:
-                parser = DebugParser(lexer.tokenize())
-                parser.parse()
-            except Exception as e:
-                self.exc_info = sys.exc_info()
-                if not hasattr(self.exc_info[1], 'django_template_source'):
-                    self.exc_info[1].django_template_source = origin, (0, 0)
-                raise forms.ValidationError('Invalid Django Template')
+                from django.template.debug import DebugLexer, DebugParser
+            except ImportError:
+                # django.template.debug doesn't exist in Django >= 1.9, so use
+                # Template from django.template instead
+                from django.template import Template
+                # Try to create a Template
+                try:
+                    template = Template(template_string=origin)
+                # This is an error with creating the template
+                except Exception as e:
+                    self.exc_info = {
+                        'message': e.args,
+                        'line': e.token.lineno,
+                        'name': origin.name,
+                    }
+                    raise forms.ValidationError('Invalid Django Template')
+                # Template has been created; try to parse
+                try:
+                    template.compile_nodelist()
+                # This is an error with parsing
+                except Exception as e:
+                    # The data we pass to the views is in e.template_debug
+                    e.template_debug = template.get_exception_info(e, e.token)
+                    self.exc_info = e.template_debug
+                    raise forms.ValidationError('Parsing Error')
+            else:
+                lexer = DebugLexer(content, origin)
+                try:
+                    parser = DebugParser(lexer.tokenize())
+                    parser.parse()
+                except Exception as e:
+                    self.exc_info = sys.exc_info()
+                    if not hasattr(self.exc_info[1], 'django_template_source'):
+                        self.exc_info[1].django_template_source = origin, (0, 0)
+                    raise forms.ValidationError('Invalid Django Template')
         return content
 
 
