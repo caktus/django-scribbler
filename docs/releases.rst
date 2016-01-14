@@ -8,7 +8,19 @@ v0.7.0 (Released TBD)
 ------------------------------------
 
 The release removed the use of RequireJS for bundling the required assets
-and instead uses Browserify to create single required JS file.
+and instead uses Browserify to create single required JS file. Updating
+from a previous version requires changing how the JS file is included.
+
+.. code-block:: html
+
+    <script data-main="{% static 'scribbler/js/scribbler-min' %}" src="{% static 'scribbler/libs/require.js' %}"></script>
+
+should be updated to
+
+.. code-block:: html
+
+    <script src="{% static 'scribbler/js/scribbler-min.js' %}"></script>
+
 
 Features
 _________________
