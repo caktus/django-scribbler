@@ -11,7 +11,8 @@ Configure Settings
 You need to include ``scribbler`` to your installed apps. django-scribbler requires
 ``django.contrib.auth`` which in turn requires ``django.contrib.sessions``
 which are enabled in Django by default. You will also need to include a context processor
-to include the current request in the template context.
+to include the current request in the template context. This is included by default
+in Django 1.8+ when using the ``startproject`` command.
 
 .. code-block:: python
 
@@ -23,20 +24,7 @@ to include the current request in the template context.
         'scribbler',
     )
 
-    TEMPLATE_CONTEXT_PROCESSORS = (
-        # Other context processors would go here
-        'django.core.context_processors.request',
-    )
-
-Note that ``TEMPLATE_CONTEXT_PROCESSORS`` is not included in the default settings
-created by ``startproject``. You should take care to ensure that the default
-context processors are included in this list. For a list of default
-``TEMPLATE_CONTEXT_PROCESSORS`` please see
-`the official Django docs <https://docs.djangoproject.com/en/1.4/ref/settings/#template-context-processors>`_.
-
-If you are using Django 1.8 then instead of ``TEMPLATE_CONTEXT_PROCESSORS`` you should configure ``TEMPLATES['OPTIONS']['context_processors']``:
-
-.. code-block:: python
+    ...
 
     TEMPLATES = [ # example config untill 'context_processors' your config maydiffer
         {
@@ -46,7 +34,7 @@ If you are using Django 1.8 then instead of ``TEMPLATE_CONTEXT_PROCESSORS`` you 
             'APP_DIRS': True,
             'OPTIONS': {
                 'context_processors': [
-                	# add required context processors here:
+                    # add required context processors here:
                     'django.template.context_processors.request',
                     'django.contrib.auth.context_processors.auth',
                     # Other context processors would go here
@@ -56,13 +44,13 @@ If you are using Django 1.8 then instead of ``TEMPLATE_CONTEXT_PROCESSORS`` you 
         },
     ],
 
-Note that unlike ``TEMPLATE_CONTEXT_PROCESSORS`` from Django 1.7 ``TEMPLATES`` is already included
-in the default settings created by ``startproject``. Django 1.8 also supports custom template engines
+
+Django 1.8+ also supports custom template engines
 but this is not supported at the moment by django-scribbler.
 
 For the context processor to have any effect you need to make sure that the template
 is rendered using a RequestContext. This is done for you with the
-`render <https://docs.djangoproject.com/en/1.4/topics/http/shortcuts/#render>`_ shortcut.
+`render <https://docs.djangoproject.com/en/stable/topics/http/shortcuts/#render>`_ shortcut.
 
 django-scribbler aggressively caches the scribble content. By default the scribble
 content is cached for 12 hours. You have the option to configure this cache timeout
@@ -87,19 +75,9 @@ Create Database Tables
 ------------------------------------
 
 You'll need to create the necessary database tables for storing scribble content.
-This is done with the ``syncdb`` management command built into Django::
-
-    python manage.py syncdb
-
-
 To run migrations call::
 
     python manage.py migrate scribbler
-
-.. note::
-
-    Scribbler no longer uses `South` for migrations and uses Django migrations
-    <https://docs.djangoproject.com/en/dev/topics/migrations/> instead.
 
 
 User Permissions
@@ -124,22 +102,14 @@ scribbles on any page on your site these should be included in your base templat
 
 .. code-block:: html
 
-    <link rel="stylesheet" href="{{ STATIC_URL }}scribbler/css/scribbler.css">
-    <script src="{{ STATIC_URL }}scribbler/js/bundle-min.js"></script>
+    <link rel="stylesheet" href="{% static 'scribbler/css/scribbler.css' %}">
+    <script src="{% static 'scribbler/js/scribbler-min.js' %}"></script>
 
 This uses `Browserify <http://browserify.org/>`_ to load the additional JS resources. The front-end
-editor uses `CodeMirror <http://codemirror.net/>`_ (currently using v2.38) which is included in the distribution.
+editor uses `CodeMirror <http://codemirror.net/>`_ (currently using v5.10) which is included in the distribution.
 Both Browserify and CodeMirror are available a MIT-style license compatible with
 this project's BSD license. You can find the license files included in
 ``scribbler/static/scribbler/libs/``.
-
-.. Note::
-
-	Prior to v0.5 you also needed to include the ``codemirror.css`` prior to ``scribbler.css``. As of
-	v0.5 you only need to include ``scribbler.css``.
-
-	Also prior to v0.5 it was recommended to use ``{{ STATIC_URL }}scribbler/js/scribbler``. As of v0.5
-	it is recommended that you use the minified version.
 
 
 Place Scribbles in Your Template
@@ -179,7 +149,7 @@ the url portion of the url/slug pair, and allows for reuse across multiple templ
 
     Scribble content can be any valid Django template. However the content does
     not include all of the context of the template. Only the context provided
-    by the set of ``TEMPLATE_CONTEXT_PROCESSORS``.
+    by the set of ``context_processors`` from the ``TEMPLATES`` configuration.
 
 
 A second scribbler tag, ``scribble_field``, allows for editing fields of model instances.
