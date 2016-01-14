@@ -1,5 +1,5 @@
 STATIC_DIR = ./scribbler/static/scribbler
-PROJECT_FILES = ${STATIC_DIR}/js/scribbler.js ${STATIC_DIR}/js/scribbler-editor.js ${STATIC_DIR}/js/scribbler-menu.js ${STATIC_DIR}/js/djangohint.js
+PROJECT_FILES = ${STATIC_DIR}/js/scribbler-main.js ${STATIC_DIR}/js/scribbler-editor.js ${STATIC_DIR}/js/scribbler-menu.js ${STATIC_DIR}/js/djangohint.js
 TESTS_DIR = ./scribbler/tests/qunit
 TEST_FILES = ${TESTS_DIR}/menu-test.js ${TESTS_DIR}/editor-test.js
 
@@ -21,18 +21,18 @@ lint-js:
 	# Check JS for any problems
 	# Requires jshint
 	jshint ${STATIC_DIR}/js/djangohint.js
-	jshint ${STATIC_DIR}/js/scribbler.js
+	jshint ${STATIC_DIR}/js/scribbler-main.js
 	jshint ${STATIC_DIR}/js/scribbler-editor.js
 	jshint ${STATIC_DIR}/js/scribbler-menu.js
 	jshint ${STATIC_DIR}/js/plugins/
 
-${STATIC_DIR}/js/bundle.js: ${PROJECT_FILES}
+${STATIC_DIR}/js/scribbler.js: ${PROJECT_FILES}
 	node_modules/.bin/browserify $< -o $@
 
-${STATIC_DIR}/js/bundle-min.js: ${STATIC_DIR}/js/bundle.js
+${STATIC_DIR}/js/scribbler-min.js: ${STATIC_DIR}/js/scribbler.js
 	node_modules/.bin/uglifyjs $^ -o $@
 
-build-js: ${STATIC_DIR}/js/bundle-min.js
+build-js: ${STATIC_DIR}/js/scribbler-min.js
 
 ${TESTS_DIR}/bundle.js: ${TESTS_DIR}/main.js ${PROJECT_FILES} ${TEST_FILES}
 	node_modules/.bin/browserify -t browserify-compile-templates --extension=.html $< -o $@
