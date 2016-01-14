@@ -19,6 +19,7 @@ _________________
 Backwards Incompatible Changes
 __________________________________
 
+- The refactor to use browserify has dropped support for front-end plugins
 - Dropped support for Django<=1.7, Python2.6, and Python3.2 (#101)
 - South migrations have been removed since Django 1.6 support was removed
 
