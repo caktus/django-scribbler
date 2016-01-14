@@ -15,10 +15,13 @@ _________________
 
 - Added support for Django 1.9
 - Added support for full screen edits
+- Updated to CodeMirror 5.10
+- Updated to Backbone 1.2.3, Underscore 1.8.3, jQuery 2.2.0
 
 Backwards Incompatible Changes
 __________________________________
 
+- The update to jQuery 2.2 drops support for IE < 9
 - The refactor to use browserify has dropped support for front-end plugins
 - Dropped support for Django<=1.7, Python2.6, and Python3.2 (#101)
 - South migrations have been removed since Django 1.6 support was removed
