@@ -4,7 +4,7 @@ Release History
 Release and change history for django-scribbler
 
 
-v0.7.0 (Released TBD)
+v0.7.0 (Released 2016-01-18)
 ------------------------------------
 
 The release removed the use of RequireJS for bundling the required assets
@@ -39,7 +39,7 @@ __________________________________
 - South migrations have been removed since Django 1.6 support was removed
 
 
-v0.6.0 (Released 2015-10-7)
+v0.6.0 (Released 2015-10-07)
 ------------------------------------
 
 This release fixes some lingering issues with Django 1.8 support and integrates
