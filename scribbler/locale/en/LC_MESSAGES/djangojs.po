@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-13 14:31-0400\n"
+"POT-Creation-Date: 2016-01-18 16:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,67 +17,93 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: static/scribbler/js/scribbler-editor.js:72
-#: static/scribbler/js/scribbler-editor.js:73
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:97
+#: static/scribbler/js/scribbler-editor.js:98
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24306
+#: tests/qunit/bundle.js.c:24307
 msgid "Close"
 msgstr ""
 
-#: static/scribbler/js/scribbler-editor.js:76
-#: static/scribbler/js/scribbler-editor.js:77
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:101
+#: static/scribbler/js/scribbler-editor.js:102
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24310
+#: tests/qunit/bundle.js.c:24311
 msgid "Save"
 msgstr ""
 
-#: static/scribbler/js/scribbler-editor.js:79
-#: static/scribbler/js/scribbler-editor.js:80
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:104
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24313
+msgid "Save Draft"
+msgstr ""
+
+#: static/scribbler/js/scribbler-editor.js:105
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24314
 msgid "Save as Draft"
 msgstr ""
 
-#: static/scribbler/js/scribbler-editor.js:82
-#: static/scribbler/js/scribbler-editor.js:83
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:107
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24316
+msgid "Discard"
+msgstr ""
+
+#: static/scribbler/js/scribbler-editor.js:108
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24317
 msgid "Discard Draft"
 msgstr ""
 
-#: static/scribbler/js/scribbler-editor.js:121
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:117
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24326
+msgid "Press "
+msgstr ""
+
+#: static/scribbler/js/scribbler-editor.js:118
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24327
+msgid "F11"
+msgstr ""
+
+#: static/scribbler/js/scribbler-editor.js:119
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24328
+msgid " to enter/exit Fullscreen edit"
+msgstr ""
+
+#: static/scribbler/js/scribbler-editor.js:152
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24361
 msgid "You do not have permission to edit this content."
 msgstr ""
 
-#: static/scribbler/js/scribbler-editor.js:191
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:224
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24433
 msgid "Error:"
 msgstr ""
 
-#: static/scribbler/js/scribbler-editor.js:225
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:258
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24467
 msgid "Server response was"
 msgstr ""
 
-#: static/scribbler/js/scribbler-editor.js:259
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:294
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24503
 msgid "Draft saved..."
 msgstr ""
 
-#: static/scribbler/js/scribbler-editor.js:293
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:328
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24537
 msgid "Restored content from a draft..."
 msgstr ""
 
-#: static/scribbler/js/scribbler-editor.js:315
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-editor.js:350
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24559
 msgid "Restored original content..."
 msgstr ""
 
-#: static/scribbler/js/scribbler-menu.js:38
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-menu.js:39
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24621
 msgid "Toggle Menu"
 msgstr ""
 
-#: static/scribbler/js/scribbler-menu.js:41
 #: static/scribbler/js/scribbler-menu.js:42
-#: static/scribbler/js/scribbler-min.js:42
+#: static/scribbler/js/scribbler-menu.js:43
+#: static/scribbler/js/scribbler-min.js:16 tests/qunit/bundle.js:24624
+#: tests/qunit/bundle.js.c:24625
 msgid "Show all scribbles"
 msgstr ""
