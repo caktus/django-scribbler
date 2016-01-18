@@ -14,12 +14,12 @@ build
 dist/*
 *.mo
 scribbler/static/scribbler/css/scribbler.css
+scribbler/static/scribbler/js/scribbler.js
 scribbler/static/scribbler/js/scribbler-min.js
 scribbler/static/scribbler/libs/codemirror/*
 scribbler/static/scribbler/libs/jquery.js
 scribbler/static/scribbler/libs/require.js
 scribbler/static/scribbler/libs/backbone.js
 scribbler/static/scribbler/libs/underscore.js
+scribbler/tests/qunit/bundle.js
 node_modules/*
-bundle.js
-bundle-min.js

@@ -8,17 +8,33 @@ v0.7.0 (Released TBD)
 ------------------------------------
 
 The release removed the use of RequireJS for bundling the required assets
-and instead uses Browserify to create single required JS file.
+and instead uses Browserify to create single required JS file. Updating
+from a previous version requires changing how the JS file is included.
+
+.. code-block:: html
+
+    <script data-main="{% static 'scribbler/js/scribbler-min' %}" src="{% static 'scribbler/libs/require.js' %}"></script>
+
+should be updated to
+
+.. code-block:: html
+
+    <script src="{% static 'scribbler/js/scribbler-min.js' %}"></script>
+
 
 Features
 _________________
 
 - Added support for Django 1.9
 - Added support for full screen edits
+- Updated to CodeMirror 5.10
+- Updated to Backbone 1.2.3, Underscore 1.8.3, jQuery 2.2.0
 
 Backwards Incompatible Changes
 __________________________________
 
+- The update to jQuery 2.2 drops support for IE < 9
+- The refactor to use browserify has dropped support for front-end plugins
 - Dropped support for Django<=1.7, Python2.6, and Python3.2 (#101)
 - South migrations have been removed since Django 1.6 support was removed
 
