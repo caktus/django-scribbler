@@ -6,7 +6,7 @@
  * Copyright 2012, Caktus Consulting Group, LLC
  * BSD License
  *
-*/
+ */
 
 /* Bootstrap imports
 ================================================== */
@@ -45,22 +45,22 @@
 
 /* Generic styles
 ======================== */
-body { 
-	margin: 0;
-	background: @grayLighter; 
-	&.login-home {
-		#gradient .radial;
-		background-repeat: repeat;
-	}
+body {
+    margin: 0;
+    background: @grayLighter;
+    &.login-home {
+        #gradient .radial;
+        background-repeat: repeat;
+    }
 }
 
 @font-face {
     font-family: 'cutiveregular';
     src: url('../fonts/cutive-regular-webfont.eot');
     src: url('../fonts/cutive-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/cutive-regular-webfont.woff') format('woff'),
-         url('../fonts/cutive-regular-webfont.ttf') format('truetype'),
-         url('../fonts/cutive-regular-webfont.svg#cutiveregular') format('svg');
+    url('../fonts/cutive-regular-webfont.woff') format('woff'),
+    url('../fonts/cutive-regular-webfont.ttf') format('truetype'),
+    url('../fonts/cutive-regular-webfont.svg#cutiveregular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -69,73 +69,73 @@ body {
 span { font-weight: bold; }
 
 h1, h2 {
-	font-family: 'cutiveregular', Georgia, serif;
-	font-weight: normal;
-	font-size: 36px;
-  color: @black;
+    font-family: 'cutiveregular', Georgia, serif;
+    font-weight: normal;
+    font-size: 36px;
+    color: @black;
 }
 
 h1 { color: @black; }
 h2 { color: @scribblerRed; }
 
 p.lead {
-	font-family: 'cutiveregular', Georgia, serif;
-	font-weight: normal;
+    font-family: 'cutiveregular', Georgia, serif;
+    font-weight: normal;
 }
 
 .content {
-	margin-top: 100px;
+    margin-top: 100px;
 }
 
 #page {
-  margin: 0 auto;
-  max-width: 979px;
-  position: relative;
-  width: 80%;
-  .clearfix;
-  .scribbler-test { 
-    padding: 20px;
-    background-color: @white;
-    .box-shadow(0 0 10px @grayLight);
-    border: 1px @grayLighter solid;
-    font-size: 15px;
-  }
+    margin: 0 auto;
+    max-width: 979px;
+    position: relative;
+    width: 80%;
+    .clearfix;
+    .scribbler-test {
+        padding: 20px;
+        background-color: @white;
+        .box-shadow(0 0 10px @grayLight);
+        border: 1px @grayLighter solid;
+        font-size: 15px;
+    }
 }
 
 /* Login form styles
 ======================== */
 #login-content {
-	margin: 100px auto 20px;
+    margin: 100px auto 20px;
     text-align: center;
     width: 100%;
     .modal {
-    	background-color: @white;
-    	color: @gray;
-	    .border-radius(8px);
-	    .box-shadow(0 0 15px @black);
-	    margin: 0 auto;
-	    padding: 40px 40px 10px   30px;
-	    width: 275px;
+        background-color: @white;
+        color: @gray;
+        .border-radius(8px);
+        .box-shadow(0 0 15px @black);
+        margin: 0 auto;
+        padding: 40px 40px 10px   30px;
+        width: 275px;
     }
     form { padding-top: 15px; }
     .errorlist {
-    	list-style: none;
-    	color: @white;
+        list-style: none;
+        color: @white;
     }
     input[type=submit] {
-    	font-weight: bold;
-      font-family: 'cutiveregular', Georgia, serif;
+        font-weight: bold;
+        font-family: 'cutiveregular', Georgia, serif;
     }
-    
+
 }
 
 small {
-   text-align: center;
-   font-family: 'cutiveregular', Georgia, serif;
-   font-weight: normal;
-   margin: 50px auto 20px;
-   display: block;
-   color: @white;
-   font-size: 13px;
-   span:last-child { padding-left: 15px;}
+    text-align: center;
+    font-family: 'cutiveregular', Georgia, serif;
+    font-weight: normal;
+    margin: 50px auto 20px;
+    display: block;
+    color: @white;
+    font-size: 13px;
+    span:last-child { padding-left: 15px;}
 }
