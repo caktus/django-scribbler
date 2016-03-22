@@ -3,6 +3,11 @@ Release History
 
 Release and change history for django-scribbler
 
+vNEXT (Released TBD)
+------------------------------------
+
+- Updated example project (including removing Twitter Bootstrap from it)
+
 
 v0.7.0 (Released 2016-01-18)
 ------------------------------------
