@@ -27,12 +27,17 @@ def build_scribble_context(scribble):
 
 
 @require_POST
-def preview_scribble(request):
+def preview_scribble(request, ct_pk):
     "Render scribble content or return error information."
     if not request.user.is_authenticated():
         return HttpResponseForbidden()
-    can_edit = request.user.has_perm('scribbler.change_scribble')
-    can_create = request.user.has_perm('scribbler.add_scribble')
+    content_type = get_object_or_404(ContentType, pk=ct_pk)
+    change_scribble = '{0}.change_{1}'.format(
+        content_type.app_label, content_type.model)
+    add_scribble = '{0}.add_{1}'.format(
+        content_type.app_label, content_type.model)
+    can_edit = request.user.has_perm(change_scribble)
+    can_create = request.user.has_perm(add_scribble)
     if not (can_edit or can_create):
         return HttpResponseForbidden()
     results = {

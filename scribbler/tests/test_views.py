@@ -10,7 +10,7 @@ import os
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
-from  django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import override_settings
 
 from selenium import webdriver
@@ -59,7 +59,8 @@ class PreviewTestCase(BaseViewTestCase):
 
     def setUp(self):
         super(PreviewTestCase, self).setUp()
-        self.url = reverse('preview-scribble')
+        content_type = ContentType.objects.get_for_model(Scribble)
+        self.url = reverse('preview-scribble', args=(content_type.pk,))
 
     def get_valid_data(self):
         "Base valid data."
@@ -104,11 +105,23 @@ class PreviewTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_permission_required(self):
-        "Return 403 if user is does not have permissions to preview scribbles."
+        "Return 403 if user does not have permissions to preview scribbles."
         self.user.user_permissions.remove(self.change_perm)
         self.user.user_permissions.remove(self.add_perm)
         data = self.get_valid_data()
         response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 403)
+
+    def test_permission_required_scribble_field(self):
+        "Return 403 if user does not have permissions to preview a scribble_field."
+        days_log = DaysLog.objects.create(happenings=self.get_random_string())
+        content_type = ContentType.objects.get_for_model(days_log)
+        url = reverse('preview-scribble', args=(content_type.pk,))
+
+        self.user.user_permissions.remove(self.change_dayslog_perm)
+        data = {'content': self.get_random_string()}
+
+        response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 403)
 
     def test_preview_existing(self):

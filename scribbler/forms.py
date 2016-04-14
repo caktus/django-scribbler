@@ -7,6 +7,7 @@ from django import forms
 from django.db.models import ObjectDoesNotExist, FieldDoesNotExist
 from django.template import StringOrigin
 from django.core.urlresolvers import reverse
+from django.contrib.contenttypes.models import ContentType
 
 from .models import Scribble
 
@@ -71,6 +72,10 @@ class ScribbleForm(forms.ModelForm, ScribbleFormMixin):
     def get_data_prefix(self):
         return self.instance.slug
 
+    def get_preview_url(self):
+        content_type = ContentType.objects.get_for_model(Scribble)
+        return reverse('preview-scribble', args=(content_type.pk,))
+
     def get_save_url(self):
         return self.instance.get_save_url()
 
@@ -120,6 +125,9 @@ class FieldScribbleForm(forms.Form, ScribbleFormMixin):
 
     def get_data_prefix(self):
         return self.prefix
+
+    def get_preview_url(self):
+        return reverse('preview-scribble', args=(self.content_type.pk,))
 
     def get_save_url(self):
         args=(self.content_type.pk, self.instance_pk, self.field_name)
