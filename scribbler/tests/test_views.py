@@ -407,7 +407,7 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome()
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
