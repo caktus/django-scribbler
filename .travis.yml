@@ -16,7 +16,7 @@ before_install:
     - "export DISPLAY=:99.0"
     - "sh -e /etc/init.d/xvfb start"
     - wget http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip
-    - unzip http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip -d $TOXENV/bin
+    - unzip http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip
     - sleep 3
 
 install:
