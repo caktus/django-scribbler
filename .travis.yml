@@ -18,10 +18,10 @@ before_install:
     - sleep 3
 
 install:
-  - pip install tox coveralls
+  - pip install tox coveralls chromedriver
 
 script:
-  - tox
+  - tox chromedriver
 
 branches:
   only:
