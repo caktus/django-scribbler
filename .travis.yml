@@ -15,9 +15,7 @@ env:
 before_install:
     - "export DISPLAY=:99.0"
     - "sh -e /etc/init.d/xvfb start"
-    - mkdir tmp
-    - wget -P http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip tmp
-    - unzip tmp/http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip -d home/travis/virtualenv
+    - console.log($TRAVIS_BUILD_DIRECTORY)
     - sleep 3
 
 install:
