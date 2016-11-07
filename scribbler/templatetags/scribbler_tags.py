@@ -33,7 +33,7 @@ class ScribbleNode(template.Node):
         request = context.get('request', None)
         if request is None:  # pragma: no cover
             if settings.DEBUG:
-                msg = '"django.core.context_processors.request" is required to use django-scribbler'
+                msg = '"django.template.context_processors.request" is required to use django-scribbler'
                 raise ImproperlyConfigured(msg)
             else:
                 return ''
@@ -164,7 +164,7 @@ def scribble_field(context, model_instance, field_name):
     request = context.get('request', None)
     if request is None:  # pragma: no cover
         if settings.DEBUG:
-            msg = '"django.core.context_processors.request" is required to use django-scribbler'
+            msg = '"django.template.context_processors.request" is required to use django-scribbler'
             raise ImproperlyConfigured(msg)
         else:
             return ''
