@@ -14,9 +14,12 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import override_settings
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 
 from . import DaysLog
 from .base import ScribblerDataTestCase, Scribble
@@ -429,7 +432,6 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
 
     def test_editor(self):
         self.browser.get('%s%s' % (self.live_server_url, '/test/'))
-        import pdb; pdb.set_trace()
         username_input = self.browser.find_element_by_name("username")
         username_input.send_keys('test')
         password_input = self.browser.find_element_by_name("password")
@@ -457,11 +459,11 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
         action.send_keys("p")
         action.send_keys(">")
         action.perform()
-        self.browser.find_element_by_class_name("save").click()
-        self.browser.implicitly_wait(10)
-        wait = WebDriverWait(driver, 10)
-        text = wait.until(EC.text_to_be_present_in_element((By.ID, 'div.scribble-content p:nth-child(2)')))
+        wait = WebDriverWait(self.browser, 10)
+        text = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,
+                                                            'div.scribble-content p:nth-child(2)')))
         self.assertEqual("This is a Test", text.text)
+        self.browser.find_element_by_class_name("save").click()
         scribble.click()
         time.sleep(1)
         action = ActionChains(self.browser)
