@@ -13,6 +13,7 @@ def test_404(request):
 
 
 def test_500(request):
+    import pdb; pdb.set_trace()
     return HttpResponseServerError()
 
 js_info_dict = {
@@ -21,6 +22,6 @@ js_info_dict = {
 
 urlpatterns = [
     url(r'^scribble/', include('scribbler.urls')),
-    url(r'^jsi18n/$', javascript_catalog, js_info_dict),
+    url(r'^jsi18n/$', javascript_catalog, js_info_dict, name='jsi18n'),
     url(r'^test/', auth_views.login, {'template_name': 'test.html'}),
 ]
