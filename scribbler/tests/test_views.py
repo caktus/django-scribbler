@@ -460,9 +460,9 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
         action.send_keys(">")
         action.perform()
         wait = WebDriverWait(self.browser, 10)
-        text = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,
-                                                            'div.scribble-content p:nth-child(2)')))
-        self.assertEqual("This is a Test", text.text)
+        text = wait.until(EC.text_to_be_present_in_element((By.CSS_SELECTOR,
+                                                            'div.scribble-content p:nth-child(2)'), "This is a Test"))
+        self.assertTrue(text)
         self.browser.find_element_by_class_name("save").click()
         scribble.click()
         time.sleep(1)
