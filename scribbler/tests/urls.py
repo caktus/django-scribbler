@@ -13,7 +13,6 @@ def test_404(request):
 
 
 def test_500(request):
-    import pdb; pdb.set_trace()
     return HttpResponseServerError()
 
 js_info_dict = {
