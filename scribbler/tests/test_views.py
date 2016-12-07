@@ -14,8 +14,12 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import override_settings
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 from . import DaysLog
 from .base import ScribblerDataTestCase, Scribble
@@ -420,7 +424,7 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.PhantomJS()
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
@@ -455,10 +459,11 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
         action.send_keys("p")
         action.send_keys(">")
         action.perform()
+        wait = WebDriverWait(self.browser, 10)
+        text = wait.until(EC.text_to_be_present_in_element((By.CSS_SELECTOR,
+                                                            'div.scribble-content p:nth-child(2)'), "This is a Test"))
+        self.assertTrue(text)
         self.browser.find_element_by_class_name("save").click()
-        self.browser.implicitly_wait(10)
-        text = self.browser.find_element_by_css_selector("div.scribble-content p:nth-child(2)")
-        self.assertEqual("This is a Test", text.text)
         scribble.click()
         time.sleep(1)
         action = ActionChains(self.browser)
