@@ -4,6 +4,14 @@ Getting Started
 Below are the basic steps need to get django-scribbler integrated into your
 Django project.
 
+Install Scribbler
+------------------------------------
+
+django-scribbler should be installed using ``pip``::
+
+    $ pip install django-scribbler
+
+.. note:: If you need to run an unreleased version from the repository, see :doc:`contributing` for additional instructions.
 
 Configure Settings
 ------------------------------------

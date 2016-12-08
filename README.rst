@@ -32,6 +32,7 @@ To install from PyPi::
 
     pip install django-scribbler
 
+.. note:: If you need to run an unreleased version from the repository, see the `Contributing Guide <http://django-scribbler.readthedocs.org/en/latest/contributing.html>`_ for additional instructions.
 
 Documentation
 -----------------------------------
