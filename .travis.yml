@@ -4,6 +4,7 @@ sudo: false
 
 python:
   - "2.7"
+  - "3.5"
 
 env:
   - TOXENV=py27-1.8.X,py33-1.8.X,py34-1.8.X
