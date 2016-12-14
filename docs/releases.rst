@@ -3,9 +3,12 @@ Release History
 
 Release and change history for django-scribbler
 
-vNEXT (Released TBD)
+v0.8.0 (Release 2016-12-14)
 ------------------------------------
 
+- Add support for Django 1.10, Python 3.5
+- Improvements to docs
+- Fix: Disallow scribble previews if the user does not have permission.
 - Updated example project (including removing Twitter Bootstrap from it)
 
 
