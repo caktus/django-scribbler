@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 "Test for template tags."
 from __future__ import unicode_literals
 
@@ -11,6 +13,16 @@ from unittest import skipIf
 from . import DaysLog
 from .base import ScribblerDataTestCase
 from scribbler.conf import CACHE_TIMEOUT
+
+class UnicodeURLTestCase(ScribblerDataTestCase):
+    "Test, that unicode characters in url got cached"
+
+    def testUnicodeURL(self):
+        scribble = self.create_scribble(
+            url='/foo/čřžžýü', slug='sidebar',
+            content='<p>Scribble content.</p>'
+        )
+        self.assertEquals(scribble.url, "/foo/čřžžýü")
 
 
 class RenderScribbleTestCase(ScribblerDataTestCase):
