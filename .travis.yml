@@ -9,6 +9,7 @@ env:
   - TOXENV=py27-1.8.X,py33-1.8.X,py34-1.8.X
   - TOXENV=py27-1.9.X,py34-1.9.X,py35-1.9.X
   - TOXENV=py27-1.10.X,py34-1.10.X,py35-1.10.X
+  - TOXENV=py27-1.11.X,py34-1.11.X,py35-1.11.X
   - TOXENV=coverage
   - TOXENV=docs
   - TOXENV=qunit
