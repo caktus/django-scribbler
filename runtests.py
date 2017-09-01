@@ -6,6 +6,17 @@ import django
 from django.conf import settings
 
 
+class DisableMigrations(object):
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        if django.VERSION < (1, 9):
+            return 'notmigrations'
+        else:
+            return None
+
+
 if not settings.configured:
     settings.configure(
         DATABASES={
@@ -64,12 +75,8 @@ if not settings.configured:
                 },
             },
         ],
-        MIGRATION_MODULES={
-            # these 'tests.migrations' modules don't actually exist, but this lets
-            # us skip creating migrations for the test models.
-            'scribbler': 'scribbler.tests.migrations',
-            'dayslog': 'dayslog.tests.migrations',
-        },
+        # skip creating migrations for the test models:
+        MIGRATION_MODULES = DisableMigrations(),
         MEDIA_ROOT='',
         MEDIA_URL='/media/',
         STATIC_ROOT='',

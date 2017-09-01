@@ -29,6 +29,7 @@
     "browserify": "^11.2.0",
     "browserify-compile-templates": "^0.2.0",
     "less": "^2.5.3",
+    "phantomjs-prebuilt": ">=2.1.7",
     "uglify-js": "^2.5.0"
   },
   "author": "Mark Lavin",
