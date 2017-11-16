@@ -2,11 +2,28 @@ language: python
 
 sudo: false
 
+# Ubuntu trusty (14.04) - latest that Travis offers
+dist: trusty
+
+# Make sure all the python versions we need are pre-installed
+# (apt-get is not available in the container-based build system)
+addons:
+  apt:
+    sources:
+    - deadsnakes
+    packages:
+    - python2.7
+    - python3.4
+    - python3.5
+    - python3.6
+
+# The version of Python that'll be used to invoke tox. Has no effect
+# on what version of Python tox uses to run each set of tests.
 python:
-  - "3.5"
+  - "3.6"
 
 env:
-  - TOXENV=py27-1.8.X,py33-1.8.X,py34-1.8.X
+  - TOXENV=py27-1.8.X,py34-1.8.X,py35-1.8.X
   - TOXENV=py27-1.10.X,py34-1.10.X,py35-1.10.X
   - TOXENV=py27-1.11.X,py34-1.11.X,py36-1.11.X
   - TOXENV=coverage

@@ -20,10 +20,11 @@
     "url": "https://github.com/caktus/django-scribbler/issues"
   },
   "dependencies": {
-    "underscore": ">=1.8 <1.9",
     "backbone": ">=1.2 <1.3",
+    "codemirror": ">=5.10 <6.0",
     "jquery": ">=2.2 <2.3",
-    "codemirror": ">=5.10 <6.0"
+    "jshint": "^2.9.5",
+    "underscore": ">=1.8 <1.9"
   },
   "devDependencies": {
     "browserify": "^11.2.0",

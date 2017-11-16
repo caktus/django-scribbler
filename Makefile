@@ -18,14 +18,13 @@ ${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less
 
 build-css: ${STATIC_DIR}/css/scribbler.css
 
-lint-js:
+lint-js: fetch-static-libs
 	# Check JS for any problems
-	# Requires jshint
-	jshint ${STATIC_DIR}/js/djangohint.js
-	jshint ${STATIC_DIR}/js/scribbler-main.js
-	jshint ${STATIC_DIR}/js/scribbler-editor.js
-	jshint ${STATIC_DIR}/js/scribbler-menu.js
-	jshint ${STATIC_DIR}/js/plugins/
+	node_modules/.bin/jshint ${STATIC_DIR}/js/djangohint.js
+	node_modules/.bin/jshint ${STATIC_DIR}/js/scribbler-main.js
+	node_modules/.bin/jshint ${STATIC_DIR}/js/scribbler-editor.js
+	node_modules/.bin/jshint ${STATIC_DIR}/js/scribbler-menu.js
+	node_modules/.bin/jshint ${STATIC_DIR}/js/plugins/
 
 ${STATIC_DIR}/js/scribbler.js: ${PROJECT_FILES}
 	node_modules/.bin/browserify $< -o $@
