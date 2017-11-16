@@ -15,7 +15,7 @@
     "type": "git",
     "url": "https://github.com/caktus/django-scribbler.git"
   },
-  "license": "BSD",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/caktus/django-scribbler/issues"
   },
@@ -62,6 +62,10 @@
     },
     {
       "name": "Victor Rocha"
+    },
+    {
+      "name": "Dan Poirier",
+      "email": "dpoirier@caktusgroup.com"
     }
   ]
 }

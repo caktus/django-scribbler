@@ -7,6 +7,7 @@ fetch-static-libs:
 	# Fetch JS library dependencies
 	# Requires npm
 	npm install
+	npm update
 
 ${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less
 	# Build CSS from LESS
@@ -65,4 +66,17 @@ prep-release: lint-js build-css build-js pull-messages compile-messages
     # Check JS, create CSS, compile translations, run the test suite
 	tox
 
-.PHONY: build-css build-js lint-js test-js compile-messages make-messages push-messages pull-messages prep-release
+dist: clean fetch-static-libs lint-js build-js build-css
+	python setup.py sdist
+	python setup.py bdist_wheel --universal
+
+clean:
+	rm -f ${STATIC_DIR}/js/scribbler.js
+	rm -f ${STATIC_DIR}/js/scribbler-min.js
+	rm -rf ${STATIC_DIR}/css
+	rm -f ${TESTS_DIR}/bundle.js
+	rm -rf dist
+	rm -rf .tox
+	rm -rf node_modules
+
+.PHONY: build-css build-js lint-js test-js compile-messages make-messages push-messages pull-messages prep-release dist clean

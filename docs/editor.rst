@@ -20,7 +20,7 @@ context processors to include additional content for rendering scribbles.
 .. image:: /_static/images/context-screenshot.png
 
 
-Tempate Tag/Filter Completion
+Template Tag/Filter Completion
 ------------------------------------
 
 Similar to how the editor can tab-complete the context variables, you can tab

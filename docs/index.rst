@@ -11,6 +11,7 @@ Contents
 .. toctree::
     :maxdepth: 2
 
+    example
     quick-start
     editor
     plugins
