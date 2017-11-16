@@ -9,12 +9,12 @@ fetch-static-libs:
 	npm install
 	npm update
 
-${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less
+${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less fetch-static-libs
 	# Build CSS from LESS
 	# Requires LESS
 	mkdir -p ${STATIC_DIR}/css
-	echo | lessc -x node_modules/codemirror/lib/codemirror.css > $@
-	echo | lessc -x $^ >> $@
+	echo | node_modules/.bin/lessc -x node_modules/codemirror/lib/codemirror.css > $@
+	echo | node_modules/.bin/lessc -x $^ >> $@
 
 build-css: ${STATIC_DIR}/css/scribbler.css
 
@@ -40,7 +40,7 @@ ${TESTS_DIR}/bundle.js: ${TESTS_DIR}/main.js ${PROJECT_FILES} ${TEST_FILES}
 test-js: ${TESTS_DIR}/bundle.js
 	# Run the QUnit tests
 	# Requires PhantomJS
-	phantomjs ${TESTS_DIR}/runner.js ${TESTS_DIR}/index.html
+	node_modules/.bin/phantomjs ${TESTS_DIR}/runner.js ${TESTS_DIR}/index.html
 
 compile-messages:
 	# Create compiled .mo files for source distribution

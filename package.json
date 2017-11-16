@@ -24,6 +24,8 @@
     "codemirror": ">=5.10 <6.0",
     "jquery": ">=2.2 <2.3",
     "jshint": "^2.9.5",
+    "less": "^2.7.3",
+    "phantomjs-prebuilt": "^2.1.16",
     "underscore": ">=1.8 <1.9"
   },
   "devDependencies": {
