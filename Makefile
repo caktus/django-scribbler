@@ -3,18 +3,20 @@ PROJECT_FILES = ${STATIC_DIR}/js/scribbler-main.js ${STATIC_DIR}/js/scribbler-ed
 TESTS_DIR = ./scribbler/tests/qunit
 TEST_FILES = ${TESTS_DIR}/menu-test.js ${TESTS_DIR}/editor-test.js
 
-fetch-static-libs:
+fetch-static-libs: FORCE
 	# Fetch JS library dependencies
 	# Requires npm
 	npm install
 	npm update
+FORCE:
 
 ${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less fetch-static-libs
 	# Build CSS from LESS
 	# Requires LESS
 	mkdir -p ${STATIC_DIR}/css
 	echo | node_modules/.bin/lessc -x node_modules/codemirror/lib/codemirror.css > $@
-	echo | node_modules/.bin/lessc -x $^ >> $@
+	echo $^ $@
+	echo | node_modules/.bin/lessc ${STATIC_DIR}/less/scribbler.less >> $@
 
 build-css: ${STATIC_DIR}/css/scribbler.css
 
@@ -74,6 +76,7 @@ clean:
 	rm -f ${STATIC_DIR}/js/scribbler-min.js
 	rm -rf ${STATIC_DIR}/css
 	rm -f ${TESTS_DIR}/bundle.js
+	rm -rf example/example/static/
 	rm -rf dist
 	rm -rf .tox
 	rm -rf node_modules
