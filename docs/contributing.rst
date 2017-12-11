@@ -26,7 +26,7 @@ Getting the Source
 
 You can clone the repository from Github::
 
-    git clone git://github.com/caktus/django-scribbler.git
+    git clone https://github.com/caktus/django-scribbler.git
 
 However this checkout will be read only. If you want to contribute code you should
 create a fork and clone your fork. You can then add the main repository as a remote::
@@ -57,13 +57,12 @@ or::
 
 Note that the tests require the `mock <http://www.voidspace.org.uk/python/mock/>`_ library.
 To test against multiple versions of Django you can use install and use ``tox>=1.4``. The
-``tox`` command will run the tests against Django 1.3, 1.4 and the current Git master using
-Python 2.6.::
+``tox`` command will run the tests against supported versions of Django and Python.::
 
     # Build all environments
     tox
     # Build a single environment
-    tox -e py26-1.3.X
+    tox -e py36-1.11.X
 
 Building all environments will also build the documentation. More on that in the next
 section.

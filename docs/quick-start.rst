@@ -54,7 +54,8 @@ in Django 1.8+ when using the ``startproject`` command.
 
 
 Django 1.8+ also supports custom template engines
-but this is not supported at the moment by django-scribbler.
+but this is not supported at the moment by django-scribbler
+(only the Django and Jinja2 template engines are supported).
 
 For the context processor to have any effect you need to make sure that the template
 is rendered using a RequestContext. This is done for you with the
@@ -125,9 +126,12 @@ Place Scribbles in Your Template
 
 You are now ready to place the scribble content blocks throughout your templates.
 This is done with the ``scribble`` block tag. The basic usage of the tag takes
-one argument which is the slug name for the scribble. Slugs must be unique per
+one argument which is the slug name for the scribble, and contains the default
+content for the scribble.
+
+Slugs must be unique per
 url/slug pair. That means you cannot use the same slug more than once in the
-template but you can use the same slug in different templates as long as they
+template, but you can use the same slug in different templates, as long as they
 are rendered on different urls.
 
 .. code-block:: html
@@ -152,6 +156,11 @@ shared scribbles.
 
 The second argument defines a lookup vector to a shared scribble. This overrides
 the url portion of the url/slug pair, and allows for reuse across multiple templates.
+
+In other words, ordinarily even scribbles with the same slug are considered
+different when they occur on pages with different URLs, but if you also give them
+the same second argument, they will be considered the same - they will share
+the same content.
 
 .. note::
 

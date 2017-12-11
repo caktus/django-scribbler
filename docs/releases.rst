@@ -3,6 +3,14 @@ Release History
 
 Release and change history for django-scribbler
 
+v0.9.0 (Release 2017-
+------------------------------------
+
+- Add support for Django 1.11 and Python 3.6
+- Drop support for Django 1.9 and Python 3.2-3.3.
+- Resulting support: Django 1.8, 1.10, or 1.11, and Python 2.7 or >= 3.4
+- Fix how styles are loaded in the example project.
+
 v0.8.0 (Release 2016-12-14)
 ------------------------------------
 

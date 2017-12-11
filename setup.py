@@ -20,7 +20,7 @@ setup(
     packages=find_packages(exclude=['example']),
     include_package_data=True,
     url='https://github.com/caktus/scribbler',
-    license='BSD',
+    license='BSD-2-Clause',
     description=' '.join(__import__('scribbler').__doc__.splitlines()).strip(),
     classifiers=[
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',

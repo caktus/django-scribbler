@@ -7,7 +7,7 @@ Setup instructions:
 
 1. Create a virtualenv and install requirements::
 
-     mkvirtualenv scribbler
+     mkvirtualenv -p $(which python3) scribbler
      pip install -r requirements.txt
 
 #. Setup the SQLite database and a superuser (set password to "demo")::

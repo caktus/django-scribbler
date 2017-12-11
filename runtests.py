@@ -3,6 +3,7 @@ import sys
 import os
 
 import django
+from django import VERSION as django_version
 from django.conf import settings
 
 
@@ -30,10 +31,7 @@ if not settings.configured:
         ),
         SITE_ID=1,
         SECRET_KEY='super-secret',
-        TEMPLATE_CONTEXT_PROCESSORS=(
-            'django.contrib.auth.context_processors.auth',
-            'django.template.context_processors.request',
-        ),
+
         ROOT_URLCONF='scribbler.tests.urls',
         PASSWORD_HASHERS=(
             'django.contrib.auth.hashers.MD5PasswordHasher',
@@ -67,8 +65,9 @@ if not settings.configured:
         MIGRATION_MODULES={
             # these 'tests.migrations' modules don't actually exist, but this lets
             # us skip creating migrations for the test models.
-            'scribbler': 'scribbler.tests.migrations',
-            'dayslog': 'dayslog.tests.migrations',
+            # https://docs.djangoproject.com/en/1.11/ref/settings/#migration-modules
+            'scribbler': 'scribbler.tests.migrations' if django_version < (1, 9) else None,
+            'dayslog': 'dayslog.tests.migrations' if django_version < (1, 9) else None,
         },
         MEDIA_ROOT='',
         MEDIA_URL='/media/',
@@ -82,6 +81,10 @@ from django.test.utils import get_runner
 
 
 def runtests():
+    if django_version < (1, 11):
+        # Try lots of ports until we find one we can use
+        os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = 'localhost:8099-9999'
+
     if hasattr(django, 'setup'):
         django.setup()
     TestRunner = get_runner(settings)

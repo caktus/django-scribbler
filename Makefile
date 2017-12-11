@@ -3,28 +3,30 @@ PROJECT_FILES = ${STATIC_DIR}/js/scribbler-main.js ${STATIC_DIR}/js/scribbler-ed
 TESTS_DIR = ./scribbler/tests/qunit
 TEST_FILES = ${TESTS_DIR}/menu-test.js ${TESTS_DIR}/editor-test.js
 
-fetch-static-libs:
+fetch-static-libs: FORCE
 	# Fetch JS library dependencies
 	# Requires npm
 	npm install
+	npm update
+FORCE:
 
-${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less
+${STATIC_DIR}/css/scribbler.css: ${STATIC_DIR}/less/scribbler.less fetch-static-libs
 	# Build CSS from LESS
 	# Requires LESS
 	mkdir -p ${STATIC_DIR}/css
-	echo | lessc -x node_modules/codemirror/lib/codemirror.css > $@
-	echo | lessc -x $^ >> $@
+	echo | node_modules/.bin/lessc -x node_modules/codemirror/lib/codemirror.css > $@
+	echo $^ $@
+	echo | node_modules/.bin/lessc ${STATIC_DIR}/less/scribbler.less >> $@
 
 build-css: ${STATIC_DIR}/css/scribbler.css
 
-lint-js:
+lint-js: fetch-static-libs
 	# Check JS for any problems
-	# Requires jshint
-	jshint ${STATIC_DIR}/js/djangohint.js
-	jshint ${STATIC_DIR}/js/scribbler-main.js
-	jshint ${STATIC_DIR}/js/scribbler-editor.js
-	jshint ${STATIC_DIR}/js/scribbler-menu.js
-	jshint ${STATIC_DIR}/js/plugins/
+	node_modules/.bin/jshint ${STATIC_DIR}/js/djangohint.js
+	node_modules/.bin/jshint ${STATIC_DIR}/js/scribbler-main.js
+	node_modules/.bin/jshint ${STATIC_DIR}/js/scribbler-editor.js
+	node_modules/.bin/jshint ${STATIC_DIR}/js/scribbler-menu.js
+	node_modules/.bin/jshint ${STATIC_DIR}/js/plugins/
 
 ${STATIC_DIR}/js/scribbler.js: ${PROJECT_FILES}
 	node_modules/.bin/browserify $< -o $@
@@ -40,7 +42,7 @@ ${TESTS_DIR}/bundle.js: ${TESTS_DIR}/main.js ${PROJECT_FILES} ${TEST_FILES}
 test-js: ${TESTS_DIR}/bundle.js
 	# Run the QUnit tests
 	# Requires PhantomJS
-	phantomjs ${TESTS_DIR}/runner.js ${TESTS_DIR}/index.html
+	node_modules/.bin/phantomjs ${TESTS_DIR}/runner.js ${TESTS_DIR}/index.html
 
 compile-messages:
 	# Create compiled .mo files for source distribution
@@ -65,4 +67,18 @@ prep-release: lint-js build-css build-js pull-messages compile-messages
     # Check JS, create CSS, compile translations, run the test suite
 	tox
 
-.PHONY: build-css build-js lint-js test-js compile-messages make-messages push-messages pull-messages prep-release
+dist: clean fetch-static-libs lint-js build-js build-css
+	python setup.py sdist
+	python setup.py bdist_wheel --universal
+
+clean:
+	rm -f ${STATIC_DIR}/js/scribbler.js
+	rm -f ${STATIC_DIR}/js/scribbler-min.js
+	rm -rf ${STATIC_DIR}/css
+	rm -f ${TESTS_DIR}/bundle.js
+	rm -rf example/example/static/
+	rm -rf dist
+	rm -rf .tox
+	rm -rf node_modules
+
+.PHONY: build-css build-js lint-js test-js compile-messages make-messages push-messages pull-messages prep-release dist clean
