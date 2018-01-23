@@ -41,9 +41,6 @@ install:
 script:
   - tox
 
-branches:
-  only:
-    - master
 
 after_success:
   - coveralls
