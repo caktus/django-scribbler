@@ -23,9 +23,23 @@ python:
   - "3.6"
 
 env:
-  - TOXENV=py27-1.8.X,py34-1.8.X,py35-1.8.X
-  - TOXENV=py27-1.10.X,py34-1.10.X,py35-1.10.X
-  - TOXENV=py27-1.11.X,py34-1.11.X,py36-1.11.X
+  - TOXENV=py27-1.8.X
+  - TOXENV=py34-1.8.X
+  - TOXENV=py35-1.8.X
+
+  - TOXENV=py27-1.10.X
+  - TOXENV=py34-1.10.X
+  - TOXENV=py35-1.10.X
+
+  - TOXENV=py27-1.11.X
+  - TOXENV=py34-1.11.X
+  - TOXENV=py35-1.11.X
+  - TOXENV=py36-1.11.X
+
+  - TOXENV=py34-2.0.X
+  - TOXENV=py35-2.0.X
+  - TOXENV=py36-2.0.X
+
   - TOXENV=coverage
   - TOXENV=docs
   - TOXENV=qunit
