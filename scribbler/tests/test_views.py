@@ -469,4 +469,5 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
         action = ActionChains(self.browser)
         action.send_keys(Keys.F11)
         action.perform()
+        self.browser.implicitly_wait(10)
         self.assertTrue(self.browser.find_element_by_class_name("CodeMirror-fullscreen"))
