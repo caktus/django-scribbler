@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import os
+from optparse import OptionParser
 
 import django
 from django import VERSION as django_version
@@ -90,18 +91,23 @@ if not settings.configured:
 from django.test.utils import get_runner
 
 
-def runtests():
+def runtests(*test_args, **kwargs):
     if django_version < (1, 11):
         # Try lots of ports until we find one we can use
         os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = 'localhost:8099-9999'
 
     if hasattr(django, 'setup'):
         django.setup()
+    if not test_args:
+        test_args = ['scribbler', ]
     TestRunner = get_runner(settings)
     test_runner = TestRunner(verbosity=1, interactive=True, failfast=False)
-    failures = test_runner.run_tests(['scribbler', ])
+    failures = test_runner.run_tests(test_args)
     sys.exit(failures)
 
 
 if __name__ == '__main__':
-    runtests()
+    parser = OptionParser()
+
+    (options, args) = parser.parse_args()
+    runtests(*args)
