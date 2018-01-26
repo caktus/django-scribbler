@@ -5,12 +5,12 @@ import random
 import string
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TransactionTestCase
 
 from scribbler.models import Scribble
 
 
-class ScribblerDataTestCase(TestCase):
+class ScribblerDataTestCase(TransactionTestCase):
     "Base test case for creating scribbler models."
 
     def get_random_string(self, length=10):

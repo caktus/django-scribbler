@@ -1,19 +1,24 @@
 from django.conf.urls import include, url, handler404, handler500
 from django.http import HttpResponseNotFound, HttpResponseServerError
 from django.contrib.auth import views as auth_views
-from django.views.i18n import javascript_catalog
+try:
+    from django.views.i18n import JavaScriptCatalog
+    javascript_catalog = JavaScriptCatalog.as_view()
+except ImportError:  # Django<1.10
+    from django.views.i18n import javascript_catalog
 
 
 handler404 = 'scribbler.tests.urls.test_404'
 handler500 = 'scribbler.tests.urls.test_500'
 
 
-def test_404(request):
+def test_404(request, exception=None):
     return HttpResponseNotFound()
 
 
-def test_500(request):
+def test_500(request, exception=None):
     return HttpResponseServerError()
+
 
 js_info_dict = {
     'packages': ('scribbler', ),

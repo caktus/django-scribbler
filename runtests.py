@@ -6,6 +6,13 @@ import django
 from django import VERSION as django_version
 from django.conf import settings
 
+MIDDLEWARES=(
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+)
 
 class DisableMigrations(object):
     def __contains__(self, item):
@@ -30,13 +37,8 @@ if not settings.configured:
             'django.contrib.staticfiles',
             'scribbler',
         ),
-        MIDDLEWARE_CLASSES=(
-            'django.middleware.common.CommonMiddleware',
-            'django.contrib.sessions.middleware.SessionMiddleware',
-            'django.middleware.csrf.CsrfViewMiddleware',
-            'django.contrib.auth.middleware.AuthenticationMiddleware',
-            'django.contrib.messages.middleware.MessageMiddleware',
-        ),
+        MIDDLEWARE_CLASSES=MIDDLEWARES,
+        MIDDLEWARE=MIDDLEWARES,
         SITE_ID=1,
         SECRET_KEY='super-secret',
 

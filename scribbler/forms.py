@@ -5,9 +5,16 @@ import sys
 
 from django import forms
 from django.db.models import ObjectDoesNotExist, FieldDoesNotExist
-from django.template import StringOrigin
-from django.core.urlresolvers import reverse
+try:
+    from django.template import Origin
+except ImportError:  # Django<2.0
+    from django.template import StringOrigin as Origin
+try:
+    from django.urls import reverse
+except ImportError:  # Django<2.0
+    from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
+from django.utils.encoding import force_text
 
 from .models import Scribble
 
@@ -17,7 +24,7 @@ class ScribbleFormMixin(object):
     def clean_content(self):
         content = self.cleaned_data.get('content', '')
         if content:
-            origin = StringOrigin(content)
+            origin = Origin(content)
 
             try:
                 from django.template.debug import DebugLexer, DebugParser
@@ -27,7 +34,7 @@ class ScribbleFormMixin(object):
                 from django.template import Template
                 # Try to create a Template
                 try:
-                    template = Template(template_string=origin)
+                    template = Template(template_string=force_text(origin))
                 # This is an error with creating the template
                 except Exception as e:
                     self.exc_info = {
