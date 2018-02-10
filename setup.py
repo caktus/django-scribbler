@@ -19,7 +19,7 @@ setup(
     author_email='solutions@caktusgroup.com',
     packages=find_packages(exclude=['example']),
     include_package_data=True,
-    url='https://github.com/caktus/scribbler',
+    url='https://github.com/caktus/django-scribbler',
     license='BSD-2-Clause',
     description=' '.join(__import__('scribbler').__doc__.splitlines()).strip(),
     classifiers=[
