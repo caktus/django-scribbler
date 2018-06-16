@@ -34,7 +34,7 @@ class ScribbleFormMixin(object):
                 from django.template import Template
                 # Try to create a Template
                 try:
-                    template = Template(template_string=force_text(origin))
+                    template = Template(template_string=force_text(content), origin=origin)
                 # This is an error with creating the template
                 except Exception as e:
                     self.exc_info = {

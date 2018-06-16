@@ -82,6 +82,16 @@ class RenderScribbleTestCase(ScribblerDataTestCase):
         result = self.render_template_tag(slug='"sidebar"')
         self.assertTrue('<p>Default.</p>' in result)
 
+    def test_unicode_rendering(self):
+        "Render with unicode defaults when no scribbles exist."
+        # On Django>=1.9 ScribbleFormMixin.clean_content directly uses django.template.Template
+        # and also uses force_text that may fail for non-string objects that have __str__ with
+        # unicode output.
+        self.scribble.delete()
+        unicode_default = '<p>\u0422\u0435\u043a\u0441\u0442.</p>'
+        result = self.render_template_tag(slug='"sidebar"', default=unicode_default)
+        self.assertTrue(unicode_default in result)
+
     def test_no_slug_given(self):
         "Slug is required by the tag."
         self.assertRaises(TemplateSyntaxError, self.render_template_tag, slug='')
