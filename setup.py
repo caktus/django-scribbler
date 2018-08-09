@@ -40,4 +40,9 @@ setup(
     long_description=read_file('README.rst'),
     test_suite="runtests.runtests",
     zip_safe=False, # because we're including media that Django needs
+    install_requires=["django"],
+    extras_require=dict(
+        dev=[],
+        test=['jinja2', 'selenium']
+    ),
 )
