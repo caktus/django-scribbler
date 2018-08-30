@@ -14,6 +14,16 @@ from scribbler.models import Scribble
 from scribbler.views import build_scribble_context
 
 
+try:
+    TOKEN_VAR = template_base.TokenType.VAR
+    TOKEN_BLOCK = template_base.TokenType.BLOCK
+    TOKEN_COMMENT = template_base.TokenType.COMMENT
+except AttributeError:
+    TOKEN_VAR = template_base.TOKEN_VAR
+    TOKEN_BLOCK = template_base.TOKEN_BLOCK
+    TOKEN_COMMENT = template_base.TOKEN_COMMENT
+
+
 register = template.Library()
 
 
@@ -88,24 +98,25 @@ class ScribbleNode(template.Node):
         return wrapper_template.render(context_data, request)
 
 
+
 def rebuild_template_string(tokens):
     "Reconstruct the original template from a list of tokens."
     result = ''
     for token in tokens:
         value = token.contents
-        if token.token_type == template_base.TOKEN_VAR:
+        if token.token_type == TOKEN_VAR:
             value = '{0} {1} {2}'.format(
                 template_base.VARIABLE_TAG_START,
                 value,
                 template_base.VARIABLE_TAG_END,
             )
-        elif token.token_type == template_base.TOKEN_BLOCK:
+        elif token.token_type == TOKEN_BLOCK:
             value = '{0} {1} {2}'.format(
                 template_base.BLOCK_TAG_START,
                 value,
                 template_base.BLOCK_TAG_END,
             )
-        elif token.token_type == template_base.TOKEN_COMMENT:
+        elif token.token_type == TOKEN_COMMENT:
             value = '{0} {1} {2}'.format(
                 template_base.COMMENT_TAG_START,
                 value,

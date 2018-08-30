@@ -24,8 +24,13 @@ js_info_dict = {
     'packages': ('scribbler', ),
 }
 
+try:
+    login_url = url(r'^test/', auth_views.LoginView.as_view(template_name='test.html'))
+except AttributeError:
+    login_url = url(r'^test/', auth_views.login, {'template_name': 'test.html'})
+
 urlpatterns = [
     url(r'^scribble/', include('scribbler.urls')),
     url(r'^jsi18n/$', javascript_catalog, js_info_dict, name='jsi18n'),
-    url(r'^test/', auth_views.login, {'template_name': 'test.html'}),
+    login_url,
 ]

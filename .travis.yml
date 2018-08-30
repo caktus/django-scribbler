@@ -40,6 +40,9 @@ env:
   - TOXENV=py35-2.0.X
   - TOXENV=py36-2.0.X
 
+  - TOXENV=py35-2.1.X
+  - TOXENV=py36-2.1.X
+
   - TOXENV=coverage
   - TOXENV=docs
   - TOXENV=qunit
