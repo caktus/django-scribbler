@@ -483,11 +483,11 @@ class UnicodeTestCase(BaseViewTestCase):
         content_type = ContentType.objects.get_for_model(Scribble)
         self.url = reverse('create-scribble')
 
-    def test_curly_quotes(self):
+    def test_unicode_chars_allowed_in_scribble(self):
         data = {
             'slug': 'test',
             'url': '/',
-            'content': '“'
+            'content': '😀Iñtërnâtiônàlizætiøn“”'
         }
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
