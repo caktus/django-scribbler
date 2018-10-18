@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 "Tests for preview/save views."
 from __future__ import unicode_literals
 
@@ -470,3 +472,26 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
         action.send_keys(Keys.F11)
         action.perform()
         self.assertTrue(self.browser.find_element_by_class_name("CodeMirror-fullscreen"))
+
+
+
+class UnicodeTestCase(BaseViewTestCase):
+    "Unicode chars in scribbles."
+
+    def setUp(self):
+        super(UnicodeTestCase, self).setUp()
+        content_type = ContentType.objects.get_for_model(Scribble)
+        self.url = reverse('create-scribble')
+
+    def test_curly_quotes(self):
+        data = {
+            'slug': 'test',
+            'url': '/',
+            'content': '“'
+        }
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 200)
+        results = json.loads(response.content.decode('utf-8'))
+        self.assertTrue(results['valid'])
+        scribble = Scribble.objects.get(slug=data['slug'], url=data['url'])
+        self.assertEqual(scribble.content, data['content'])
