@@ -17,7 +17,7 @@ class ScribbleFormMixin(object):
     def clean_content(self):
         content = self.cleaned_data.get('content', '')
         if content:
-            origin = StringOrigin(content)
+            origin = StringOrigin(content.encode('utf-8'))
 
             try:
                 from django.template.debug import DebugLexer, DebugParser
