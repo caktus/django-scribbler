@@ -1,10 +1,26 @@
 #!/usr/bin/env python
 import sys
 import os
+from optparse import OptionParser
 
 import django
 from django import VERSION as django_version
 from django.conf import settings
+
+MIDDLEWARES=(
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+)
+
+class DisableMigrations(object):
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return 'notmigrations'
 
 
 if not settings.configured:
@@ -22,13 +38,8 @@ if not settings.configured:
             'django.contrib.staticfiles',
             'scribbler',
         ),
-        MIDDLEWARE_CLASSES=(
-            'django.middleware.common.CommonMiddleware',
-            'django.contrib.sessions.middleware.SessionMiddleware',
-            'django.middleware.csrf.CsrfViewMiddleware',
-            'django.contrib.auth.middleware.AuthenticationMiddleware',
-            'django.contrib.messages.middleware.MessageMiddleware',
-        ),
+        MIDDLEWARE_CLASSES=MIDDLEWARES,
+        MIDDLEWARE=MIDDLEWARES,
         SITE_ID=1,
         SECRET_KEY='super-secret',
 
@@ -68,7 +79,7 @@ if not settings.configured:
             # https://docs.djangoproject.com/en/1.11/ref/settings/#migration-modules
             'scribbler': 'scribbler.tests.migrations' if django_version < (1, 9) else None,
             'dayslog': 'dayslog.tests.migrations' if django_version < (1, 9) else None,
-        },
+        } if django_version >= (1, 9) else DisableMigrations(),
         MEDIA_ROOT='',
         MEDIA_URL='/media/',
         STATIC_ROOT='',
@@ -80,18 +91,23 @@ if not settings.configured:
 from django.test.utils import get_runner
 
 
-def runtests():
+def runtests(*test_args, **kwargs):
     if django_version < (1, 11):
         # Try lots of ports until we find one we can use
         os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = 'localhost:8099-9999'
 
     if hasattr(django, 'setup'):
         django.setup()
+    if not test_args:
+        test_args = ['scribbler', ]
     TestRunner = get_runner(settings)
     test_runner = TestRunner(verbosity=1, interactive=True, failfast=False)
-    failures = test_runner.run_tests(['scribbler', ])
+    failures = test_runner.run_tests(test_args)
     sys.exit(failures)
 
 
 if __name__ == '__main__':
-    runtests()
+    parser = OptionParser()
+
+    (options, args) = parser.parse_args()
+    runtests(*args)

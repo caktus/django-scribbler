@@ -6,6 +6,10 @@ from django.db import models
 from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
+try:
     from django.utils.six import PY3
 except ImportError:
     # Django < 1.5. No Python 3 support
@@ -35,16 +39,14 @@ class Scribble(models.Model):
     class Meta(object):
         unique_together = ('slug', 'url')
 
-    @models.permalink
     def get_save_url(self):
         if self.pk:
-            return ('edit-scribble', (), {'scribble_id': self.pk})
+            return reverse('edit-scribble', kwargs={'scribble_id': self.pk})
         else:
-            return ('create-scribble', (), {})
+            return reverse('create-scribble')
 
-    @models.permalink
     def get_delete_url(self):
-        return ('delete-scribble', (), {'scribble_id': self.pk})
+        return reverse('delete-scribble', kwargs={'scribble_id': self.pk})
 
 
 @receiver(post_save, sender=Scribble)

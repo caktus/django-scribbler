@@ -29,7 +29,7 @@ def build_scribble_context(scribble):
 @require_POST
 def preview_scribble(request, ct_pk):
     "Render scribble content or return error information."
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponseForbidden()
     content_type = get_object_or_404(ContentType, pk=ct_pk)
     change_scribble = '{0}.change_{1}'.format(
@@ -83,7 +83,7 @@ def preview_scribble(request, ct_pk):
 @require_POST
 def create_edit_scribble(request, scribble_id=None):
     "Create a new Scribble or edit an existing one."
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponseForbidden()
     if scribble_id is not None:
         scribble = get_object_or_404(Scribble, pk=scribble_id)
@@ -107,7 +107,7 @@ def create_edit_scribble(request, scribble_id=None):
 
 @require_POST
 def edit_scribble_field(request, ct_pk, instance_pk, field_name):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponseForbidden()
     content_type = get_object_or_404(ContentType, pk=ct_pk)
     perm_name = '{0}.change_{1}'.format(content_type.app_label, content_type.model)
@@ -133,7 +133,7 @@ def edit_scribble_field(request, ct_pk, instance_pk, field_name):
 @require_POST
 def delete_scribble(request, scribble_id):
     "Delete an existing scribble."
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponseForbidden()
     scribble = get_object_or_404(Scribble, pk=scribble_id)
     if not request.user.has_perm('scribbler.delete_scribble'):
