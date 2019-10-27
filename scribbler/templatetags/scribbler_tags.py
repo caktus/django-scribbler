@@ -1,6 +1,4 @@
 "Template tags for rendering snippet content."
-from __future__ import unicode_literals
-
 from django import template
 from django.template import base as template_base
 from django.conf import settings
@@ -19,6 +17,7 @@ try:
     TOKEN_BLOCK = template_base.TokenType.BLOCK
     TOKEN_COMMENT = template_base.TokenType.COMMENT
 except AttributeError:
+    # Can be removed once we drop support for Django 2.0
     TOKEN_VAR = template_base.TOKEN_VAR
     TOKEN_BLOCK = template_base.TOKEN_BLOCK
     TOKEN_COMMENT = template_base.TOKEN_COMMENT

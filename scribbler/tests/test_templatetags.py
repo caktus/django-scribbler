@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 "Test for template tags."
-from __future__ import unicode_literals
-
 from django.contrib.auth.models import Permission
 from django.core.cache import cache
 from django.template import Template, TemplateSyntaxError

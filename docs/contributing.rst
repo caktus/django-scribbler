@@ -62,7 +62,7 @@ To test against multiple versions of Django you can use install and use ``tox>=1
     # Build all environments
     tox
     # Build a single environment
-    tox -e py36-1.11.X
+    tox -e py37-2.2.X
 
 Building all environments will also build the documentation. More on that in the next
 section.

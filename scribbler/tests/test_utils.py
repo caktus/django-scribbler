@@ -1,5 +1,4 @@
 "Tests for utility functions."
-from __future__ import unicode_literals
 from contextlib import contextmanager
 
 from django.test import TestCase

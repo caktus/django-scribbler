@@ -4,24 +4,8 @@ import os
 from optparse import OptionParser
 
 import django
-from django import VERSION as django_version
 from django.conf import settings
-
-MIDDLEWARES=(
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-)
-
-class DisableMigrations(object):
-    def __contains__(self, item):
-        return True
-
-    def __getitem__(self, item):
-        return 'notmigrations'
-
+from django.test.utils import get_runner
 
 if not settings.configured:
     settings.configure(
@@ -38,9 +22,15 @@ if not settings.configured:
             'django.contrib.staticfiles',
             'scribbler',
         ),
-        MIDDLEWARE_CLASSES=MIDDLEWARES,
-        MIDDLEWARE=MIDDLEWARES,
-        SITE_ID=1,
+        MIDDLEWARE=(
+            'django.middleware.security.SecurityMiddleware',
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.middleware.common.CommonMiddleware',
+            'django.middleware.csrf.CsrfViewMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+            'django.contrib.messages.middleware.MessageMiddleware',
+            'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        ),
         SECRET_KEY='super-secret',
 
         ROOT_URLCONF='scribbler.tests.urls',
@@ -74,12 +64,11 @@ if not settings.configured:
             },
         ],
         MIGRATION_MODULES={
-            # these 'tests.migrations' modules don't actually exist, but this lets
-            # us skip creating migrations for the test models.
-            # https://docs.djangoproject.com/en/1.11/ref/settings/#migration-modules
-            'scribbler': 'scribbler.tests.migrations' if django_version < (1, 9) else None,
-            'dayslog': 'dayslog.tests.migrations' if django_version < (1, 9) else None,
-        } if django_version >= (1, 9) else DisableMigrations(),
+            # this lets us skip creating migrations for the test models.
+            # https://docs.djangoproject.com/en/2.2/ref/settings/#migration-modules
+            'scribbler': None,
+            'dayslog': None,
+        },
         MEDIA_ROOT='',
         MEDIA_URL='/media/',
         STATIC_ROOT='',
@@ -88,16 +77,8 @@ if not settings.configured:
     )
 
 
-from django.test.utils import get_runner
-
-
 def runtests(*test_args, **kwargs):
-    if django_version < (1, 11):
-        # Try lots of ports until we find one we can use
-        os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = 'localhost:8099-9999'
-
-    if hasattr(django, 'setup'):
-        django.setup()
+    django.setup()
     if not test_args:
         test_args = ['scribbler', ]
     TestRunner = get_runner(settings)

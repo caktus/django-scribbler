@@ -1,16 +1,13 @@
-from __future__ import unicode_literals
-
 import json
 
 from django import template
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
-from django.template import RequestContext, Template
+from django.template import RequestContext
 from django.views.debug import ExceptionReporter
 from django.views.decorators.http import require_POST
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import render
 
 from .forms import ScribbleForm, PreviewForm, FieldScribbleForm
 from .models import Scribble

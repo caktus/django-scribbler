@@ -26,7 +26,8 @@ Features
 Installation
 --------------------------------------
 
-django-scribbler requires Django 1.8, 1.10, 1.11, or 2.0, and Python 2.7 or >= 3.4.
+django-scribbler currently requires Django 2.0, 2.1 or 2.2 and Python >= 3.4. Older versions of
+django-scribbler may support older versions of Django and Python.
 
 To install from PyPi::
 
@@ -60,4 +61,3 @@ you can join the `Transifex project <https://www.transifex.com/projects/p/django
 
 Development sponsored by `Caktus Consulting Group, LLC
 <http://www.caktusgroup.com/services>`_.
-
