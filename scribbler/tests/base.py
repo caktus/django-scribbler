@@ -1,6 +1,4 @@
 "Test helper functions and base test cases."
-from __future__ import unicode_literals
-
 import random
 import string
 

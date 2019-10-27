@@ -1,18 +1,11 @@
 "Tests for preview/save views."
-from __future__ import unicode_literals
-
 import json
 from datetime import date
-import unittest
 import time
-import os
 
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
-try:
-    from django.urls import reverse
-except ImportError:  # Django<2.0
-    from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import override_settings
 
@@ -27,10 +20,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from . import DaysLog
 from .base import ScribblerDataTestCase, Scribble
 
+
 @override_settings(ROOT_URLCONF='scribbler.tests.urls')
 class BaseViewTestCase(ScribblerDataTestCase):
     "Common functionality for testing views."
-
 
     def setUp(self):
         self.user = self.create_user(username='test', password='test')

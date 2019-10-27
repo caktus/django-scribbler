@@ -1,19 +1,9 @@
 "Models for storing snippet content."
-from __future__ import unicode_literals
-
 from django.core.cache import cache
 from django.db import models
 from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
-try:
-    from django.utils.six import PY3
-except ImportError:
-    # Django < 1.5. No Python 3 support
-    PY3 = False
+from django.urls import reverse
 
 
 from .conf import CACHE_TIMEOUT, CACHE_KEY_FUNCTION
@@ -31,10 +21,6 @@ class Scribble(models.Model):
 
     def __str__(self):
         return '{0} - {1}'.format(self.slug, self.url)
-
-    if not PY3:
-        __unicode__ = __str__
-        __str__ = lambda self: self.__unicode__().encode('utf-8')
 
     class Meta(object):
         unique_together = ('slug', 'url')

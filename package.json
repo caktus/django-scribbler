@@ -1,6 +1,6 @@
 {
   "name": "django-scribbler",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": " An application for managing snippets of text for a Django website.",
   "keywords": [],
   "main": "scribbler/static/scribbler/js/scribbler.js",

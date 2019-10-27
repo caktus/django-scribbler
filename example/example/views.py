@@ -23,7 +23,7 @@ def homepage(request):
         'form': form
     }
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         context['days_log'], created = DaysLog.objects.get_or_create(day=datetime.date.today())
 
     return render(request, 'home.html', context)
