@@ -428,7 +428,7 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    @skipIf(os.environ.get('CI'), 'selenium is too flaky for this to work over the full matrix in CI')
+    @skipIf(os.environ.get('TRAVIS'), 'selenium is too flaky for this to work over the full matrix in CI')
     def test_editor(self):
         self.browser.get('%s%s' % (self.live_server_url, '/test/'))
         username_input = self.browser.find_element_by_name("username")
