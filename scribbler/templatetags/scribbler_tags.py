@@ -31,11 +31,12 @@ class ScribbleNode(template.Node):
 
     child_nodelists = ('nodelist_default', )
 
-    def __init__(self, slug, nodelist, raw, url=None):
+    def __init__(self, slug, nodelist, raw, url=None, readonly=False):
         self.slug = template.Variable(slug)
         self.nodelist_default = nodelist
         self.raw = raw
         self.url = template.Variable(url) if url else None
+        self.readonly = readonly
 
     def render(self, context):
         slug = self.slug.resolve(context)
@@ -72,6 +73,8 @@ class ScribbleNode(template.Node):
                 scribble_template = template.Template(self.raw)
         scribble_context = build_scribble_context(scribble)
         content = scribble_template.render(scribble_context, request)
+        if self.readonly:
+            return content
         wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
         context['scribble'] = scribble
         context['rendered_scribble'] = content
@@ -159,6 +162,42 @@ def scribble(parser, token):
     parser.delete_first_token()
     raw = rebuild_template_string(tokens)
     return ScribbleNode(slug=slug, nodelist=nodelist, raw=raw, url=url)
+
+
+@register.tag
+def get_scribble(parser, token):
+    """
+    Renders a scribble by slug. First looks for a scribble matching the
+    current url and slug then looks for shared scribbles by slug.
+
+    Usage:
+    {% scribble 'sidebar' %}
+        <p>This is the default.</p>
+    {% endscribble %}
+
+    Usage with optional parameter:
+    {% scribble 'sidebar' 'shared-scribble' %}
+        <p>This is the default.</p>
+    {% endscribble %}
+
+    """
+    bits = token.split_contents()
+    if len(bits) == 1 or len(bits) > 3:
+        msg = "{0} tag expects a syntax of {0} 'slug' ['shared''].".format(*token.contents.split())
+        raise template.TemplateSyntaxError(msg)
+    elif len(bits) == 2:
+        tag_name, slug = bits
+        url = None
+    else:
+        tag_name, slug, url = bits
+    # Save original token state
+    tokens = parser.tokens[:]
+    nodelist = parser.parse(('endget_scribble', ))
+    # Remaining tokens are inside the block
+    tokens = list(filter(lambda t: t not in parser.tokens, tokens))
+    parser.delete_first_token()
+    raw = rebuild_template_string(tokens)
+    return ScribbleNode(slug=slug, nodelist=nodelist, raw=raw, url=url, readonly=True)
 
 
 @register.simple_tag(takes_context=True)
