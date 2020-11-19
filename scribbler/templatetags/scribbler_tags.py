@@ -22,6 +22,8 @@ except AttributeError:
     TOKEN_BLOCK = template_base.TOKEN_BLOCK
     TOKEN_COMMENT = template_base.TOKEN_COMMENT
 
+wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
+blank_scribble = wrapper_template.render({})
 
 register = template.Library()
 
@@ -71,10 +73,7 @@ class ScribbleNode(template.Node):
             else:
                 scribble_template = template.Template(self.raw)
         scribble_context = build_scribble_context(scribble)
-        content = scribble_template.render(scribble_context, request)
-        wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
         context['scribble'] = scribble
-        context['rendered_scribble'] = content
         user = context.get('user', None)
         show_controls = False
         can_edit = False
@@ -92,6 +91,10 @@ class ScribbleNode(template.Node):
         context['can_edit_scribble'] = can_edit
         context['can_delete_scribble'] = can_delete
         context['raw_content'] = self.raw
+        if not bool(scribble.content.strip()) and not (can_edit or can_add):
+            return blank_scribble  # Don't bother to render blank scribble
+        content = scribble_template.render(scribble_context, request)
+        context['rendered_scribble'] = content
         # render() takes a dict, so we have to extract the context dict from the object
         context_data = context.dicts[-1]
         return wrapper_template.render(context_data, request)
