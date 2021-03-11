@@ -1,4 +1,5 @@
 "Template tags for rendering snippet content."
+import django
 from django import template
 from django.template import base as template_base
 from django.conf import settings
@@ -101,6 +102,9 @@ class ScribbleNode(template.Node):
 def rebuild_template_string(tokens):
     "Reconstruct the original template from a list of tokens."
     result = ''
+    if django.VERSION >= (3, 1, 0):
+        # For some reason in Django 3.1 the token list is reversed
+        list.reverse(tokens)
     for token in tokens:
         value = token.contents
         if token.token_type == TOKEN_VAR:
