@@ -1,2 +1,2 @@
-Django==2.2.8
+Django==2.2.21
 django-scribbler==1.0.0
