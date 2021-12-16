@@ -1,10 +1,10 @@
 "Create/edit forms for scribble content."
 from django import forms
-from django.core.exceptions import ObjectDoesNotExist, FieldDoesNotExist
+from django.core.exceptions import FieldDoesNotExist
 from django.template import Origin, Template
 from django.urls import reverse
 from django.contrib.contenttypes.models import ContentType
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from .models import Scribble
 
@@ -18,7 +18,7 @@ class ScribbleFormMixin(object):
 
             # Try to create a Template
             try:
-                template = Template(template_string=force_text(content), origin=origin)
+                template = Template(template_string=force_str(content), origin=origin)
             except Exception as e:
                 # This is an error with creating the template
                 self.exc_info = {

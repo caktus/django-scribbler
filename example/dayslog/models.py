@@ -1,6 +1,7 @@
 from django.db import models
 
 class DaysLog(models.Model):
+    id = models.AutoField(primary_key=True)
     day = models.DateField(unique=True)
     happenings = models.TextField(
         default="<h1>Things that happened today</h1>\n"
