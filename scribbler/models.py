@@ -12,6 +12,7 @@ from .conf import CACHE_TIMEOUT, CACHE_KEY_FUNCTION
 class Scribble(models.Model):
     "Core model for storing snippet content."
 
+    id = models.AutoField(primary_key=True)
     created_time = models.DateTimeField(auto_now_add=True, editable=False)
     modified_time = models.DateTimeField(auto_now=True, editable=False)
     name = models.CharField(max_length=255, blank=True, default="")
