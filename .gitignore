@@ -22,4 +22,4 @@ ghostdriver.log
 .direnv
 .envrc
 .gitignore
-.package-lock.json
+package-lock.json
