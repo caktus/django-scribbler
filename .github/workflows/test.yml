@@ -3,23 +3,15 @@ name: lint-test
 on:
   pull_request:
     branches:
-      - develop
+      - master
   push:
     branches:
       - master
-      - develop
-      - 4.0update
   schedule:
     # run once a week on early monday mornings
     - cron: '22 2 * * 1'
 
 jobs:
-  # pre-commit:
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/setup-python@v2
-  #     - uses: pre-commit/action@v2.0.0
 
   test:
     runs-on: ubuntu-20.04
