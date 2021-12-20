@@ -19,3 +19,7 @@ scribbler/static/scribbler/js/scribbler-min.js
 scribbler/tests/qunit/bundle.js
 node_modules/*
 ghostdriver.log
+.direnv
+.envrc
+.gitignore
+package-lock.json
