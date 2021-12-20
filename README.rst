@@ -26,7 +26,7 @@ Features
 Installation
 --------------------------------------
 
-django-scribbler currently requires Django 2.0, 2.1 or 2.2 and Python >= 3.4. Older versions of
+django-scribbler currently requires Django 2.0, 2.1 2.2, 3.2, or 4.0 and Python >= 3.9. Older versions of
 django-scribbler may support older versions of Django and Python.
 
 To install from PyPi::
