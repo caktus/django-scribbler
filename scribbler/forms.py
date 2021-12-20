@@ -1,6 +1,6 @@
 "Create/edit forms for scribble content."
 from django import forms
-from django.core.exceptions import FieldDoesNotExist
+from django.core.exceptions import FieldDoesNotExist, ObjectDoesNotExist
 from django.template import Origin, Template
 from django.urls import reverse
 from django.contrib.contenttypes.models import ContentType

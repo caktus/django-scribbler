@@ -417,6 +417,7 @@ class DeleteTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 403)
 
 
+@skipIf(True, 'PhantomJS was deprecated')
 @override_settings(ROOT_URLCONF='scribbler.tests.urls')
 class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
 
