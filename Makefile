@@ -69,7 +69,6 @@ prep-release: lint-js build-css build-js pull-messages compile-messages
 
 dist: clean fetch-static-libs lint-js build-js build-css
 	python setup.py sdist
-	python setup.py bdist_wheel --universal
 
 clean:
 	rm -f ${STATIC_DIR}/js/scribbler.js
