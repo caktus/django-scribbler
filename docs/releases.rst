@@ -3,7 +3,7 @@ Release History
 
 Release and change history for django-scribbler
 
-v1.0.1 (Release 2021-12-17)
+v1.1.0 (Release 2021-12-20)
 ------------------------------------
 
 - Add support for Django 3.2 through 4.0 (Thanks Petr Dlouhý)
