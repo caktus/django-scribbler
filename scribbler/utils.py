@@ -1,5 +1,4 @@
-from collections import Iterable
-
+from collections.abc import Iterable
 
 def _flatten(iterable):
     """
