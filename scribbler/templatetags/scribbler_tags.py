@@ -71,7 +71,7 @@ class ScribbleNode(template.Node):
                 scribble_template = template.engines['django'].from_string(self.raw)
             else:
                 scribble_template = template.Template(self.raw)
-        scribble_context = build_scribble_context(scribble)
+        scribble_context = build_scribble_context(scribble, context)
         content = scribble_template.render(scribble_context, request)
         wrapper_template = template.loader.get_template('scribbler/scribble-wrapper.html')
         context['scribble'] = scribble
@@ -189,7 +189,7 @@ def scribble_field(context, model_instance, field_name):
         scribble_template = template.engines['django'].from_string(field_value)
     else:
         scribble_template = template.Template(field_value)
-    scribble_context = build_scribble_context(None)
+    scribble_context = build_scribble_context(None, context)
     rendered_content = scribble_template.render(scribble_context, request)
     context['rendered_scribble'] = rendered_content
 
